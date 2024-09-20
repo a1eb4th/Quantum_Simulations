@@ -1,0 +1,7 @@
+# Entorno virtual
+quantum-env/
+__pycache__/
+.vscode/
+*.pyc
+*.pyo
+.DS_Store
