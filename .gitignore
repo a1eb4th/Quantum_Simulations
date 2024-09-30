@@ -1,5 +1,5 @@
 # Entorno virtual
-quantum-env/
+env/
 __pycache__/
 .vscode/
 *.pyc
