@@ -1,0 +1,57 @@
+{
+    "H2": {
+        "symbols": ["H", "H"],
+        "coordinates": [0.0, 0.0, 0.0, 0.0, 0.0, 0.74],
+        "active_electrons": 2,
+        "active_orbitals": 2
+    },
+    "O2": {
+        "symbols": ["O", "O"],
+        "coordinates": [0.0, 0.0, 0.0, 0.0, 0.0, 1.21],
+        "active_electrons": 12,
+        "active_orbitals": 6
+    },
+    "H2O": {
+        "symbols": ["H", "O", "H"],
+        "coordinates": [0.0, 0.0, 0.0, 0.0, 0.0, 0.96, 0.0, 0.75, -0.66],
+        "active_electrons": 8,
+        "active_orbitals": 4
+    },
+    "LiH": {
+        "symbols": ["Li", "H"],
+        "coordinates": [0.0, 0.0, 0.0, 0.0, 0.0, 1.6],
+        "active_electrons": 4,
+        "active_orbitals": 4
+    },
+    "CH4": {
+        "symbols": ["C", "H", "H", "H", "H"],
+        "coordinates": [
+            0.0, 0.0, 0.0,
+            0.0, 0.0, 1.089,
+            1.026719, 0.0, -0.363,
+            -0.513360, 0.889165, -0.363,
+            -0.513360, -0.889165, -0.363
+        ],
+        "active_electrons": 10,
+        "active_orbitals": 6
+    },
+    "H2O2": {
+        "symbols": ["H", "O", "O", "H"],
+        "coordinates": [
+            0.0, 0.0, 0.0,
+            0.0, 0.0, 0.96,
+            0.0, 0.0, 1.92,
+            0.0, 0.0, 2.88
+        ],
+        "active_electrons": 12,
+        "active_orbitals": 6
+    },
+    "O": {
+        "symbols": ["O"],
+        "coordinates": [0.0, 0.0, 0.0],
+        "active_electrons": 6,
+        "active_orbitals": 2
+    }
+}
+
+
