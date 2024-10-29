@@ -1,29 +1,28 @@
 #!/usr/bin/env python3
 
 import os
-import sys
+os.environ["JAX_ENABLE_X64"] = "1"
 
 from exceptions import QuantumSimulationError
 from molecule_simulation import QuantumSimulation
 from chemical_reaction import ChemicalReaction
-from mol_optimizer import *
-from functions import *
+from functions import from_user_input  # Importa la función específica
 
+# Importa las funciones necesarias
+from mol_optimizer import mol_optimizer
 
-import argparse
-
+import warnings
+from numpy import ComplexWarning
 from pennylane import numpy as np
 
+warnings.filterwarnings("ignore", category=ComplexWarning)
+
 def main():
+
     molecules, args, type_sim = from_user_input()
 
     if type_sim == 'optimization':
-
-        for mol in molecules:
-            optimized_geometry, energy = optimize_geometry(mol)
-            print(f"Molécula: {mol.symbols}")
-            print(f"Energía mínima: {energy}")
-            print(f"Geometría optimizada: {optimized_geometry}")
+        mol_optimizer(molecules, interfaces=['jax'])
 
 if __name__ == "__main__":
     main()

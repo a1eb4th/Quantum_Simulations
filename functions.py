@@ -3,7 +3,7 @@ import argparse
 import pennylane as qml
 import sys
 import json
-import numpy as np
+from pennylane import numpy as np
 import os
 import subprocess
 import datetime
@@ -19,7 +19,7 @@ def from_user_input():
     
     parser.add_argument('--molecule', type=str, nargs='+', help='Molecule(s) to simulate (multiple molecules can be separated by spaces).')
     parser.add_argument('--reaction', action='store_true', help='Simulate a chemical reaction.')
-    parser.add_argument('--opt', type=str, nargs='+', help='Molecule(s) to optimize (multiple molecules can be separated by spaces).')
+    parser.add_argument('--opt', action= 'store_true', help='Molecule(s) to optimize (multiple molecules can be separated by spaces).')
     parser.add_argument('--basis_set', type=str, default='sto-3g', help='Basis set to use.')
     parser.add_argument('--optimizer', type=str, default='GradientDescent', help='Optimizer to use.')
     parser.add_argument('--max_iterations', type=int, default=50, help='Maximum number of optimization iterations.')
@@ -44,12 +44,9 @@ def from_user_input():
     # Determine if the input is a molecule or a reaction
     if args.reaction:
         input_type = 'reaction'
-    elif args.molecule:
-        input_type = 'molecule'
-        molecule_names = args.molecule
     elif args.opt:
         input_type = 'optimization'
-        molecule_names = args.opt
+        print("=== Molecular Optimization Simulation with PennyLane ===\n")
     else:
         print("Error: You must specify a type simulation.")
         sys.exit(1)
@@ -59,29 +56,60 @@ def from_user_input():
         return [], args, input_type
 
     # Load the defined molecules from a JSON file
-    molecules_data = load_molecules()  # Method that loads molecules from the JSON file
-
+    predefined_molecules = load_molecules()  # Method that loads molecules from the JSON file
     molecules = []
-    for molecule_name in molecule_names:
-        # Check if the specified molecule exists in the loaded database
-        if molecule_name not in molecules_data:
-            print(f"Molecule '{molecule_name}' is not defined. Use '--add_molecule' to add it.")
-            sys.exit(1)  # Terminate the program if the molecule is not defined
 
-        # Get the data of the specified molecule
-        molecule_data = molecules_data[molecule_name]
+    if args.molecule:
+        molecule_names = args.molecule
+        for molecule_name in molecule_names:
+            # Check if the specified molecule exists in the loaded database
+            if molecule_name not in predefined_molecules:
+                print(f"Molecule '{molecule_name}' is not defined. Use '--add_molecule' to add it.")
+                sys.exit(1)  # Terminate the program if the molecule is not defined
 
-        # Create the molecule using PennyLane
+            # Get the data of the specified molecule
+            molecule_data = predefined_molecules[molecule_name]
+
+            # Create the molecule using PennyLane
+            molecule = qml.qchem.Molecule(
+                symbols=molecule_data['symbols'],
+                coordinates=np.array(molecule_data['coordinates']),
+                basis_name=molecule_data.get('basis_name', args.basis_set),
+                charge=molecule_data.get('charge', 0),
+                mult=molecule_data.get('multiplicity', 1)
+            )
+            molecules.append(molecule)
+    else:
+        # Present options to the user
+        print("Select a molecule to simulate:")
+        for idx, molecule_name in enumerate(predefined_molecules.keys(), start=1):
+            print(f"{idx}. {molecule_name}")
+        print(f"{len(predefined_molecules) + 1}. Exit")
+        
+        # Prompt the user to choose a molecule
+        while True:
+            try:
+                choice = int(input(f"\nEnter the number of the molecule to simulate (1-{len(predefined_molecules) + 1}): "))
+                if 1 <= choice <= len(predefined_molecules):
+                    molecule_names = list(predefined_molecules.keys())[choice - 1]
+                    selected_molecule = predefined_molecules[molecule_names]
+                    print(f"\nYou have selected: {molecule_names}\n")
+                    break
+                elif choice == len(predefined_molecules) + 1:
+                    print("Exiting the program.")
+                    return
+                else:
+                    print(f"Please choose a number between 1 and {len(predefined_molecules) + 1}.")
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
+
         molecule = qml.qchem.Molecule(
-            symbols=molecule_data['symbols'],
-            coordinates=np.array(molecule_data['coordinates']),
-            basis_name=molecule_data.get('basis_set', args.basis_set),
-            charge=molecule_data.get('charge', 0),
-            mult=molecule_data.get('multiplicity', 1)
+            symbols=selected_molecule['symbols'],
+            coordinates=np.array(selected_molecule['coordinates']),
+            basis_name=selected_molecule.get('basis_name', args.basis_set),
+            charge=selected_molecule.get('charge', 0),
+            mult=selected_molecule.get('multiplicity', 1)
         )
-        molecule.basis_name = molecule_data.get('basis_set', args.basis_set)
-        molecule.active_electrons = molecule_data.get('active_electrons', molecule.n_electrons)
-        molecule.active_orbitals = molecule_data.get('active_orbitals', molecule.n_orbitals)
         molecules.append(molecule)
 
     # Return the list of molecules, the user-provided arguments, and the input type
@@ -111,13 +139,9 @@ def add_new_molecule():
             print("Error: Coordinates must be numbers.")
             sys.exit(1)
     try:
-        active_electrons = int(input("Number of active electrons: ").strip())
-        active_orbitals = int(input("Number of active orbitals: ").strip())
         multiplicity = int(input("Multiplicity (1 for singlet, 2 for doublet, etc.): ").strip())
         charge = int(input("Charge of the molecule: ").strip())
-        if active_electrons <= 0 or active_orbitals <= 0 or multiplicity <= 0:
-            print("Error: Number of active electrons, orbitals, and multiplicity must be positive integers.")
-            sys.exit(1)
+        basis_set = input("Basis set (e.g., sto-3g): ").strip()
     except ValueError:
         print("Error: You must enter integer numbers for active electrons, orbitals, multiplicity, and charge.")
         sys.exit(1)
@@ -126,10 +150,9 @@ def add_new_molecule():
     molecule = {
         'symbols': symbols,
         'coordinates': coordinates,
-        'active_electrons': active_electrons,
-        'active_orbitals': active_orbitals,
-        'multiplicity': multiplicity,
-        'charge': charge
+        'charge': charge,
+        'mult': multiplicity,
+        'basis_name': basis_set,
     }
 
     # Load existing molecules

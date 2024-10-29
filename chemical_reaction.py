@@ -8,8 +8,6 @@ import matplotlib.image as mpimg
 
 from molecule_simulation import QuantumSimulation, QuantumSimulationError
 import re
-from ase import Atoms
-from ase.io import write
 import subprocess
 import datetime
 
@@ -198,6 +196,7 @@ class ChemicalReaction:
             save_path (str): File path where the plot will be saved.
             show_plot (bool): Indicates whether to display the plot.
         """
+        '''
         if not self.simulations:
             print("No simulations to plot.")
             return
@@ -212,9 +211,10 @@ class ChemicalReaction:
             molecule_data = self.molecules_data[molecule_name]
             symbols = molecule_data['symbols']
             coordinates = np.array(molecule_data['coordinates']).reshape(-1, 3)
-            atoms = Atoms(symbols=symbols, positions=coordinates)
+            #atoms = Atoms(symbols=symbols, positions=coordinates)
 
             # Save temporary image securely
+
             with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp_file:
                 try:
                     write(tmp_file.name, atoms, format='png')
@@ -245,7 +245,7 @@ class ChemicalReaction:
             plt.show()
         else:
             plt.close()
-
+        '''
     def save_results(self, directory, optimizer_choice, max_iterations, conv_tol, stepsize):
         """
         Saves the reaction results in the specified directory.
