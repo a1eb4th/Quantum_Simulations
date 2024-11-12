@@ -35,7 +35,7 @@ def main():
     molecules, args, type_sim = from_user_input()
 
     if type_sim == 'optimization':
-        mol_optimizer(molecules, interfaces=['jax','autograd'])
+        mol_optimizer(molecules)
 
 if __name__ == "__main__":
     main()
