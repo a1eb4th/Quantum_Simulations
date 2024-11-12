@@ -9,4 +9,5 @@ __pycache__/
 .DS_Store
 results/
 temp_results_jax/
+temp_results/
 *.prof

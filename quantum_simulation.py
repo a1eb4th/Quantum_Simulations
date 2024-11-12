@@ -1,39 +1,34 @@
-#!/usr/bin/env python3
-
 import os
-os.environ["JAX_ENABLE_X64"] = "1"
-# Configurar variables de entorno antes de importar JAX
-os.environ['OMP_NUM_THREADS'] = '128'  # Ajustar al número de hilos que deseas usar
-os.environ['XLA_FLAGS'] = '--xla_cpu_multi_thread_eigen=true'
 import sys
 import shutil
-from exceptions import QuantumSimulationError
-from molecule_simulation import QuantumSimulation
-from chemical_reaction import ChemicalReaction
-from functions import from_user_input
 
-from mol_optimizer import mol_optimizer
-
-import warnings
-from numpy import ComplexWarning
-from pennylane import numpy as np
-warnings.filterwarnings("ignore")
-
-
+# Configuración de directorio y archivo de salida
 TEMP_RESULTS_DIR = "temp_results_jax"
 
-if os.path.exists(TEMP_RESULTS_DIR):
-    shutil.rmtree(TEMP_RESULTS_DIR) 
-os.makedirs(TEMP_RESULTS_DIR) 
+# Crear el directorio si no existe
+if not os.path.exists(TEMP_RESULTS_DIR):
+    os.makedirs(TEMP_RESULTS_DIR)
 
+# Abrir archivo para registrar la salida
+output_file_path = os.path.join(TEMP_RESULTS_DIR, "output.txt")
+output_file = open(output_file_path, "w", buffering=1)  # Line-buffered mode
+original_stdout = sys.stdout  # Guardar salida estándar original
+sys.stdout = output_file  # Redirigir salida estándar al archivo
 
+try:
+    def main():
+        from functions import from_user_input  # Importa otras dependencias necesarias
+        from mol_optimizer import mol_optimizer
 
-def main():
+        molecules, args, type_sim = from_user_input()
+        
+        if type_sim == 'optimization':
+            mol_optimizer(molecules)
 
-    molecules, args, type_sim = from_user_input()
+    if __name__ == "__main__":
+        main()
 
-    if type_sim == 'optimization':
-        mol_optimizer(molecules)
-
-if __name__ == "__main__":
-    main()
+finally:
+    # Restaurar la salida estándar y cerrar el archivo
+    sys.stdout = original_stdout
+    output_file.close()

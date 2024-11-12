@@ -9,14 +9,11 @@ import matplotlib.pyplot as plt
 from tabulate import tabulate
 import time
 import optax
-# Configurar el directorio de resultados temporales
+print(jax.devices())
+
 TEMP_RESULTS_DIR = "temp_results_jax"
-
-terminal_output_file = open(os.path.join(TEMP_RESULTS_DIR, "output.txt"), "w", buffering=1)
-sys.stdout = terminal_output_file
-
 # Constants for convergence and maximum number of iterations
-MAX_ITER = 5   # Adjust as needed
+MAX_ITER = 10   # Adjust as needed
 CONV = 1e-8    # Convergence criterion
 STEP_SIZE = 0.01   # Step size for the optimizers
 jax.config.update("jax_enable_x64", True)
@@ -621,8 +618,6 @@ def mol_optimizer(selected_molecules):
     Returns:
         None
     """
-    terminal_output_file = open(os.path.join(TEMP_RESULTS_DIR, "output.txt"), "w", buffering=1)
-    sys.stdout = terminal_output_file
     for selected_molecule in selected_molecules:
         symbols = selected_molecule.symbols
         coordinates = selected_molecule.coordinates
@@ -640,6 +635,4 @@ def mol_optimizer(selected_molecules):
         results = optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charge, mult, basis_name)
 
         charge_results(results, symbols)
-    sys.stdout = sys.__stdout__
-    terminal_output_file.close()
     
