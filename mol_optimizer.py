@@ -1,34 +1,19 @@
 import os
-
-os.environ['OMP_NUM_THREADS'] = '64'
-os.environ['XLA_FLAGS'] = '--xla_cpu_multi_thread_eigen=true'
-
-import sys
 import shutil
-
+import sys
 import pennylane as qml
-from pennylane import numpy as np
+from pennylane import numpy as np 
 import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
 from tabulate import tabulate
 import time
 import optax
-import functools
-from functools import partial
-
-print("Dispositivo predeterminado en JAX:", jax.default_backend())
-
-# Opcional: comprobar dispositivos en JAX
-print("Dispositivos disponibles en JAX:", jax.devices())
-
 # Configurar el directorio de resultados temporales
-TEMP_RESULTS_DIR = "temp_results"
+TEMP_RESULTS_DIR = "temp_results_jax"
 
-if os.path.exists(TEMP_RESULTS_DIR):
-    shutil.rmtree(TEMP_RESULTS_DIR) 
-os.makedirs(TEMP_RESULTS_DIR) 
-
+terminal_output_file = open(os.path.join(TEMP_RESULTS_DIR, "output.txt"), "w", buffering=1)
+sys.stdout = terminal_output_file
 
 # Constants for convergence and maximum number of iterations
 MAX_ITER = 5   # Adjust as needed
@@ -87,14 +72,21 @@ def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
     Returns:
         hamiltonian (qml.Hamiltonian): Molecular Hamiltonian.
     """
-    coordinates = x.reshape(-1, 3)
-    hamiltonian, _ = qml.qchem.molecular_hamiltonian(
-        symbols, coordinates, charge=charge, mult=mult, basis=basis_name
+
+    x_np = qml.math.toarray(x)
+    coordinates = x_np.reshape(-1, 3)
+
+    # Ensure coordinates are standard NumPy arrays
+    coordinates_np = np.array(coordinates, dtype=float)
+
+    hamiltonian, qubits = qml.qchem.molecular_hamiltonian(
+        symbols, coordinates_np, charge=charge, mult=mult, basis=basis_name
     )
     h_coeffs, h_ops = hamiltonian.terms()
     h_coeffs = jnp.array(h_coeffs)
-    return qml.Hamiltonian(h_coeffs, h_ops)
 
+    hamiltonian = qml.Hamiltonian(h_coeffs, h_ops)
+    return hamiltonian
 
 def generate_hf_state(electrons, spin_orbitals):
     """
@@ -141,27 +133,32 @@ def get_operator_pool(electrons, spin_orbitals, excitation_level='both'):
     else:
         raise ValueError("The excitation level must be 'single', 'double', or 'both'.")
     print(f"Number of {excitation_level} excitations: {len(operator_pool)}")
-
-    # Convert each excitation to a tuple
-    operator_pool = [tuple(exc) for exc in operator_pool]
     return operator_pool
 
-def compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, charge=0, mult=1, basis_name='sto-3g'):
+
+def compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, interface='autograd', charge=0, mult=1, basis_name='sto-3g'):
     """
-    Calculates the energy gradients with respect to the nuclear coordinates x using JAX.
+    Calculates the energy gradients with respect to the nuclear coordinates x.
     """
-    delta = 1e-3  # Step size for finite differences
+    delta = 1e-3
     num_coords = len(x)
 
+
     grad_x = jnp.zeros_like(x)
+    params_jax = jnp.array(params)
+    x = jnp.array(x)
+
     for i in range(num_coords):
-        # Use functional updates instead of in-place modification
         x_plus = x.at[i].add(delta)
         x_minus = x.at[i].add(-delta)
+        x_plus_np = np.array(x_plus)
+        x_minus_np = np.array(x_minus)
 
-        h_plus = build_hamiltonian(x_plus, symbols, charge, mult, basis_name)
-        h_minus = build_hamiltonian(x_minus, symbols, charge, mult, basis_name)
+        # Build Hamiltonians
+        h_plus = build_hamiltonian(x_plus_np, symbols, charge, mult, basis_name)
+        h_minus = build_hamiltonian(x_minus_np, symbols, charge, mult, basis_name)
 
+        # Define cost functions
         @qml.qnode(dev, interface="jax")
         def cost_fn_plus(params):
             prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals)
@@ -172,12 +169,17 @@ def compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_
             prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals)
             return qml.expval(h_minus)
 
-        energy_plus = cost_fn_plus(params)
-        energy_minus = cost_fn_minus(params)
-        grad_value = (energy_plus - energy_minus) / (2 * delta)
-        grad_x = grad_x.at[i].set(grad_value)
+        # Compute energies
+        energy_plus = cost_fn_plus(params_jax)
+        energy_minus = cost_fn_minus(params_jax)
+
+        # Compute gradient
+        grad = (energy_plus - energy_minus) / (2 * delta)
+        grad_x = grad_x.at[i].set(grad)
 
     return grad_x
+
+
 
 def compute_exact_energy(hamiltonian):
     """
@@ -207,55 +209,58 @@ def prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals):
         elif len(exc) == 4:
             qml.DoubleExcitation(params[i], wires=exc)
 
-def compute_operator_gradients(operator_pool, selected_excitations, params, hamiltonian, hf_state, dev, spin_orbitals):
+def compute_operator_gradients(operator_pool, selected_excitations, params, hamiltonian, hf_state, dev, spin_orbitals, interface='autograd'):
     """
-    Calculates the energy gradients with respect to each operator in the pool using JAX.
-    
+    Calculates the energy gradients with respect to each operator in the pool.
+
+    Source:
+    https://pennylane.ai/qml/demos/tutorial_adaptive_circuits/
+
     Args:
         operator_pool (list): List of available excitations.
         selected_excitations (list): List of selected excitations.
-        params (jnp.ndarray): Ansatz parameters.
+        params (np.ndarray): Ansatz parameters.
         hamiltonian (qml.Hamiltonian): Molecular Hamiltonian.
         hf_state (np.ndarray): Hartree-Fock state.
         dev (qml.Device): Quantum device.
         spin_orbitals (int): Number of spin orbitals.
-    
-    Returns:
-        gradients (jnp.ndarray): List of absolute gradients for each operator.
-    """
-    params_jax = jnp.array(params)
-    gradients = []
 
-    # Define the circuit outside grad_fn to fix gate_wires as static
-    def create_circuit(gate_wires):
+    Returns:
+        gradients (list): List of absolute gradients for each operator.
+    """
+
+    gradients = []
+    for gate_wires in operator_pool:
+        param_init = 0.0
+
+        params_jax = jnp.array(params)
+        param_init_jax = jnp.array(param_init)
+
         @qml.qnode(dev, interface="jax")
-        def circuit(param):
+        def circuit_with_gate(param):
             prepare_ansatz(params_jax, hf_state, selected_excitations, spin_orbitals)
             if len(gate_wires) == 2:
                 qml.SingleExcitation(param, wires=gate_wires)
             elif len(gate_wires) == 4:
                 qml.DoubleExcitation(param, wires=gate_wires)
-            else:
-                raise ValueError("Invalid number of wires in gate_wires.")
             return qml.expval(hamiltonian)
-        return circuit
 
-    for gate_wires in operator_pool:
-        circuit = create_circuit(gate_wires)
-        # JIT compile the gradient function with gate_wires as static
-        grad_circuit = jax.jit(jax.grad(circuit))
-        grad = grad_circuit(0.0)
-        gradients.append(jnp.abs(grad))
+        grad_fn = jax.grad(circuit_with_gate, argnums=0)
+        grad = grad_fn(param_init_jax)
+        grad = jnp.abs(grad)
+        gradients.append(grad)
 
-    gradients = jnp.array(gradients)
     return gradients
 
 def select_operator(gradients, operator_pool, convergence):
     """
     Selects the operator with the largest gradient from the pool.
 
+    Source:
+    https://pennylane.ai/qml/demos/tutorial_adaptive_circuits/
+
     Args:
-        gradients (list or jnp.ndarray): List of absolute gradients.
+        gradients (list): List of absolute gradients.
         operator_pool (list): List of available excitations.
         convergence (float): Convergence criterion.
 
@@ -264,11 +269,7 @@ def select_operator(gradients, operator_pool, convergence):
         max_grad_value (float or None): Maximum gradient value or None.
     """
 
-    # Convert gradients to a NumPy array if it's a JAX array
-    if isinstance(gradients, jax.Array):
-        gradients = np.array(gradients)
-
-    if len(gradients) == 0 or np.all(np.isnan(gradients)):
+    if not gradients or all(np.isnan(gradients)):
         print("No more operators to add.")
         return None, None
 
@@ -282,16 +283,19 @@ def select_operator(gradients, operator_pool, convergence):
     selected_gate = operator_pool[max_grad_index]
     return selected_gate, max_grad_value
 
-def update_parameters_and_coordinates(opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, learning_rate_x, convergence, charge=0, mult=1, basis_name='sto-3g'):
+def update_parameters_and_coordinates(opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, learning_rate_x, convergence, interface='autograd', charge=0, mult=1, basis_name='sto-3g'):
     """
-    Updates the circuit parameters and nuclear coordinates using JAX.
+    Updates the circuit parameters and nuclear coordinates.
+
+    Source:
+    https://pennylane.ai/qml/demos/tutorial_vqe_qng.html
 
     Args:
-        opt (optax.GradientTransformation): Optax optimizer.
-        opt_state: Current state of the optimizer.
+        opt (qml.optimize.Optimizer): Quantum optimizer.
+        opt_state: Current state of the optimizer (used for Optax).
         cost_fn (callable): Cost function to optimize.
-        params (jnp.ndarray): Current parameters.
-        x (jnp.ndarray): Current coordinates.
+        params (np.ndarray): Current parameters.
+        x (np.ndarray): Current coordinates.
         symbols (list): List of atomic symbols.
         selected_excitations (list): List of selected excitations.
         dev (qml.Device): Quantum device.
@@ -299,51 +303,63 @@ def update_parameters_and_coordinates(opt, opt_state, cost_fn, params, x, symbol
         spin_orbitals (int): Number of spin orbitals.
         learning_rate_x (float): Learning rate for nuclear coordinates.
         convergence (float): Convergence criterion.
+        interface (str, optional): 'jax' or 'autograd' for differentiation.
         charge (int, optional): Charge of the molecule.
         mult (int, optional): Spin multiplicity.
         basis_name (str, optional): Name of the atomic basis.
 
     Returns:
-        params (jnp.ndarray): Updated parameters.
-        x (jnp.ndarray): Updated nuclear coordinates.
+        params (np.ndarray): Updated parameters.
+        x (np.ndarray): Updated nuclear coordinates.
         energy_history (list): Energy history during optimization.
         x_history (list): Coordinate history during optimization.
         opt_state: Updated optimizer state.
     """
+
     prev_energy = None
     energy_history = []
     x_history = []
 
-    cost_fn = jax.jit(cost_fn)
 
     for opt_step in range(10):
-        energy, grad_params = jax.value_and_grad(cost_fn)(params)
-        energy = float(jnp.real(energy))
+
+        @jax.jit
+        def cost_and_grad(params):
+            energy, grad_params = jax.value_and_grad(cost_fn)(params)
+            return energy, grad_params
+
+        # Compute energy and gradient
+        energy, grad_params = cost_and_grad(params)
+        energy = jnp.real(energy)
+        # Update parameters using Optax optimizer
         updates, opt_state = opt.update(grad_params, opt_state, params)
         params = optax.apply_updates(params, updates)
 
-        energy_history.append(energy)
-        x_history.append(np.array(x))
 
-        grad_x = compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, charge, mult, basis_name)
+        energy_history.append(energy)
+        x_history.append(x.copy())
+
+        # Compute nuclear gradients and update x
+        grad_x = compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, interface, charge, mult, basis_name)
         x = x - learning_rate_x * grad_x
 
-        prev_energy = energy
 
     return params, x, energy_history, x_history, opt_state
 
 def optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charge=0, mult=1, basis_name='sto-3g'):
     """
-    Performs the optimization of the molecule using JAX.
+    Performs the optimization of the molecule using different interfaces and optimizers.
     """
     results = {}
+    interface='jax'
 
-    print(f"\n===== Starting optimization with JAX =====\n")
+    print(f"\n===== Starting optimization with interface: {interface} =====\n")
     hf_state = generate_hf_state(electrons, spin_orbitals)
 
-    dev = qml.device("default.qubit.jax", wires=spin_orbitals)
+    dev = qml.device("default.qubit", wires=spin_orbitals)
 
     operator_pool = get_operator_pool(electrons, spin_orbitals, excitation_level='both')
+
 
     optimizers = {
         "Adam": optax.adam(learning_rate=STEP_SIZE),
@@ -379,7 +395,8 @@ def optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charg
 
         for iteration in range(max_iterations):
             hamiltonian = build_hamiltonian(x, symbols, charge, mult, basis_name)
-            gradients = compute_operator_gradients(operator_pool_copy, selected_excitations, params, hamiltonian, hf_state, dev, spin_orbitals)
+
+            gradients = compute_operator_gradients(operator_pool_copy, selected_excitations, params, hamiltonian, hf_state, dev, spin_orbitals, interface)
 
             selected_gate, max_grad_value = select_operator(gradients, operator_pool_copy, convergence)
             if selected_gate is None:
@@ -401,20 +418,23 @@ def optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charg
                 new_mu = jnp.concatenate([old_state.mu, jnp.array([0.0])])
                 new_nu = jnp.concatenate([old_state.nu, jnp.array([0.0])])
 
+                # Increment the count
+                new_count = old_state.count + 1
+
                 # Create a new ScaleByAdamState with updated 'mu', 'nu', and 'count'
                 new_scale_by_adam_state = optax.ScaleByAdamState(
-                    count=old_state.count,
+                    count=new_count,
                     mu=new_mu,
                     nu=new_nu
                 )
                 # Update the optimizer state
                 opt_state = (new_scale_by_adam_state, empty_state)
+                #print(f"Opt state: {opt_state}")
             else:
                 opt_state = opt.init(params)
 
-            # JIT-compile the cost function for JAX
             @jax.jit
-            @qml.qnode(dev, interface="jax")
+            @qml.qnode(dev, interface=interface)
             def cost_fn(params):
                 prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals)
                 return qml.expval(hamiltonian)
@@ -422,7 +442,7 @@ def optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charg
             # Update parameters and coordinates
             params, x, energy_history, x_history, opt_state = update_parameters_and_coordinates(
                 opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
-                learning_rate_x, convergence, charge, mult, basis_name
+                learning_rate_x, convergence, interface, charge, mult, basis_name
             )
 
             energy_history_total.extend(energy_history)
@@ -437,7 +457,7 @@ def optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charg
         # End timing
         end_time = time.time()
         total_time = end_time - start_time
-        print(f"Total optimization time with {optimizer_name}: {total_time:.2f} seconds")
+        print(f"Total optimization time with {optimizer_name} ({interface}): {total_time:.2f} seconds")
 
         final_energy = energy_history_total[-1] if energy_history_total else None
         interface_results[optimizer_name] = {
@@ -447,17 +467,18 @@ def optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charg
             "final_energy": final_energy,
             "final_params": params,
             "final_x": x,
+            "interface": interface,
             "total_time": total_time
         }
 
         # Display final results
         if final_energy is not None:
-            print(f"\nFinal energy with {optimizer_name} = {final_energy:.8f} Ha")
+            print(f"\nFinal energy with {optimizer_name} ({interface}) = {final_energy:.8f} Ha")
         else:
-            print(f"\nNo final energy obtained with {optimizer_name}")
+            print(f"\nNo final energy obtained with {optimizer_name} ({interface})")
 
         final_x = x
-        print(f"\nFinal geometry with {optimizer_name}:")
+        print(f"\nFinal geometry with {optimizer_name} ({interface}):")
         atom_coords = []
         final_x_np = np.array(final_x)
         for i, atom in enumerate(symbols):
@@ -465,34 +486,39 @@ def optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charg
         print(tabulate(atom_coords, headers=["Symbol", "x (Å)", "y (Å)", "z (Å)"], floatfmt=".6f"))
 
         # Optional: Print the final quantum circuit
-        print(f"Quantum Circuit with {optimizer_name}:\n")
+        print(f"Quantum Circuit with {optimizer_name} ({interface}):\n")
         print(qml.draw(cost_fn)(params))
 
-    results = interface_results
+    results[interface] = interface_results
 
-    # Compare total optimization times
+# Compare total optimization times
     print("\n=== Total Optimization Times ===")
-    for optimizer_name, data in results.items():
-        total_time = data.get("total_time", 0)
-        print(f"Optimizer: {optimizer_name}, Time: {total_time:.2f} seconds")
+    for interface, interface_results in results.items():
+        print(f"\nInterface: {interface}")
+        for optimizer_name, data in interface_results.items():
+            total_time = data.get("total_time", 0)
+            print(f"Optimizer: {optimizer_name}, Time: {total_time:.2f} seconds")
 
     return results
 
-def visualize_results(results, symbols):
+
+def charge_results(results, symbols):
     """
     Generates plots to compare optimizers and visualize the evolution of coordinates.
 
-    Visualization code to compare results across optimizers.
+    Visualization code to compare results across interfaces and optimizers
+    Plot energy over optimization steps comparing optimizers and interfaces
 
     Args:
         results (dict): Dictionary with results for each optimizer.
         symbols (list): List of atomic symbols.
     """
     plt.figure(figsize=(10, 6))
-    for optimizer_name, data in results.items():
-        if data["energy_history"]:  # Ensure energy_history is not empty
-            label = f"{optimizer_name}"
-            plt.plot(data["energy_history"], label=label)
+    for interface, interface_results in results.items():
+        for optimizer_name, data in interface_results.items():
+            if data["energy_history"]:
+                label = f"{optimizer_name} ({interface})"
+                plt.plot(data["energy_history"], label=label)
     plt.xlabel('Optimization Step', fontsize=14)
     plt.ylabel('Energy (Ha)', fontsize=14)
     plt.title('Energy Evolution During Optimization', fontsize=16)
@@ -512,12 +538,13 @@ def visualize_results(results, symbols):
     for atom_index in range(num_atoms):
         for axis_index, axis_name in enumerate(axes):
             ax = axs[atom_index, axis_index] if num_atoms > 1 else axs[axis_index]
-            for optimizer_name, data in results.items():
-                x_history = np.array(data["x_history"])
-                num_iterations = len(x_history)
-                coord_history = x_history[:, 3*atom_index + axis_index]
-                label = f"{optimizer_name}"
-                ax.plot(range(num_iterations), coord_history, label=label)
+            for interface, interface_results in results.items():
+                for optimizer_name, data in interface_results.items():
+                    x_history = np.array(data["x_history"])
+                    num_iterations = len(x_history)
+                    coord_history = x_history[:, 3*atom_index + axis_index]
+                    label = f"{optimizer_name} ({interface})"
+                    ax.plot(range(num_iterations), coord_history, label=label)
             if atom_index == num_atoms - 1:
                 ax.set_xlabel('Optimization Step', fontsize=12)
             ax.set_ylabel(f'{symbols[atom_index]} - {axis_name} (Å)', fontsize=12)
@@ -534,48 +561,50 @@ def visualize_results(results, symbols):
 
 def visualize_final_geometries(results, symbols):
     """
-    Generates a 3D plot showing the final geometries for each optimizer.
+    Generates a 3D plot showing the final geometries for each optimizer and interface.
     """
     fig = plt.figure(figsize=(10, 8))
     ax = fig.add_subplot(111, projection='3d')
 
-    # Define colors and markers for each optimizer
-    colors = {'Gradient Descent': 'r', 'Adam': 'g'}
-    markers = {'Gradient Descent': 'o', 'Adam': '^'}
+    # Define colors and markers for each optimizer and interface
+    colors = {'Gradient Descent': 'r', 'Adam': 'g', 'Quantum Natural Gradient': 'b'}
+    markers = {'autograd': 'o', 'jax': '^'}
 
     # Get the range of coordinates to adjust point sizes
     all_coords = []
-    for data in results.values():
-        final_coords = data['final_x'].reshape(-1, 3)
-        all_coords.append(final_coords)
+    for interface_results in results.values():
+        for data in interface_results.values():
+            final_coords = data['final_x'].reshape(-1, 3)
+            all_coords.append(final_coords)
     all_coords = np.concatenate(all_coords)
     max_range = np.ptp(all_coords, axis=0).max()  # Maximum range in any axis
 
     # Scale for point sizes
     size_scale = 200 / max_range  # Adjust 200 as needed
 
-    for optimizer_name, data in results.items():
-        final_coords = data["final_x"].reshape(-1, 3)
-        color = colors.get(optimizer_name, 'k')
-        marker = markers.get(optimizer_name, 's')
-        # Calculate point sizes based on distance from the molecule center
-        center = final_coords.mean(axis=0)
-        distances = np.linalg.norm(final_coords - center, axis=1)
-        sizes = distances * size_scale + 50  # Add a minimum size for visibility
+    for interface, interface_results in results.items():
+        for optimizer_name, data in interface_results.items():
+            final_coords = data["final_x"].reshape(-1, 3)
+            color = colors.get(optimizer_name, 'k')
+            marker = markers.get(interface, 's')
+            # Calculate point sizes based on distance from the molecule center
+            center = final_coords.mean(axis=0)
+            distances = np.linalg.norm(final_coords - center, axis=1)
+            sizes = distances * size_scale + 50
 
-        for i, atom in enumerate(symbols):
-            label = f"{atom} - {optimizer_name}" if i == 0 else ""
-            ax.scatter(final_coords[i, 0], final_coords[i, 1], final_coords[i, 2],
-                       color=color, marker=marker, s=sizes[i], label=label)
-            ax.text(final_coords[i, 0], final_coords[i, 1], final_coords[i, 2],
-                    f"{atom}", size=10, color=color)
+            for i, atom in enumerate(symbols):
+                label = f"{atom} - {optimizer_name} ({interface})" if i == 0 else ""
+                ax.scatter(final_coords[i, 0], final_coords[i, 1], final_coords[i, 2],
+                           color=color, marker=marker, s=sizes[i], label=label)
+                ax.text(final_coords[i, 0], final_coords[i, 1], final_coords[i, 2],
+                        f"{atom}", size=10, color=color)
 
     ax.set_xlabel('x (Å)')
     ax.set_ylabel('y (Å)')
     ax.set_zlabel('z (Å)')
-    ax.set_title('Final Geometries of Optimizers')
+    ax.set_title('Final Geometries of Optimizers and Interfaces')
     handles, labels = ax.get_legend_handles_labels()
-    by_label = dict(zip(labels, handles))  # Avoid duplicate labels
+    by_label = dict(zip(labels, handles))
     ax.legend(by_label.values(), by_label.keys())
     plt.tight_layout()
     plt.savefig(os.path.join(TEMP_RESULTS_DIR, "final_geometries_3D.png"))
@@ -583,15 +612,17 @@ def visualize_final_geometries(results, symbols):
 
 def mol_optimizer(selected_molecules):
     """
-    Tests the molecular optimization for a list of selected molecules using JAX.
+    Tests the molecular optimization for a list of selected molecules.
 
     Args:
         selected_molecules (list): List of selected molecule objects.
+        interfaces (list, optional): List of interfaces to use ('jax', 'autograd').
 
     Returns:
         None
     """
-
+    terminal_output_file = open(os.path.join(TEMP_RESULTS_DIR, "output.txt"), "w", buffering=1)
+    sys.stdout = terminal_output_file
     for selected_molecule in selected_molecules:
         symbols = selected_molecule.symbols
         coordinates = selected_molecule.coordinates
@@ -607,5 +638,8 @@ def mol_optimizer(selected_molecules):
         molecule, electrons, spin_orbitals = initialize_molecule(symbols, x_init, charge, mult, basis_name)
 
         results = optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charge, mult, basis_name)
-        
-        visualize_results(results, symbols)
+
+        charge_results(results, symbols)
+    sys.stdout = sys.__stdout__
+    terminal_output_file.close()
+    
