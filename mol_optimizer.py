@@ -13,7 +13,7 @@ print(jax.devices())
 
 TEMP_RESULTS_DIR = "temp_results_jax"
 # Constants for convergence and maximum number of iterations
-MAX_ITER = 10   # Adjust as needed
+MAX_ITER = 5   # Adjust as needed
 CONV = 1e-8    # Convergence criterion
 STEP_SIZE = 0.01   # Step size for the optimizers
 jax.config.update("jax_enable_x64", True)

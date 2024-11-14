@@ -1,6 +1,8 @@
 import os
 import sys
-import shutil
+import cProfile
+import pstats
+from io import StringIO
 
 # Configuración de directorio y archivo de salida
 TEMP_RESULTS_DIR = "temp_results_jax"
@@ -11,24 +13,56 @@ if not os.path.exists(TEMP_RESULTS_DIR):
 
 # Abrir archivo para registrar la salida
 output_file_path = os.path.join(TEMP_RESULTS_DIR, "output.txt")
-output_file = open(output_file_path, "w", buffering=1)  # Line-buffered mode
-original_stdout = sys.stdout  # Guardar salida estándar original
-sys.stdout = output_file  # Redirigir salida estándar al archivo
+output_file = open(output_file_path, "w", buffering=1)
+original_stdout = sys.stdout
+sys.stdout = output_file
 
-try:
-    def main():
-        from functions import from_user_input  # Importa otras dependencias necesarias
-        from mol_optimizer import mol_optimizer
+def main():
+    from functions import from_user_input
+    from mol_optimizer import mol_optimizer
 
-        molecules, args, type_sim = from_user_input()
-        
-        if type_sim == 'optimization':
-            mol_optimizer(molecules)
+    molecules, args, type_sim = from_user_input()
 
-    if __name__ == "__main__":
+    if type_sim == 'optimization':
+        mol_optimizer(molecules)
+
+if __name__ == "__main__":
+    profiler = cProfile.Profile()
+    try:
+        profiler.enable()
+
         main()
 
-finally:
-    # Restaurar la salida estándar y cerrar el archivo
+    finally:
+        profiler.disable()
+
+        profiler_output_path = os.path.join(TEMP_RESULTS_DIR, "profile_output.txt")
+        with open(profiler_output_path, "w") as f:
+            profiler_output = StringIO()
+            stats = pstats.Stats(profiler, stream=profiler_output)
+
+            # Filtrar y analizar funciones específicas de 'mol_optimizer'
+            stats.strip_dirs()
+            stats.sort_stats('cumulative')
+
+            # Filtrar las funciones definidas dentro de 'mol_optimizer'
+            filtered_output = StringIO()
+            stats.stream = filtered_output
+            stats.print_stats("mol_optimizer")
+            filtered_results = filtered_output.getvalue()
+
+            # Escribir el resultado filtrado en un archivo separado
+            filtered_report_path = os.path.join(TEMP_RESULTS_DIR, "filtered_report.txt")
+            with open(filtered_report_path, "w") as filtered_file:
+                filtered_file.write(filtered_results)
+
+            # Escribir el reporte completo de perfil
+            stats.stream = profiler_output
+            stats.print_stats()
+            f.write(profiler_output.getvalue())
+
+        print(f"Reporte completo guardado en: {profiler_output_path}")
+        print(f"Reporte filtrado guardado en: {filtered_report_path}")
+
     sys.stdout = original_stdout
     output_file.close()
