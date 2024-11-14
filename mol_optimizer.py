@@ -11,11 +11,8 @@ from tabulate import tabulate
 import time
 
 # Configurar el directorio de resultados temporales
-TEMP_RESULTS_DIR = "temp_results"
+TEMP_RESULTS_DIR = "temp_results_autograd"
 
-if os.path.exists(TEMP_RESULTS_DIR):
-    shutil.rmtree(TEMP_RESULTS_DIR) 
-os.makedirs(TEMP_RESULTS_DIR) 
 
 
 # Constants for convergence and maximum number of iterations
