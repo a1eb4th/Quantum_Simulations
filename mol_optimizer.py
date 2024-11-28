@@ -1,6 +1,4 @@
 import os
-import shutil
-import sys
 import pennylane as qml
 from pennylane import numpy as np 
 import jax
@@ -11,9 +9,15 @@ import time
 import optax
 print(jax.devices())
 
+import portalocker
+import time
+import os
+import pandas as pd
+
+
 TEMP_RESULTS_DIR = "temp_results_jax"
 # Constants for convergence and maximum number of iterations
-MAX_ITER = 5   # Adjust as needed
+MAX_ITER = 10   # Adjust as needed
 CONV = 1e-8    # Convergence criterion
 STEP_SIZE = 0.01   # Step size for the optimizers
 jax.config.update("jax_enable_x64", True)
@@ -343,119 +347,130 @@ def update_parameters_and_coordinates(opt, opt_state, cost_fn, params, x, symbol
 
     return params, x, energy_history, x_history, opt_state
 
-def optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charge=0, mult=1, basis_name='sto-3g'):
+def optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charge=0, mult=1, basis_name='sto-3g', interface='jax'):
     """
     Performs the optimization of the molecule using different interfaces and optimizers.
     """
     results = {}
-    interface='jax'
-
     print(f"\n===== Starting optimization with interface: {interface} =====\n")
+    
     hf_state = generate_hf_state(electrons, spin_orbitals)
-
     dev = qml.device("default.qubit", wires=spin_orbitals)
-
     operator_pool = get_operator_pool(electrons, spin_orbitals, excitation_level='both')
-
-
+    
     optimizers = {
-        "Adam": optax.adam(learning_rate=STEP_SIZE),
+        #"Adam": optax.adam(learning_rate=STEP_SIZE),
         "Gradient Descent": optax.sgd(learning_rate=STEP_SIZE),
     }
-
+    
     convergence = CONV
     max_iterations = MAX_ITER
     learning_rate_x = 0.01
-
+    
     interface_results = {}
-
+    
     for optimizer_name, opt in optimizers.items():
         print(f"\n--- Optimizing with {optimizer_name} ---")
-
+    
+        execution_times = {
+            'build_hamiltonian': 0.0,
+            'compute_operator_gradients': 0.0,
+            'update_parameters_and_coordinates': 0.0,
+            'Total Time': 0.0
+        }
+        optimizer_start_time = time.time()
+    
         operator_pool_copy = operator_pool.copy()
         selected_excitations = []
         params = []
-
+    
         energy_history_total = []
         x_history_total = []
         params_history = []
-
+    
         x = x_init.copy()
-
+    
         # Initialize optimizer state
         params = jnp.array(params)
         x = jnp.array(x)
         opt_state = opt.init(params)
-
-        # Start timing
-        start_time = time.time()
-
+    
         for iteration in range(max_iterations):
+            iter_start_time = time.time()
+
+            start_time = time.time()
             hamiltonian = build_hamiltonian(x, symbols, charge, mult, basis_name)
+            end_time = time.time()
+            execution_times['build_hamiltonian'] += end_time - start_time
+    
 
+            start_time = time.time()
             gradients = compute_operator_gradients(operator_pool_copy, selected_excitations, params, hamiltonian, hf_state, dev, spin_orbitals, interface)
-
+            end_time = time.time()
+            execution_times['compute_operator_gradients'] += end_time - start_time
+    
             selected_gate, max_grad_value = select_operator(gradients, operator_pool_copy, convergence)
             if selected_gate is None:
                 break
-
+    
             selected_excitations.append(selected_gate)
+    
 
-            # Add a new parameter initialized to 0.0
             new_param = jnp.array([0.0])
             params = jnp.concatenate([params, new_param])
-
+    
             if optimizer_name == 'Adam':
-                # Manually update the optimizer state to include the new parameter
-                # Extract the existing state
-                old_state = opt_state[0]  # ScaleByAdamState
-                empty_state = opt_state[1]  # EmptyState
 
-                # Append zero to 'mu' and 'nu' for the new parameter
+                old_state = opt_state[0]  
+                empty_state = opt_state[1]  
+    
                 new_mu = jnp.concatenate([old_state.mu, jnp.array([0.0])])
                 new_nu = jnp.concatenate([old_state.nu, jnp.array([0.0])])
-
-                # Increment the count
+    
                 new_count = old_state.count + 1
-
-                # Create a new ScaleByAdamState with updated 'mu', 'nu', and 'count'
                 new_scale_by_adam_state = optax.ScaleByAdamState(
                     count=new_count,
                     mu=new_mu,
                     nu=new_nu
                 )
-                # Update the optimizer state
+
                 opt_state = (new_scale_by_adam_state, empty_state)
-                #print(f"Opt state: {opt_state}")
             else:
                 opt_state = opt.init(params)
-
+    
             @jax.jit
             @qml.qnode(dev, interface=interface)
             def cost_fn(params):
                 prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals)
                 return qml.expval(hamiltonian)
+    
 
-            # Update parameters and coordinates
+            start_time = time.time()
             params, x, energy_history, x_history, opt_state = update_parameters_and_coordinates(
                 opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
                 learning_rate_x, convergence, interface, charge, mult, basis_name
             )
-
+            end_time = time.time()
+            execution_times['update_parameters_and_coordinates'] += end_time - start_time
+    
             energy_history_total.extend(energy_history)
             x_history_total.extend(x_history)
             params_history.append(params.copy())
-
+    
             print(f"Iteration {iteration + 1}, Energy = {energy_history[-1]:.8f} Ha, Max Gradient = {max_grad_value:.5e}")
             if max_grad_value < convergence:
                 print("Convergence achieved in iteration", iteration + 1)
                 break
+            iter_end_time = time.time()
+            iteration_time = iter_end_time - iter_start_time
+            execution_times[f"Iteration {iteration + 1}"] = iteration_time
+    
 
-        # End timing
-        end_time = time.time()
-        total_time = end_time - start_time
+        optimizer_end_time = time.time()
+        total_time = optimizer_end_time - optimizer_start_time
+        execution_times['Total Time'] = total_time
         print(f"Total optimization time with {optimizer_name} ({interface}): {total_time:.2f} seconds")
-
+    
         final_energy = energy_history_total[-1] if energy_history_total else None
         interface_results[optimizer_name] = {
             "energy_history": energy_history_total,
@@ -467,13 +482,12 @@ def optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charg
             "interface": interface,
             "total_time": total_time
         }
-
-        # Display final results
+    
         if final_energy is not None:
             print(f"\nFinal energy with {optimizer_name} ({interface}) = {final_energy:.8f} Ha")
         else:
             print(f"\nNo final energy obtained with {optimizer_name} ({interface})")
-
+    
         final_x = x
         print(f"\nFinal geometry with {optimizer_name} ({interface}):")
         atom_coords = []
@@ -481,22 +495,59 @@ def optimize_molecule(molecule, symbols, x_init, electrons, spin_orbitals, charg
         for i, atom in enumerate(symbols):
             atom_coords.append([atom, final_x_np[3 * i], final_x_np[3 * i + 1], final_x_np[3 * i + 2]])
         print(tabulate(atom_coords, headers=["Symbol", "x (Å)", "y (Å)", "z (Å)"], floatfmt=".6f"))
+    
 
-        # Optional: Print the final quantum circuit
         print(f"Quantum Circuit with {optimizer_name} ({interface}):\n")
         print(qml.draw(cost_fn)(params))
-
+    
+        write_simulation_times(molecule, interface, optimizer_name, execution_times)
+    
     results[interface] = interface_results
-
-# Compare total optimization times
+    
+    # Comparar tiempos totales de optimización
     print("\n=== Total Optimization Times ===")
     for interface, interface_results in results.items():
         print(f"\nInterface: {interface}")
         for optimizer_name, data in interface_results.items():
             total_time = data.get("total_time", 0)
             print(f"Optimizer: {optimizer_name}, Time: {total_time:.2f} seconds")
-
+    
     return results
+
+def write_simulation_times(molecule, interface, optimizer_name, execution_times):
+    """
+    Escribe los tiempos de ejecución de una simulación en un archivo CSV común sin sobrescribir datos existentes.
+    Si la simulación ya existe, reemplaza los datos antiguos por los nuevos.
+    """
+    filename = "execution_times.csv"
+    simulation_id = f"{molecule.symbols}_{interface}_{optimizer_name}"
+
+    # Crear un DataFrame con los tiempos de ejecución de esta simulación
+    df_new = pd.DataFrame(list(execution_times.items()), columns=['Function', simulation_id])
+    df_new.set_index('Function', inplace=True)
+
+    # Usar bloqueo de archivo para operaciones de lectura y escritura
+    with portalocker.Lock(filename, 'a+', timeout=10) as fh:
+        fh.seek(0)  # Mover el puntero al inicio del archivo antes de leer
+        if os.path.getsize(filename) > 0:
+            # Leer el archivo existente
+            df_existing = pd.read_csv(fh, index_col='Function')
+
+            # Si el simulation_id ya existe, eliminar la columna antigua
+            if simulation_id in df_existing.columns:
+                df_existing.drop(columns=[simulation_id], inplace=True)
+
+            # Combinar los DataFrames
+            df_combined = df_existing.join(df_new, how='outer')
+        else:
+            # Si el archivo está vacío, usar el DataFrame nuevo
+            df_combined = df_new
+
+        # Escribir el DataFrame combinado en el archivo
+        fh.seek(0)
+        fh.truncate()
+        df_combined.to_csv(fh)
+
 
 
 def charge_results(results, symbols):
