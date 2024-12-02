@@ -1,0 +1,220 @@
+% Document title: ETSETB TFG LaTeX Template
+% Version: 5.0
+% Author: 2023 Orestes Mas Casals
+% License: ETSETB TFG LaTeX Template by Orestes Mas is marked with CC0 1.0 Universal
+
+%%%% TEMPLATE LANGUAGE MACROS %%%%
+
+% Language selection based on the language variable defined above
+\ifcase\doclanguage\or
+  % Case 1
+  \usepackage[catalan]{babel}
+  \selectlanguage{catalan}%
+  \setquotestyle{spanish}% El paquet "csquotes" no té estil pel català, però podem usar l'espanyol
+  \newcommand\TFGdate{
+    \ifcase\month\or%
+      Gener\or Febrer\or Març\or Abril\or
+      Maig\or Juny\or Juliol\or Agost\or
+      Setembre\or Octubre\or Novembre\or Desembre\fi
+      \space de~\number\year%
+    }
+\or % Case 2
+  \usepackage[spanish,es-noquoting]{babel}
+  \selectlanguage{spanish}%
+  \newcommand\TFGdate{
+    \ifcase\month\or%
+      Enero\or Febrero\or Marzo\or Abril\or
+      Mayo\or Junio\or Julio\or Agosto\or
+      Septiembre\or Octubre\or Noviembre\or Diciembre\fi
+      \space de~\number\year%
+    }
+\else % Case 3 (default)
+  \usepackage[english]{babel}
+  \selectlanguage{english}%
+  \newcommand\TFGdate{
+    \ifcase\month\or%
+      January\or February\or March\or April\or
+      May\or June\or July\or August\or
+      September\or October\or November\or December\fi
+      \space\number\year%
+    }
+\fi
+
+\newcommand\degreename{
+  \ifcase\doclanguage
+  \or
+    \{Nom del Grau\}%
+  \or
+    \{Nombre del Grado\}%
+  \else
+    \{Degree's Name\}%
+  \fi
+}
+
+\newcommand\GEF{
+  \ifcase\doclanguage
+  \or
+    Grau en Enginyeria Física
+  \or
+    Grado en Ingeniería Física
+  \else
+    Degree in Physics Engineering
+  \fi
+}
+
+\newcommand\GRETST{
+  \ifcase\doclanguage
+  \or
+    Grau en Enginyeria de Tecnologies i Serveis de Telecomunicació
+  \or
+    Grado en Ingeniería de Tecnologías y Servicios de Telecomunicación
+  \else
+    Degree in Telecommunication Technologies and Services Engineering
+  \fi
+}
+
+\newcommand\GREELEC{
+  \ifcase\doclanguage
+  \or
+    Grau en Enginyeria Electrònica de Telecomunicació
+  \or
+    Grado en Ingeniería Electrónica de Telecomunicación
+  \else
+    Degree in Electronics Engineering%  Should be "Degree in Telecommunication Electronics Engineering"
+  \fi
+}
+
+\newcommand{\studentsname}{
+  \ifcase\doclanguage
+  \or
+    \{Nom de l'Autor\}%
+  \or
+    \{Nombre del Autor\}%
+  \else
+    \{Author's Name\}%
+  \fi
+}
+
+\newcommand\reporttitle{
+  \ifcase\doclanguage
+  \or
+    \{Títol del Treball\}%
+  \or
+    \{Título del Trabajo\}%
+  \else
+    \{Report's title\}%
+  \fi
+}
+
+\newcommand\FirstParagraph{
+  \ifcase\doclanguage
+  \or
+    Treball de Fi de Grau\medskip\\
+    presentat a l'Escola Tècnica Superior\medskip\\
+    d'Enginyeria de Telecomunicació de Barcelona\medskip\\
+    de la Universitat Politècnica de Catalunya\medskip\\
+    per
+  \or
+    Trabajo de Final de Grado\medskip\\
+    presentado en la Escola Tècnica Superior\medskip\\
+    d'Enginyeria de Telecomunicació de Barcelona\medskip\\
+    de la Universitat Politècnica de Catalunya\medskip\\
+    por
+  \else
+    Bachelor's Degree Thesis\medskip\\
+    Submitted to the Faculty at the\medskip\\
+    Escola Tècnica Superior\medskip\\
+    d'Enginyeria de Telecomunicació de Barcelona\medskip\\
+    of the Universitat Politècnica de Catalunya\medskip\\
+    by
+  \fi
+}
+
+\newcommand\SecondParagraph{
+  \ifcase\doclanguage
+  \or
+    En compliment parcial\medskip\\
+    dels requisits per a l'obtenció del
+  \or
+    En cumplimiento parcial\medskip\\
+    de los requisitos para la obtención del
+  \else
+    In partial fulfillment\medskip\\
+    of the requirements for the
+  \fi
+}
+
+\newcommand\advisor{
+  \ifcase\doclanguage
+  \or
+    \textit{\{Nom del director del projecte\}}
+  \or
+    \textit{\{Nombre del director del proyecto\}}
+  \else
+    \textit{\{Advisor's Name\}}
+  \fi
+}
+
+\newcommand\reviewer{
+  \ifcase\doclanguage
+  \or
+    \textit{\{Nom del ponent (si s'escau)\}}
+  \or
+    \textit{\{Nombre del ponente (si aplica)\}}
+  \else
+    \textit{\{Reviewer's Name (if applicable)\}}
+  \fi
+}
+
+\newcommand\ThesisTitle{\reporttitle}
+\newcommand\AuthorName{\studentsname}
+\newcommand\DegreeName{\degreename}
+\newcommand\AdvisorName{\advisor}
+\newcommand\ReviewerName{\reviewer}
+\newcommand\documentDate{\TFGdate}
+\newcommand\AdvisorLine{
+  \ifcase\doclanguage
+  \or
+    Director/a:
+  \or
+    Director/a:
+  \else
+    Advisor:
+  \fi \AdvisorName
+}
+\newcommand\ReviewerLine{
+  \ifcase\doclanguage
+  \or
+    Ponent:
+  \or
+    Ponente:
+  \else
+    Reviewer:
+  \fi \ReviewerName
+}
+
+% Define some macros for user-provided information
+\newcommand\setTitle[1]{\renewcommand{\ThesisTitle}{#1}}
+\newcommand\setAuthor[1]{\renewcommand{\AuthorName}{#1}}
+\newcommand\setDegree[1]{%
+  \renewcommand{\DegreeName}{#1}
+  % This stablishes a different color for each Degree
+  % It's only a proposal and proof-of-concept. By now it's disabled until approval
+%  \ifdefstring{\DegreeName}{\GRETST}{
+%    \colorlet{DegreeColor}{GRETSTcolor}
+%  }{
+%    \ifdefstring{\DegreeName}{\GREELEC}{
+%      \colorlet{DegreeColor}{GREELECcolor}
+%    }{
+%      \ifdefstring{\DegreeName}{\GEF}{
+%        \colorlet{DegreeColor}{GEFcolor}
+%      }{
+%        \colorlet{DegreeColor}{UPCblue}
+%      }
+%    }
+%  }
+}
+\newcommand\setAdvisor[1]{\renewcommand{\AdvisorName}{#1}}
+\newcommand\setReviewer[1]{\renewcommand{\ReviewerName}{#1}}
+\newcommand\setDate[1]{\renewcommand{\documentDate}{#1}}
+

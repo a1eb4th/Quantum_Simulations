@@ -1,0 +1,11 @@
+\clearpage
+\thispagestyle{empty}             % No header/footer
+\vspace*{4cm}                     % 
+\hfill                            % Push the minipage to the right
+\begin{minipage}{0.8\textwidth}   % You can adjust the minipage width
+  \raggedleft\itshape             % Text in italics and flushed to the right
+  \ifcase\doclanguage\or          % REPLACE FROM HERE (including the \ifcase structure) WITH YOUR OWN TEXT
+    Podeu incloure una pàgina de Dedicatòries just abans de la pàgina d’Agraïments, però no és un requisit.\or
+    Puede incluirse una página de Dedicatorias justo antes de la página de Agradecimientos, pero no es un requisito.\else
+    A Dedication page may be included in your thesis just before the Acknowledgments page, but it is not a requirement.\fi
+\end{minipage}

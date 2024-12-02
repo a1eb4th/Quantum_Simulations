@@ -1,0 +1,12 @@
+\vspace*{0cm}
+
+% As the Revision History has three LaTeX tables, in this particular case it's better to separate the translations in three different files.
+% Please modify the one that suit your needs and this code will ignore the languages you're not working on.
+
+\ifcase\doclanguage\or
+  \input{chapters/revision_history_ca}
+\or
+  \input{chapters/revision_history_es}
+\else
+  \input{chapters/revision_history_en}
+\fi

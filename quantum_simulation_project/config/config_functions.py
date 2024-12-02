@@ -5,7 +5,6 @@ import sys
 import json
 from pennylane import numpy as np
 import os
-import subprocess
 import datetime
 
 def from_user_input():
@@ -183,7 +182,7 @@ def load_molecules():
     """
     Load molecules from the JSON file.
     """
-    molecules_file = 'molecules.json'
+    molecules_file = 'config/molecules.json'
     if not os.path.exists(molecules_file):
         print(f"The file '{molecules_file}' does not exist. Creating an empty file.")
         try:

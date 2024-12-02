@@ -1,0 +1,15 @@
+def sieve_of_eratosthenes(limit):
+  primes = []
+  sieve = [True] * (limit + 1)
+  for num in range(2, limit + 1):
+    if sieve[num]:
+      primes.append(num)
+      for multiple in range(num*num, limit + 1, num):
+        sieve[multiple] = False
+  return primes
+
+# Example usage:
+if __name__ == "__main__":
+  limit = 30
+  print(f"The prime numbers up to {limit} are:
+          {sieve_of_eratosthenes(limit)}")

@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style type="text/css">
+</style>
+<meta name="generator" content="ReText 8.0.0">
+<title>README_ca</title>
+<style type="text/css">
+</style>
+</head>
+<body>
+<h1>Patró LaTeX per al TFG</h1>
+<p>(envieu comentaris i/o suggerències a <a href="mailto:orestes.mas@upc.edu">orestes.mas@upc.edu</a>)</p>
+<h2>Idiomes</h2>
+<p>Aquest patró de TFG permet generar el PDF en 3 idiomes diferents: català, castellà i angles. Per seleccionar l'idioma de generació vegeu l'apartat de «Personalització».</p>
+<h2>Requisits</h2>
+<p>Per poder compilar el document i obtenir un PDF final, necessitareu una instal·lació moderna i funcional de TeX. Es pot instal·lar manualment, però és molt més fàcil instal·lar una <strong>distribució TeX precompilada</strong>.</p>
+<ol>
+<li><strong>Per a sistemes GNU/Linux</strong>, la distribució <a href="https://tug.org/texlive/">TeX Live</a> és la predominant, tot i que fa alguns anys la distribució <a href="https://miktex.org/">MiKTeX</a> també es va portar a sistemes GNU/Linux. La majoria de les distribucions GNU/Linux, com ara Ubuntu, Mint, Debian o Fedora, ja tenen TeX Live empaquetat i llest per instal·lar, així que consulteu el vostre gestor de paquets.</li>
+<li><strong>Per a ordinadors amb macOS</strong>, pots instal·lar <a href="https://tug.org/mactex/">MacTeX</a>, que és essencialment TeX Live per a Mac.</li>
+<li><strong>Per a Windows</strong>, pots triar entre <a href="https://miktex.org/">MiKTeX</a> o [TeX Live]. La primera d'elles és més popular entre els usuaris de Windows, probablement perquè fa més anys que és disponible.</li>
+<li><strong>En línia</strong>: Algunes persones comencen a fer els seus primers passos en LaTeX utilitzant un servei en línia com <a href="https://www.overleaf.com/">Overleaf</a>. Tot i que aquests serveis poden ser útils per baixar la barrera d'entrada, tingues en compte que són serveis <em>freemium</em>, és a dir, la versió gratuïta té algunes limitacions (normalment en longitud del document i temps de processament) i cal de fer una actualització a una versió de pagament per eliminar aquestes limitacions.</li>
+</ol>
+<h2>Per tenir en compte</h2>
+<p>El (La)TeX és un programa molt antic que ha anat evolucionant. Alhora, les versions antigues s'han volgut conservar per tal de preservar la compatibilitat. Això fa que actualment hi ha 2 maneres principals de generar el vostre document:</p>
+<ol>
+<li><strong>pdflatex</strong>: És la manera «antiga», que compila més ràpidament però no suporta directament l'ús de fonts OpenType i característiques tipogràfiques avançades.</li>
+<li><strong>lualatex</strong>: contràriament amb l'anterior, és una mica més lent a l'hora de compilar però suporta directament tipus de lletra TrueType i OpenType.</li>
+</ol>
+<p>La plantilla LaTeX està dissenyada i configurada per compilar bé de les dues maneres. Vosaltres haureu d'escollir amb quina de les dues opcions us quedeu (podeu provar-les les dues per veure la diferència de velocitat). Personalment us recomanem la segona ja que és la més moderna i probablement serà la que acabarà prevalent a mig termini.</p>
+<h2>Generació del document.</h2>
+<p>Coneixement:</p>
+<p>El procés de generació d'un document LaTeX pot ser dividit en diversos passos. Aquí hi ha una breu explicació del procediment:</p>
+<ol>
+<li>
+<p><strong>Edició del document</strong>: L'usuari escriu el contingut del document en un editor de text. El document està escrit en format LaTeX, que inclou comandes i marcadors per a indicar la seva estructura i format. Per ajudar en aquesta tasca hi ha editors de text especialment dedicats a això com ara <strong>TeXStudio</strong>.</p>
+</li>
+<li>
+<p><strong>Compilació</strong>: Per obtenir un document final (generalment en format PDF), cal compilar el document LaTeX. Aquest procés implica l'ús d'un motor LaTeX, com "pdflatex" o "lualatex", per processar el document i generar el resultat desitjat. Durant la compilació es generen diversos <strong>fitxers auxiliars</strong> que ajuden a LaTeX a gestionar la informació, com ara els índexs, les bibliografies i les referències creuades.</p>
+</li>
+<li>
+<p><strong>Gestió de bibliografia</strong>: Si s'utilitza una bibliografia, LaTeX utilitza un programari com "biber" per processar les cites i generar la llista de referències bibliogràfiques.</p>
+</li>
+<li>
+<p><strong>Compilació múltiple</strong>: En molts casos, és necessari compilar el document més d'una vegada per resoldre les referències creuades i altres elements que requereixen informació addicional.</p>
+</li>
+<li>
+<p><strong>Generació del document final</strong>: Finalment, el motor LaTeX crea el document final en el format desitjat, com un arxiu PDF. El document inclou tots els elements, com ara text, imatges, taules i gràfics, amb el format especificat pel document LaTeX original.</p>
+</li>
+</ol>
+<p>El resultat és un document de gran qualitat tipogràfica que segueix les normes estàndard de format i estil de LaTeX. Aquest procés de compilació permet als autors centrar-se en el contingut del document mentre LaTeX gestiona la presentació i la tipografia de manera automàtica.</p>
+<p>Així, la primera vegada que compilem el document caldrà fer:</p>
+<pre><code class="language-sh">pdflatex TFG.tex (repetir l'ordre dues o més vegades per resoldre les referències creuades)
+biber TFG        (això genera la bibliografia)
+pdflatex TFG.tex (repetir 2 o més vegades per incorporar la bibliog. i resoldre les referències)
+</code></pre>
+<p>o:</p>
+<pre><code class="language-sh">lualatex TFG.tex (repetir l'ordre dues o més vegades per resoldre les referències creuades)
+biber TFG        (això genera la bibliografia)
+lualatex TFG.tex (repetir 2 o més vegades per incorporar la bibliog. i resoldre les referències)
+</code></pre>
+<p>Una vegada generat sense errors ni advertències, si no modifiquem la bibliografia podrem anar actualitzant únicament el fitxer .TeX principal amb <code>lualatex/pdflatex</code> i prou.</p>
+<h2>Personalització de la plantilla (IMPORTANT !)</h2>
+<h3>Informació del TFG</h3>
+<p>Per adaptar la plantilla a les vostres necessitats heu d'<strong>editar el fitxer principal (<code>TFG.tex</code>)</strong> i introduir la vostra informació personal:</p>
+<ol>
+<li>Indiqueu l'idioma del document a la variable <code>\doclanguage</code> (línia 31).</li>
+<li>Descomenteu la macro <code>\setTitle</code> i poseu-hi el títol del vostre TFG (línia 37)</li>
+<li>Feu el mateix amb les macros <code>\setAuthor</code>, <code>\setAdvisor</code>, <code>\setReviewer</code> i <code>\setDate</code></li>
+<li>Feu el mateix amb la macro <code>\setDegree</code>, però aquí no hi heu de posar un text qualsevol sinó que ja hi ha predefinides les variables \GRETST i \GREELEC que ja s'encarreguen de tot.</li>
+<li>Canvieu el text dels diferents apartats d'agraïments, dedicatòria, etc.</li>
+<li>Finalment, editeu el contingut dels diferents fitxers en què està divit el document per posar-hi el vostre propi contingut, escrit en l'idioma que hàgiu escollit.</li>
+</ol>
+<h3>Canvis d'estil</h3>
+<p>Si voleu canviar o afegir alguna cosa en l'estil del document, la majoria d'opcions les trobareu al fitxer <code>config/styles.tex</code>. De tota manera com que es tracta d'un document oficial i formal no convé canviar l'aparença general.</p>
+<h3>Afegir funcionalitat</h3>
+<p>Per ampliar les capacitats del LaTeX podeu afegir paquets al preàmbul. El lloc ideal per fer-ho és al fitxer <code>config/packages.tex</code>.</p>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+\begin{titlepage}
+  % Cover page style defined in config/styles.tex
+  \loadgeometry{cover}
+  \thispagestyle{frontcover}
+  % Use a Sans Serif typeface throughout
+  \sffamily
+  
+  % Title page background image
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=center,opacity=0.3,xshift=5mm,yshift=-10mm,scale=8] (Campillo) at (current page.center) {\includegraphics{img/Campillo.png}};
+    \filldraw[color=DegreeColor] (current page.south west) rectangle +(1.5cm,\paperheight);
+    \filldraw[color=ETSETBcopper] (current page.south west) -- ++(0,0.140\paperheight-10pt) -- ++(0.75cm,20pt) --   ++(0.75cm,-20pt) -- ++(0,-0.140\paperheight+10pt) -- cycle;
+    % This commented out sentence is work-in-progress
+    % \node[anchor=south,at=(current page.south west),xshift=0.75cm,yshift=0.5cm] {\rotatebox{90}{\textcolor{white}{\Huge\bfseries \raisebox{-3pt}{ETSETB}~~~~\LARGE\DegreeName}}};
+    \node[anchor=south,at=(current page.south west),xshift=0.75cm,yshift=0.5cm] {\rotatebox{90}{\textcolor{white}{\Huge\bfseries \raisebox{0pt}{ETSETB} -- \LARGE\DegreeName}}};
+  \end{tikzpicture}
+  
+  \begin{center}
+    \vspace*{2.5cm}
+    
+    {\Huge \ThesisTitle}\\
+    
+    \vspace{0.8cm}
+    
+    \color{black}\hrule height 2pt
+    
+    \vspace{1cm}
+    
+    {\large \FirstParagraph}\bigskip\\
+  
+    {\Large \AuthorName}\medskip\\
+    
+    \vspace{2.5cm}
+    
+    \SecondParagraph\medskip\\
+    
+    {\bfseries\scshape\DegreeName}
+    
+    % This is an elastic space
+    \vfill
+    
+    \AdvisorLine\medskip\\
+    
+    %%% Comment out / delete the following line if there's no thesis reviewer
+    \ReviewerLine\medskip\\
+    
+    \vspace{1cm}
+    
+    {Barcelona, \documentDate}
+    
+    \vspace{1cm}
+  \end{center}
+\end{titlepage}

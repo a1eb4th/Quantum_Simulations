@@ -18,8 +18,8 @@ original_stdout = sys.stdout
 sys.stdout = output_file
 
 def main():
-    from functions import from_user_input
-    from mol_optimizer import mol_optimizer
+    from config.config_functions import from_user_input
+    from modules.opt_mol import mol_optimizer
 
     molecules, args, type_sim = from_user_input()
 
@@ -66,3 +66,4 @@ if __name__ == "__main__":
 
     sys.stdout = original_stdout
     output_file.close()
+

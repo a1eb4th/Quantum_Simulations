@@ -1,0 +1,208 @@
+\chapter{Logic Gates}
+\label{appendices:LogicGates}
+\section{Simple Logic Gates}
+Below are detailed the simple logic gates essential for constructing more complex quantum algorithms:
+
+\paragraph{X Gate (Pauli-X)}
+
+The \textbf{Pauli-X} gate is the quantum analog of the classical NOT gate. It performs a bit flip on the qubit, transforming the state $\ket{x}$ into $\ket{\neg x}$.
+
+\vspace{0.5em}
+\begin{minipage}{\textwidth}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Representative Matrix}\\[0.5em]
+        \[
+        X = 
+        \begin{pmatrix}
+        0 & 1 \\
+        1 & 0 \\
+        \end{pmatrix}
+        \]
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Effect on Basis States}\\[0.5em]
+        \begin{itemize}
+            \item $X\ket{0} = \ket{1}$
+            \item $X\ket{1} = \ket{0}$
+        \end{itemize}
+    \end{minipage}
+\end{minipage}
+
+\paragraph{Y Gate (Pauli-Y)}
+
+The \textbf{Pauli-Y} gate performs a rotation of $\pi$ around the $y$-axis. It transforms the state $\ket{x}$ into $i(-1)^x\ket{\neg x}$.
+
+\vspace{0.5em}
+
+\begin{minipage}{\textwidth}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Representative Matrix}\\[0.5em]
+        \[
+        Y = 
+        \begin{pmatrix}
+        0 & -i \\
+        i & 0 \\
+        \end{pmatrix}
+        \]
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Effect on Basis States}\\[0.5em]
+        \begin{itemize}
+            \item $Y\ket{0} = i\ket{1}$
+            \item $Y\ket{1} = -i\ket{0}$
+        \end{itemize}
+    \end{minipage}
+\end{minipage}
+
+\paragraph{Z Gate (Pauli-Z)}
+
+The \textbf{Pauli-Z} gate is known as the phase inversion gate. It transforms the state $\ket{x}$ into $(-1)^x\ket{x}$.
+
+\vspace{0.5em}
+\begin{minipage}{\textwidth}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Representative Matrix}\\[0.5em]
+        \[
+        Z = 
+        \begin{pmatrix}
+        1 & 0 \\
+        0 & -1 \\
+        \end{pmatrix}
+        \]
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Effect on Basis States}\\[0.5em]
+        \begin{itemize}
+            \item $Z\ket{0} = \ket{0}$
+            \item $Z\ket{1} = -\ket{1}$
+        \end{itemize}
+    \end{minipage}
+\end{minipage}
+
+
+\paragraph{Hadamard Gate (H)}
+
+The \textbf{Hadamard} gate creates an equal superposition of the computational basis states. It transforms the state $\ket{x}$ into $\dfrac{1}{\sqrt{2}} (\ket{0} + (-1)^x \ket{1})$.
+
+\vspace{0.5em}
+\begin{minipage}{\textwidth}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Representative Matrix}\\[0.5em]
+        \[
+        H = \dfrac{1}{\sqrt{2}}
+        \begin{pmatrix}
+        1 & 1 \\
+        1 & -1 \\
+        \end{pmatrix}
+        \]
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Effect on Basis States}\\[0.5em]
+        \begin{itemize}
+            \item $H\ket{0} = \dfrac{1}{\sqrt{2}} (\ket{0} + \ket{1}) = \ket{+}$
+            \item $H\ket{1} = \dfrac{1}{\sqrt{2}} (\ket{0} - \ket{1}) = \ket{-}$
+        \end{itemize}
+    \end{minipage}
+\end{minipage}
+
+\section{Multi-Qubit Logic Gates}
+
+\paragraph{Controlled-NOT Gate (CNOT)}
+
+The \textbf{CNOT} or \textbf{Controlled-X} gate is a two-qubit gate that flips the second qubit (target) if and only if the first qubit (control) is in the state $\ket{1}$. It transforms the state $\ket{x, y}$ into $\ket{x, x \oplus y}$, where $\oplus$ denotes the XOR operation.
+
+\vspace{0.5em}
+\begin{minipage}{\textwidth}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Representative Matrix}\\[0.5em]
+        \[
+        \text{CNOT} = 
+        \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 0 & 1 \\
+        0 & 0 & 1 & 0 \\
+        \end{pmatrix}
+        \]
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Effect on Basis States}\\[0.5em]
+        \begin{itemize}
+            \item $\text{CNOT}\ket{00} = \ket{00}$
+            \item $\text{CNOT}\ket{01} = \ket{01}$
+            \item $\text{CNOT}\ket{10} = \ket{11}$
+            \item $\text{CNOT}\ket{11} = \ket{10}$
+        \end{itemize}
+    \end{minipage}
+\end{minipage}
+
+\paragraph{Single Excitation Gate (\textit{SingleExcitation})}
+
+This gate performs a rotation in the two-dimensional subspace $\{\ket{01}, \ket{10}\}$. It transforms the state $\ket{10}$ into $\cos\left( \dfrac{\phi}{2} \right) \ket{10} - \sin\left( \dfrac{\phi}{2} \right) \ket{01}$.
+
+\vspace{0.5em}
+\begin{minipage}{\textwidth}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Representative Matrix}\\[0.5em]
+        \[
+        U(\phi) = \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & \cos\left( \dfrac{\phi}{2} \right) & -\sin\left( \dfrac{\phi}{2} \right) & 0 \\
+        0 & \sin\left( \dfrac{\phi}{2} \right) & \cos\left( \dfrac{\phi}{2} \right) & 0 \\
+        0 & 0 & 0 & 1 \\
+        \end{pmatrix}
+        \]
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Effect on Basis States}\\[0.5em]
+        It affects the subspace $\{\ket{01}, \ket{10}\}$, performing a rotation parameterized by $\phi$.
+    \end{minipage}
+\end{minipage}
+
+\paragraph{Double Excitation Gate (\textit{DoubleExcitation})}
+
+This gate performs a rotation in the subspace of states $\{\ket{0011}, \ket{1100}\}$. It specifically affects these states, leaving the others unchanged.
+
+\vspace{0.5em}
+\begin{minipage}{\textwidth}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Representative Matrix}\\[0.5em]
+        \[
+        U(\phi) = \begin{pmatrix}
+        I_{12} & 0 & 0 \\
+        0 & \begin{pmatrix}
+        \cos\left( \dfrac{\phi}{2} \right) & -\sin\left( \dfrac{\phi}{2} \right) \\
+        \sin\left( \dfrac{\phi}{2} \right) & \cos\left( \dfrac{\phi}{2} \right) \\
+        \end{pmatrix} & 0 \\
+        0 & 0 & I_2 \\
+        \end{pmatrix}
+        \]
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Effect on Basis States}\\[0.5em]
+        It performs a rotation parameterized by $\phi$ in the subspace $\{\ket{0011}, \ket{1100}\}$.
+    \end{minipage}
+\end{minipage}
+
+These gates are implemented in PennyLane as \texttt{qml.SingleExcitation} and \linebreak\texttt{qml.DoubleExcitation}, and are essential in quantum chemistry algorithms such as the \textit{Unitary Coupled-Cluster Singles and Doubles} (UCCSD).

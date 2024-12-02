@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style type="text/css">
+</style>
+<meta name="generator" content="ReText 8.0.0">
+<title>README_en</title>
+<style type="text/css">
+</style>
+</head>
+<body>
+<h1>LaTeX Template for Bachelor's Thesis</h1>
+<p>(send comments and/or suggestions to <a href="mailto:orestes.mas@upc.edu">orestes.mas@upc.edu</a>)</p>
+<h2>Languages</h2>
+<p>This TFG template allows you to generate the PDF in 3 different languages: Catalan, Spanish, and English. To select the generation language, please refer to the "Customization" section.</p>
+<h2>Requirements</h2>
+<p>To compile the document and obtain a final PDF, you will need a modern and functional TeX installation. It can be installed manually, but it's much easier to install a <strong>precompiled TeX distribution</strong>.</p>
+<ol>
+<li><strong>For GNU/Linux systems</strong>, the <a href="https://tug.org/texlive/">TeX Live</a> distribution is the predominant one, although some years ago the <a href="https://miktex.org/">MiKTeX</a> distribution was also ported to GNU/Linux systems. Most GNU/Linux distributions, like Ubuntu, Mint, Debian, or Fedora, already have TeX Live packaged and ready to install, so check your package manager.</li>
+<li><strong>For macOS computers</strong>, you can install <a href="https://tug.org/mactex/">MacTeX</a>, which is essentially TeX Live for Mac.</li>
+<li><strong>For Windows</strong>, you can choose between <a href="https://miktex.org/">MiKTeX</a> or [TeX Live]. The former is more popular among Windows users, probably because it has been available for more years.</li>
+<li><strong>Online</strong>: Some people start their first steps in LaTeX using an online service like <a href="https://www.overleaf.com/">Overleaf</a>. While these services can be helpful in lowering the entry barrier, keep in mind that they are <em>freemium</em> services, meaning the free version has some limitations (usually in document length/processing time), and you need to upgrade to a paid version to remove those limitations.</li>
+</ol>
+<h2>Considerations</h2>
+<p>LaTeX is a very old program that has evolved over time. Additionally, older versions have been preserved to maintain compatibility. This means that there are currently 2 main ways to generate your document:</p>
+<ol>
+<li><strong>pdflatex</strong>: This is the "older" way, which compiles faster but does not directly support the use of OpenType fonts and advanced typographic features.</li>
+<li><strong>lualatex</strong>: In contrast to the former, it compiles a bit slower but directly supports TrueType and OpenType fonts.</li>
+</ol>
+<p>The LaTeX template is designed and configured to compile well using both methods. You will need to choose which of the two options you prefer (you can try both to see the difference in speed). Personally, we recommend the second one as it is more modern and likely to prevail in the medium term.</p>
+<h2>Document Generation</h2>
+<p>Knowledge:</p>
+<p>The process of generating a LaTeX document can be divided into several steps. Here's a brief explanation of the procedure:</p>
+<ol>
+<li>
+<p><strong>Document Editing</strong>: The user writes the content of the document in a text editor. The document is written in LaTeX format, which includes commands and markers to indicate its structure and formatting. To assist with this task, there are text editors specially dedicated to LaTeX, such as TeXStudio.</p>
+</li>
+<li>
+<p><strong>Compilation</strong>: To obtain a final document (usually in PDF format), you need to compile the LaTeX document. This process involves using a LaTeX engine, such as "pdflatex" or "lualatex," to process the document and generate the desired output. During compilation, several <strong>auxiliary files</strong> are generated to help LaTeX manage information, such as indexes, bibliographies, and cross-references.</p>
+</li>
+<li>
+<p><strong>Bibliography Management</strong>: If a bibliography is used, LaTeX uses software like "biber" to process citations and generate the list of bibliographic references.</p>
+</li>
+<li>
+<p><strong>Multiple Compilation</strong>: In many cases, it's necessary to compile the document more than once to resolve cross-references and other elements that require additional information.</p>
+</li>
+<li>
+<p><strong>Generation of the Final Document</strong>: Finally, the LaTeX engine creates the final document in the desired format, such as a PDF file. The document includes all elements, such as text, images, tables, and graphics, with the formatting specified in the original LaTeX document.</p>
+</li>
+</ol>
+<p>The result is a document with high typographic quality that follows standard formatting and style rules of LaTeX. This compilation process allows authors to focus on the content of the document while LaTeX automatically manages presentation and typography.</p>
+<p>Therefore, the first time you compile the document, you will need to do the following:</p>
+<pre><code class="language-sh">pdflatex TFG.tex  (repeat this command 2 or 3 times to resolve the cross references)
+biber TFG         (this command generates the bibliography)
+pdflatex TFG.tex  (repeat this command 2 or 3 times to resolve the cross references)
+</code></pre>
+<p>or:</p>
+<pre><code class="language-sh">lualatex TFG.tex  (repeat this command 2 or 3 times to resolve the cross references)
+biber TFG         (this command generates the bibliography)
+lualatex TFG.tex  (repeat this command 2 or 3 times to resolve the cross references)
+</code></pre>
+<p>Once generated without errors or warnings, if you don't modify the bibliography, you can update only the main .TeX file with <code>lualatex/pdflatex</code> and that's it.</p>
+<h2>Template Customization (IMPORTANT!)</h2>
+<h3>Bachelor's Thesis Information</h3>
+<p>To adapt the template to your needs, you need to <strong>edit the main file (<code>TFG.tex</code>)</strong> and enter your personal information:</p>
+<ol>
+<li>Specify the document's language in the <code>\doclanguage</code> variable (line 31).</li>
+<li>Uncomment the <code>\setTitle</code> macro and enter the title of your bachelor's thesis (line 37).</li>
+<li>Do the same with the macros <code>\setAuthor</code>, <code>\setAdvisor</code>, <code>\setReviewer</code>, and <code>\setDate</code>.</li>
+<li>Do the same with the <code>\setDegree</code> macro, but here you don't need to enter arbitrary text as predefined variables like <code>\GRETST</code> and <code>\GREELEC</code> take care of everything.</li>
+<li>Change the text of different sections, such as acknowledgments, dedication, etc.</li>
+<li>Finally, edit the content of the different files in which the document is divided to add your own content, written in the language you have chosen.</li>
+</ol>
+<h3>Style Changes</h3>
+<p>If you want to change or add something to the document's style, most options can be found in the <code>config/styles.tex</code> file. However, since it is an official and formal document, it is advisable not to change the general appearance.</p>
+<h3>Adding Functionality</h3>
+<p>To expand LaTeX's capabilities, you can add packages to the preamble. The ideal place to do this is in the <code>config/packages.tex</code> file.</p>
+
+</body>
+</html>

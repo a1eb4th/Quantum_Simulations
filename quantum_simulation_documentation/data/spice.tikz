@@ -1,0 +1,79 @@
+\begin{tikzpicture}
+  \tikzset{
+    every pin/.style={fill=yellow!20!white,rectangle,rounded corners=3pt,inner sep=3pt,font=\scriptsize},
+    small dot/.style={fill=black,circle,scale=0.25},
+  }
+  \begin{semilogxaxis}[
+    width=14cm,
+    height=10cm,
+    grid=both,
+    xmin=1,
+    xmax=1E8,
+    ymin=5,
+    ymax=55,
+    xlabel={\ifcase\doclanguage\or Freqüència\or Frecuencia\else Frequency\fi [\si{\Hz}]},
+    ylabel={\ifcase\doclanguage\or Guany\or Ganancia\else Gain\fi [\si{\dB}]},
+    every tick label/.append style={font=\scriptsize},
+    extra y ticks={41.7},
+    extra y tick labels={\SI{41,7}{\dB}},
+    extra y tick style={color=red,grid style={color=red}},
+  ]
+    \addplot[color=blue,line width=1pt] table[x index=0, y index=1,search path={data}] {RF-lineal.dat}
+      node[pin={[pin distance=0.5cm]135:{$G_{max}=\SI{44,64}{\dB}$}},fill,circle,scale=0.5] at (axis cs:1000,44.64) {}
+    ;
+    \addplot[color=red,line width=1pt] table[x index=0, y index=1,search path={data}] {RF-model-SPICE-adaptat.dat}
+      node[pin={[pin distance=0.5cm]-70:{$G_{max}=\SI{44,76}{\dB}$}},fill,circle,scale=0.5] at (axis cs:2000,44.76) {}
+    ;
+    \node[pin={[pin distance=1cm]-45:{$f_{c1}\simeq\SI{15}{\Hz}$}},fill,circle,scale=0.5] at (axis cs:15.2,41.7) {};
+    \addlegendentry{\ifcase\doclanguage\or
+      Model lineal en petit senyal\or
+      Modelo lineal en pequeña señal\else
+      Small-signal linear model\fi
+    };
+    \addlegendentry{\ifcase\doclanguage\or
+      Macromodel SPICE\or
+      Macromodelo SPICE\else
+      SPICE Macromodel\fi
+    };
+    \fill[white] (1.4cm,1cm) rectangle (9.4cm,5.5cm);
+  \end{semilogxaxis}
+  \begin{semilogxaxis}[
+    name=detall,
+    width=8cm,
+    height=5cm,
+    at={(2.5cm,0.5cm)},
+    anchor=south west,
+    axis background/.style={fill=black!05!white},
+    title={\ifcase\doclanguage\or 
+      Detall al voltant de\or
+      Detalle alrededor de\else
+      Detail around\fi\ 
+      \SI{500}{\kHz}
+    },
+    title style={yshift=-5pt},
+    grid=both,
+    % Eix X
+    xmin=1E5,
+    xmax=1E6,
+    xtick={1e5,2e5,3e5,4e5,5e5,6e5,7e5,8e5,9e5,1e6},
+%     xtick={1e5,5e5,1e6},
+    xticklabels={\SI{100}{\kHz},,,,\SI{500}{\kHz},,,,,\SI{1}{\MHz}},
+    every axis x label/.style={at={(ticklabel* cs:1.06)},anchor=north west,},
+%     xlabel=(Hz),
+    % Eix Y
+    ymin=38,
+    ymax=46,
+    every tick label/.append style={font=\scriptsize},
+    ytick={38,40,44},
+    yticklabels={\SI{38}{\dB},\SI{40}{\dB},\SI{44}{\dB}},
+    extra y ticks={41.7,44.7},
+    extra y tick labels={\SI{41,7}{\dB},\SI{44,7}{\dB}},
+    extra y tick style={color=red,grid style={color=red}},
+%     ylabel=(dB),
+  ]
+    \addplot[color=blue,line width=1.5pt] table[x index=0, y index=1,search path={data}] {RF-lineal.dat}
+    node[pin={[pin distance=0.5cm]-155:{$f_{c2}\simeq\SI{556}{\kHz}$, $G\simeq\SI{41.64}{\dB}$}},fill,circle,scale=0.5] at (axis cs:556e3,41.64) {};
+    \addplot[color=red,line width=1.5pt] table[x index=0, y index=1,search path={data}] {RF-model-SPICE-adaptat.dat}
+    node[pin={[pin distance=0.8cm]-100:{$f_{c2}\simeq\SI{708}{\kHz}$, $G\simeq\SI{41.76}{\dB}$}},fill,circle,scale=0.5] at (axis cs:708e3,41.76) {};
+  \end{semilogxaxis}
+\end{tikzpicture}

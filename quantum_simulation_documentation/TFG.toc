@@ -1,0 +1,113 @@
+\babel@toc {english}{}\relax 
+\acswitchoff 
+\babel@toc {english}{}\relax 
+\contentsline {section}{Summary}{2}{Doc-Start}%
+\contentsline {section}{Acknowledgements}{4}{chapter*.1}%
+\contentsline {section}{Revision history and approval record}{5}{chapter*.2}%
+\contentsline {section}{Contents}{6}{chapter*.2}%
+\contentsline {section}{List of figures}{8}{chapter*.4}%
+\contentsline {section}{List of tables}{9}{chapter*.5}%
+\contentsline {section}{Abbreviations}{10}{chapter*.5}%
+\contentsline {chapter}{\numberline {1}Introduction}{11}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Work goals}{11}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Requirements and specifications}{12}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Methods and procedures}{12}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Work plan}{14}{section.1.4}%
+\contentsline {chapter}{\numberline {2}State of the Art}{15}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Quantum Simulation}{16}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Key Concepts in Quantum Mechanics}{17}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Qubit}{17}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Quantum Superposition}{18}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Quantum Decoherence}{18}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}The Hamiltonian in Quantum Mechanics}{19}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Mathematical Definition}{19}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Role in the Schrödinger Equation}{20}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Hamiltonian in Multi-Particle Systems}{20}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Importance in Quantum Simulations}{21}{subsection.2.3.4}%
+\contentsline {section}{\numberline {2.4}Algorithms}{21}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}VQE: Variational Quantum Eigensolver}{21}{subsection.2.4.1}%
+\contentsline {paragraph}{1. Quantum State Preparation}{21}{paragraph*.9}%
+\contentsline {paragraph}{2. Measurement of the Expected Energy}{22}{paragraph*.10}%
+\contentsline {paragraph}{3. Classical Optimization}{22}{paragraph*.11}%
+\contentsline {paragraph}{4. Iteration of the Process}{22}{paragraph*.12}%
+\contentsline {subsection}{\numberline {2.4.2}Adaptive Circuits}{22}{subsection.2.4.2}%
+\contentsline {section}{\numberline {2.5}Optimizers}{22}{section.2.5}%
+\contentsline {chapter}{\numberline {3}Methodology / project development}{24}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Elección framework}{24}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Estructuración del Proyecto}{25}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Organización del Código}{25}{subsection.3.2.1}%
+\contentsline {subsubsection}{Estructura Modular}{25}{subsubsection*.13}%
+\contentsline {subsubsection}{Descripción de Archivos y Directorios}{26}{subsubsection*.14}%
+\contentsline {subsection}{\numberline {3.2.2}Herramientas y Tecnologías Utilizadas}{26}{subsection.3.2.2}%
+\contentsline {subsubsection}{Control de Versiones}{26}{subsubsection*.15}%
+\contentsline {section}{\numberline {3.3}Desarrollo e Implementación}{26}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Algoritmos y Métodos Implementados}{26}{subsection.3.3.1}%
+\contentsline {subsubsection}{Variational Quantum Eigensolver (VQE)}{26}{subsubsection*.16}%
+\contentsline {paragraph}{Principio del VQE:}{26}{paragraph*.17}%
+\contentsline {paragraph}{Relevancia en la estimación de energías moleculares:}{27}{paragraph*.18}%
+\contentsline {paragraph}{Implementación en el código:}{27}{paragraph*.19}%
+\contentsline {paragraph}{Requerimientos para ejecutar el VQE:}{28}{paragraph*.20}%
+\contentsline {subsubsection}{Preparación del Estado de Hartree-Fock}{28}{subsubsection*.21}%
+\contentsline {paragraph}{Proceso de generación del estado inicial:}{28}{paragraph*.22}%
+\contentsline {paragraph}{Conceptos teóricos relacionados:}{29}{paragraph*.23}%
+\contentsline {paragraph}{Requerimientos:}{29}{paragraph*.24}%
+\contentsline {subsubsection}{Construcción del Hamiltoniano Molecular}{30}{subsubsection*.25}%
+\contentsline {paragraph}{Proceso de construcción del Hamiltoniano:}{30}{paragraph*.26}%
+\contentsline {paragraph}{Conceptos teóricos relacionados:}{31}{paragraph*.27}%
+\contentsline {paragraph}{Requerimientos:}{31}{paragraph*.28}%
+\contentsline {paragraph}{Implementación detallada en el código:}{31}{paragraph*.29}%
+\contentsline {paragraph}{Relación con los conceptos teóricos:}{32}{paragraph*.30}%
+\contentsline {subsubsection}{Conclusión}{32}{subsubsection*.31}%
+\contentsline {subsection}{\numberline {3.3.2}Optimización de Parámetros y Geometría}{32}{subsection.3.3.2}%
+\contentsline {subsubsection}{Selección de Operadores}{32}{subsubsection*.32}%
+\contentsline {subsubsection}{Optimización de Parámetros Variacionales}{32}{subsubsection*.33}%
+\contentsline {subsubsection}{Actualización de Coordenadas Moleculares}{32}{subsubsection*.34}%
+\contentsline {subsection}{\numberline {3.3.3}Modificaciones y Decisiones Técnicas}{32}{subsection.3.3.3}%
+\contentsline {subsubsection}{Cambio de Optimizadores}{32}{subsubsection*.35}%
+\contentsline {subsubsection}{Uso de la Interfaz Autograd}{32}{subsubsection*.36}%
+\contentsline {subsubsection}{Gestión del Estado del Optimizador}{33}{subsubsection*.37}%
+\contentsline {section}{\numberline {3.4}Registro y Análisis del Rendimiento}{33}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Registro de Tiempos de Ejecución}{33}{subsection.3.4.1}%
+\contentsline {subsubsection}{Motivación}{33}{subsubsection*.38}%
+\contentsline {subsubsection}{Implementación}{33}{subsubsection*.39}%
+\contentsline {subsubsection}{Manejo de Datos Duplicados}{33}{subsubsection*.40}%
+\contentsline {subsection}{\numberline {3.4.2}Análisis de Resultados}{33}{subsection.3.4.2}%
+\contentsline {subsubsection}{Comparación de Optimizadores}{33}{subsubsection*.41}%
+\contentsline {subsubsection}{Interpretación de Métricas}{33}{subsubsection*.42}%
+\contentsline {section}{\numberline {3.5}Pruebas y Validación}{33}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Casos de Prueba}{33}{subsection.3.5.1}%
+\contentsline {subsubsection}{Moléculas Sencillas}{33}{subsubsection*.43}%
+\contentsline {subsubsection}{Resultados Esperados vs. Obtenidos}{34}{subsubsection*.44}%
+\contentsline {subsection}{\numberline {3.5.2}Verificación del Código}{34}{subsection.3.5.2}%
+\contentsline {subsubsection}{Depuración y Manejo de Errores}{34}{subsubsection*.45}%
+\contentsline {subsubsection}{Pruebas Unitarias}{34}{subsubsection*.46}%
+\contentsline {section}{\numberline {3.6}Limitaciones y Consideraciones}{34}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}Complejidad Computacional}{34}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}Aproximaciones Utilizadas}{34}{subsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.6.3}Dependencia de Herramientas Externas}{34}{subsection.3.6.3}%
+\contentsline {section}{\numberline {3.7}Futuras Mejoras y Trabajos Relacionados}{34}{section.3.7}%
+\contentsline {subsection}{\numberline {3.7.1}Optimización de Recursos}{34}{subsection.3.7.1}%
+\contentsline {subsection}{\numberline {3.7.2}Extensión a Moléculas Más Complejas}{34}{subsection.3.7.2}%
+\contentsline {subsection}{\numberline {3.7.3}Integración con Hardware Cuántico}{35}{subsection.3.7.3}%
+\contentsline {section}{\numberline {3.8}Conclusión de la Metodología}{35}{section.3.8}%
+\contentsline {subsection}{\numberline {3.8.1}Resumen de la Estrategia}{35}{subsection.3.8.1}%
+\contentsline {subsection}{\numberline {3.8.2}Reflexión Personal}{35}{subsection.3.8.2}%
+\contentsline {section}{\numberline {3.9}Code Listings}{35}{section.3.9}%
+\contentsline {chapter}{\numberline {4}Results}{37}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Experiments and Tests}{37}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Data Visualization}{37}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Limitations}{37}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Sustainability Analysis and Ethical Implications}{38}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Conclusions and Future Work}{39}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Conclusions}{39}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Future Directions}{39}{section.6.2}%
+\contentsline {chapter}{\numberline {A}Logic Gates}{40}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Simple Logic Gates}{40}{section.A.1}%
+\contentsline {paragraph}{X Gate (Pauli-X)}{40}{paragraph*.47}%
+\contentsline {paragraph}{Y Gate (Pauli-Y)}{40}{paragraph*.48}%
+\contentsline {paragraph}{Z Gate (Pauli-Z)}{40}{paragraph*.49}%
+\contentsline {paragraph}{Hadamard Gate (H)}{41}{paragraph*.50}%
+\contentsline {section}{\numberline {A.2}Multi-Qubit Logic Gates}{41}{section.A.2}%
+\contentsline {paragraph}{Controlled-NOT Gate (CNOT)}{41}{paragraph*.51}%
+\contentsline {paragraph}{Single Excitation Gate (\textit {SingleExcitation})}{41}{paragraph*.52}%
+\contentsline {paragraph}{Double Excitation Gate (\textit {DoubleExcitation})}{42}{paragraph*.53}%

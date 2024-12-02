@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style type="text/css">
+</style>
+<meta name="generator" content="ReText 8.0.0">
+<title>README_es</title>
+<style type="text/css">
+</style>
+</head>
+<body>
+<h1>Plantilla LaTeX para el TFG</h1>
+<p>(enviar comentarios y/o sugerencias a <a href="mailto:orestes.mas@upc.edu">orestes.mas@upc.edu</a>)</p>
+<h2>Idiomas</h2>
+<p>Esta plantilla de TFG permite generar el PDF en 3 idiomas diferentes: catalán, castellano e inglés. Para seleccionar el idioma de generación, consulte la sección de «Personalización».</p>
+<h2>Requisitos</h2>
+<p>Para poder compilar el documento y obtener un PDF final, necesitarás una instalación moderna y funcional de TeX. Puedes instalarlo manualmente, pero es mucho más fácil instalar una <strong>distribución de TeX precompilada</strong>.</p>
+<ol>
+<li><strong>Para sistemas GNU/Linux</strong>, la distribución <a href="https://tug.org/texlive/">TeX Live</a> es la predominante, aunque hace algunos años también se portó la distribución <a href="https://miktex.org/">MiKTeX</a> a sistemas GNU/Linux. La mayoría de las distribuciones GNU/Linux, como Ubuntu, Mint, Debian o Fedora, ya tienen TeX Live empaquetado y listo para instalar, así que consulta tu gestor de paquetes.</li>
+<li><strong>Para ordenadores con macOS</strong>, puedes instalar <a href="https://tug.org/mactex/">MacTeX</a>, que es esencialmente TeX Live para Mac.</li>
+<li><strong>Para Windows</strong>, puedes elegir entre <a href="https://miktex.org/">MiKTeX</a> o [TeX Live]. La primera de ellas es más popular entre los usuarios de Windows, probablemente porque ha estado disponible durante más tiempo.</li>
+<li><strong>En línea</strong>: Algunas personas comienzan a dar sus primeros pasos en LaTeX utilizando un servicio en línea como <a href="https://www.overleaf.com/">Overleaf</a>. Aunque estos servicios pueden ser útiles para reducir la barrera de entrada, ten en cuenta que son servicios "freemium", es decir, la versión gratuita tiene algunas limitaciones (normalmente en longitud del documento y tiempo de procesamiento) y es necesario actualizar a una versión de pago para eliminar estas limitaciones.</li>
+</ol>
+<h2>Aspectos a tener en cuenta</h2>
+<p>LaTeX es un programa muy antiguo que ha ido evolucionando con el tiempo. Además, se han conservado versiones antiguas para preservar la compatibilidad. Esto significa que actualmente existen 2 formas principales de generar tu documento:</p>
+<ol>
+<li><strong>pdflatex</strong>: Es la forma "antigua" que compila más rápido, pero no admite directamente el uso de fuentes OpenType y características tipográficas avanzadas.</li>
+<li><strong>lualatex</strong>: Por otro lado, es un poco más lento en la compilación pero admite directamente fuentes TrueType y OpenType.</li>
+</ol>
+<p>La plantilla LaTeX está diseñada y configurada para compilar correctamente de ambas maneras. Deberás elegir cuál de las dos opciones prefieres utilizar (puedes probar ambas para ver la diferencia de velocidad). Personalmente, te recomendamos la segunda opción, ya que es más moderna y probablemente prevalecerá a medio plazo.</p>
+<h2>Generación del documento</h2>
+<p>El proceso de generación de un documento LaTeX se puede dividir en varios pasos. Aquí tienes una breve explicación del procedimiento:</p>
+<ol>
+<li>
+<p><strong>Edición del documento</strong>: El usuario escribe el contenido del documento en un editor de texto. El documento está escrito en formato LaTeX, que incluye comandos y marcadores para indicar su estructura y formato. Para ayudar en esta tarea, existen editores de texto especialmente diseñados para esto, como <strong>TeXStudio</strong>.</p>
+</li>
+<li>
+<p><strong>Compilación</strong>: Para obtener un documento final (generalmente en formato PDF), es necesario compilar el documento LaTeX. Este proceso implica el uso de un motor LaTeX, como "pdflatex" o "lualatex", para procesar el documento y generar el resultado deseado. Durante la compilación se generan varios <strong>archivos auxiliares</strong> que ayudan a LaTeX a gestionar la información, como los índices, las bibliografías y las referencias cruzadas.</p>
+</li>
+<li>
+<p><strong>Gestión de bibliografía</strong>: Si se utiliza una bibliografía, LaTeX utiliza un software como "biber" para procesar las citas y generar la lista de referencias bibliográficas.</p>
+</li>
+<li>
+<p><strong>Compilación múltiple</strong>: En muchos casos, es necesario compilar el documento más de una vez para resolver las referencias cruzadas y otros elementos que requieren información adicional.</p>
+</li>
+<li>
+<p><strong>Generación del documento final</strong>: Finalmente, el motor LaTeX crea el documento final en el formato deseado, como un archivo PDF. El documento incluye todos los elementos, como texto, imágenes, tablas y gráficos, con el formato especificado en el documento LaTeX original.</p>
+</li>
+</ol>
+<p>El resultado es un documento de alta calidad tipográfica que sigue las normas estándar de formato y estilo de LaTeX. Este proceso de compilación permite a los autores centrarse en el contenido del documento mientras LaTeX gestiona la presentación y la tipografía de manera automática.</p>
+<p>Por lo tanto, la primera vez que compilemos el documento, deberemos hacer lo siguiente:</p>
+<pre><code class="language-sh">pdflatex TFG.tex (repetir el comando dos o más veces para resolver las referencias cruzadas)
+biber TFG        (esto genera la bibliografía)
+pdflatex TFG.tex (repetir 2 o más veces para incorporar la bibliografía y resolver las referencias)
+</code></pre>
+<p>o:</p>
+<pre><code class="language-sh">lualatex TFG.tex (repetir el comando dos o más veces para resolver las referencias cruzadas)
+biber TFG        (esto genera la bibliografía)
+lualatex TFG.tex (repetir 2 o más veces para incorporar la bibliografía y resolver las referencias)
+</code></pre>
+<p>Una vez generado sin errores ni advertencias, si no modificamos la bibliografía, podremos actualizar únicamente el archivo .TeX principal con <code>lualatex/pdflatex</code> y listo.</p>
+<h2>Personalización de la plantilla (IMPORTANTE !)</h2>
+<h3>Información del TFG</h3>
+<p>Para adaptar la plantilla a tus necesidades, debes <strong>editar el archivo principal (<code>TFG.tex</code>)</strong> e introducir tu información personal:</p>
+<ol>
+<li>Indica el idioma del documento en la variable <code>\doclanguage</code> (línea 31).</li>
+<li>Descomenta la macro <code>\setTitle</code> y coloca el título de tu TFG (línea 37).</li>
+<li>Haz lo mismo con las macros <code>\setAuthor</code>, <code>\setAdvisor</code>, <code>\setReviewer</code> y <code>\setDate</code>.</li>
+<li>También modifica la macro <code>\setDegree</code>, pero aquí no debes poner un texto aleatorio, ya que las variables \GRETST y \GREELEC ya se encargan de todo.</li>
+<li>Cambia el texto de las diferentes secciones de agradecimientos, dedicatoria, etc.</li>
+<li>Finalmente, edita el contenido de los diferentes archivos en los que se divide el documento para poner tu propio contenido, escrito en el idioma que hayas elegido.</li>
+</ol>
+<h3>Cambios de estilo</h3>
+<p>Si deseas cambiar o agregar algo al estilo del documento, la mayoría de las opciones las encontrarás en el archivo <code>config/styles.tex</code>. Sin embargo, dado que se trata de un documento oficial y formal, no es conveniente cambiar la apariencia general.</p>
+<h3>Agregar funcionalidad</h3>
+<p>Para ampliar las capacidades de LaTeX, puedes agregar paquetes al preámbulo. El lugar ideal para hacerlo es en el archivo <code>config/packages.tex</code>.</p>
+
+</body>
+</html>

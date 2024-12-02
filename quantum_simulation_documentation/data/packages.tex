@@ -1,0 +1,93 @@
+% Document title: ETSETB TFG LaTeX Template
+% Version: 5.0
+% Author: 2023 Orestes Mas Casals
+% License: ETSETB TFG LaTeX Template by Orestes Mas is marked with CC0 1.0 Universal
+
+%%%% TOOLS %%%%
+\usepackage{lipsum}
+\usepackage{etoolbox}   % <<< Provides some macros to compare text
+\usepackage{iftex}      % <<< Detect TeX engine used to compile the document
+
+%%%% MATH SETUP %%%%
+\usepackage{mathtools}
+
+%%%% INTERNATIONAL SYSTEM NOTATION FOR UNITS IN NUMBERS %%%%
+\usepackage{siunitx}
+
+%%%% FONTS SETUP %%%%
+\iftutex   % True if compiling with Unicode engines (XeTeX/LuaTeX)
+  \usepackage{fontspec}
+  \usepackage[math-style=ISO,
+    warnings-off={mathtools-colon, mathtools-overbracket},
+  ]{unicode-math}
+  %  This package is only a wrapper for the two packages libertinus-type1 (pdfLaTeX) and libertinus-otf (LuaLaTeX/XeLaTeX).
+  %  The Libertinus fonts are similiar to Libertine and Biolinum, but come with math symbols. 
+  \usepackage{libertinus}
+  % Use DejaVu Mono for monospaced font
+  \usepackage[
+    mono=true,serif=false,sans=false,math=false,
+    TT={Scale=0.80,FakeStretch=1.0}]{dejavu-otf}
+\else    % True if compiling with 8-bit engines (LaTeX/pdfLaTeX)
+  \usepackage[T1]{fontenc}
+  %  This package is only a wrapper for the two packages libertinus-type1 (pdfLaTeX) and libertinus-otf (LuaLaTeX/XeLaTeX).
+  %  The Libertinus fonts are similiar to Libertine and Biolinum, but come with math symbols. 
+  \usepackage{libertinus,libertinust1math}
+  % Use DejaVu Mono for monospaced font
+  \usepackage[scaled=0.80]{DejaVuSansMono}
+  % Some declarations for the Gantt diagram example
+  \DeclareUnicodeCharacter{1D49}{\textsuperscript{e}} % "ᵉ" character
+  \DeclareUnicodeCharacter{02B3}{\textsuperscript{r}} % "ʳ" character
+  \DeclareUnicodeCharacter{1D52}{\textsuperscript{o}} % "ᵒ" character
+\fi
+\usepackage{microtype}
+
+%%%% PAGE GEOMETRY %%%%
+\usepackage{geometry}
+
+%%%% PAGE STYLE %%%%%
+\usepackage{fancyhdr}
+
+%%%% PARAGRAPH STYLE %%%%
+% Blank line between paragraphs instead of first line indenting
+\usepackage{parskip}
+
+%%%% TITLES STYLE %%%%
+\usepackage{titlesec}
+
+%%%% COLOR DEFINITIONS %%%%
+\usepackage[svgnames]{xcolor}
+
+%%%% TABLES %%%%
+%\usepackage{array}
+\usepackage{tabularx,booktabs}
+
+%%%% ACRONYMS %%%%
+\usepackage{acro}
+\input{acronyms.tex}
+
+%%%% GRAPHICS %%%%
+\usepackage{graphicx}
+\usepackage{caption}        %
+\usepackage{tikz}           % Generic vector graphics language
+\usepackage{pgfgantt}       % Gantt diagrams. See "pgfgantt" manual for reference
+
+%%%% ELECTRONIC CIRCUITS %%%%
+\usepackage{circuitikz}
+
+%%%% PLOTTING %%%%
+\usepackage{pgfplots}
+
+%%%% COLOR BOXES %%%%
+\usepackage{tcolorbox}
+
+%%%% BIBLIOGRAPHY (using biblatex) %%%%
+%\usepackage[section,numbib]{tocbibind}       % Makes bibliography appear in the Table of Contents
+\usepackage[backend=biber,style=numeric]{biblatex}
+\addbibresource{TFG.bib}
+
+%%%% QUOTES %%%%
+\usepackage{csquotes}
+
+%%%% HYPERLINKS %%%%
+\usepackage{hyperref}
+
