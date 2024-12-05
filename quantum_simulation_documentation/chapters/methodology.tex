@@ -1,264 +1,185 @@
 %%%% PLEASE REPLACE ENTIRELY WITH YOUR OWN CONTENT %%%%
 
-\ifcase\doclanguage
-\or
-  \chapter{Metodologia / desenvolupament del projecte}
-  
-  En aquest capítol es detallarà la metodologia emprada en la realització del treball. Té com a objectiu oferir un compte detallat de les aproximacions i tècniques utilitzades, assegurant la replicabilitat i el rigor acadèmic. No només cobrirà els mètodes de recerca i tècniques de mesurament emprats, sinó que també aprofundirà en les especificitats del desenvolupament de programari i maquinari. Tant si el projecte implica anàlisi qualitativa, mesuraments quantitatius, modelatge computacional com prototipatge físic, aquest capítol hauria d'elucidar com contribueix cada component als objectius generals.
-  
-  A més de descriure els mètodes en si mateixos, el capítol també proporcionarà justificacions per què es van escollir mètodes particulars enfront d'altres. Per exemple, podria explicar la tria d'un llenguatge de programació específic, prova estadística o configuració experimental. El capítol també abordarà les limitacions de la metodologia i com aquestes s'han mitigat o tingut en compte. Els lectors haurien de sortir amb una comprensió clara de com s'ha dut a terme el desenvolupament del projecte, per què s'han escollit determinades opcions i com aquests mètodes serveixen per complir els objectius establerts inicialment.
-  
-\or
-  \chapter{Metodología / desarrollo del proyecto}
-  En este capítulo se detallará la metodología empleada en la realización del trabajo. Su objetivo es ofrecer un relato detallado de los enfoques y técnicas utilizadas, asegurando la replicabilidad y el rigor académico. No solo cubrirá los métodos de investigación y técnicas de medición empleados, sino que también profundizará en las especificidades del desarrollo de software y hardware. Ya sea que el proyecto implique análisis cualitativo, mediciones cuantitativas, modelado computacional o prototipado físico, este capítulo debería elucidar cómo contribuye cada componente a los objetivos generales.
-  
-  Además de describir los métodos en sí mismos, el capítulo también proporcionará justificaciones sobre por qué se eligieron métodos particulares frente a otros. Por ejemplo, podría explicar la elección de un lenguaje de programación específico, prueba estadística o configuración experimental. El capítulo también abordará las limitaciones de la metodología y cómo estas se han mitigado o tenido en cuenta. Los lectores deberían salir con una comprensión clara de cómo se ha llevado a cabo el desarrollo del proyecto, por qué se han escogido determinadas opciones y cómo estos métodos sirven para cumplir los objetivos establecidos inicialmente.
-  
-\else
-  \chapter{Methodology / project development}
 
-  In this chapter, the methodology used in the completion of the work will be detailed. Its aim is to offer a thorough account of the approaches and techniques used, ensuring replicability and academic rigor. It will not only cover the research methods and measurement techniques employed but will also delve into the specifics of software and hardware development. Whether the project involves qualitative analysis, quantitative measurements, computational modeling, or physical prototyping, this chapter should elucidate how each component contributes to the overall objectives.
-  
-  In addition to describing the methods themselves, the chapter will also provide justifications for why specific methods were chosen over others. For example, it may explain the choice of a particular programming language, statistical test, or experimental setup. The chapter will also address the limitations of the methodology and how these have been mitigated or accounted for. Readers should come away with a clear understanding of how the project's development has been carried out, why certain choices were made, and how these methods serve to fulfill the initially established objectives.
+\chapter{Methodology / project development}
 
-\fi
-\section{Elección framework}
-Para poder efectuar la decision de que framework utliziar. Estubimos comparando las documentaciones de los dos frameworks de simulación cuantica del mercado. PennyLane y Quiskit. Estos son los frameworks mas completo, con carateristicas similares, que existan en el momento de la cración de este proyeto. Después de estar revisando la documentación, al final nos decantamos por el uso de PennyLane debido a 2 razones.
+In this chapter, the methodology used in the completion of the work will be detailed. Its aim is to offer a thorough account of the approaches and techniques used, ensuring replicability and academic rigor. It will not only cover the research methods and measurement techniques employed but will also delve into the specifics of software and hardware development. Whether the project involves qualitative analysis, quantitative measurements, computational modeling, or physical prototyping, this chapter should elucidate how each component contributes to the overall objectives.
 
-La primera razón fue la cantidad de documentación referente a la simulación quantica. Una vez empezamos a buscar como otra gente estaba utilizando estos recursos, nos dimos cuenta, que para el ambito de simulación molecular. La documentación existente, tanto teorica pero sobretodo practica era sustancialmente mayor. Disponienso así de mas ejemplos para poder empezar a desarrollar nuestro proyecto.
+In addition to describing the methods themselves, the chapter will also provide justifications for why specific methods were chosen over others. For example, it may explain the choice of a particular programming language, statistical test, or experimental setup. The chapter will also address the limitations of the methodology and how these have been mitigated or accounted for. Readers should come away with a clear understanding of how the project's development has been carried out, why certain choices were made, and how these methods serve to fulfill the initially established objectives.
 
-La segundo razón de nuestra elección fue los grandes cambios que efectua regularmente Qiskit, nos dimos cuenta, que Qiskit, es una herramienta que promete ser muy buena, aun asi, historicamente ha tenido grandes cambios significativos en su estructura.
 
-Es por estas razones, que finalmente, este proyecto se ha desenvolupado con el framewerk, PennyLane. A continuación observaremos como ha sido el desarrollo del proyecto y explicaremos el porque de las decisiones tomadas.
+\section{Framework Selection}
+To make the decision on which framework to use, we compared the documentation of the two quantum simulation frameworks available in the market: PennyLane and Qiskit. These are the most comprehensive frameworks with similar features available at the time of creating this project. After reviewing the documentation, we ultimately chose to use PennyLane for two reasons.
 
-\section{Estructuración del Proyecto}
+The first reason was the amount of documentation related to quantum simulation. Once we started looking into how others were using these resources, we realized that in the field of molecular simulation, the existing documentation—both theoretical and especially practical—was substantially greater. This provided us with more examples to begin developing our project.
 
-\subsection{Organización del Código}
+The second reason for our choice was the frequent major changes implemented by Qiskit. We realized that while Qiskit is a tool that promises to be very good, it has historically undergone significant structural changes.
+
+For these reasons, this project has been developed using the PennyLane framework. Below, we will observe how the project has been developed and explain the reasons behind the decisions made.
+
+\section{Project Structuring}
+
+\subsection{Code Organization}
 \begin{ProjectStructure}
   \texttt{quantum\_simulation\_project/}
   \begin{itemize}[label={}, left=1em]
       \item \texttt{config/}
       \begin{itemize}[label={}, left=2em]
-          \item \texttt{config\_functions.py}: Funciones de configuración para el proyecto.
-          \item \texttt{molecules.json}: Datos de moléculas.
-          \item \texttt{\_\_pycache\_\_}: Archivos de caché de Python.
+          \item \texttt{config\_functions.py}: Configuration functions for the project.
+          \item \texttt{molecules.json}: Molecule data.
+          \item \texttt{\_\_pycache\_\_}: Python cache files.
       \end{itemize}
-      \item \texttt{main.py}: Archivo principal del programa.
+      \item \texttt{main.py}: Main program file.
       \item \texttt{modules/}
       \begin{itemize}[label={}, left=2em]
-          \item \texttt{ansatz\_preparer.py}: Preparación del ansatz cuántico.
-          \item \texttt{hamiltonian\_builder.py}: Construcción del Hamiltoniano molecular.
-          \item \texttt{molecule\_manager.py}: Gestión de datos moleculares.
-          \item \texttt{opt\_mol.py}: Optimización molecular.
-          \item \texttt{optimizer.py}: Algoritmos de optimización.
-          \item \texttt{visualizer.py}: Herramientas de visualización.
-          \item \texttt{\_\_pycache\_\_}: Archivos de caché de Python.
+          \item \texttt{ansatz\_preparer.py}: Quantum ansatz preparation.
+          \item \texttt{hamiltonian\_builder.py}: Molecular Hamiltonian construction.
+          \item \texttt{molecule\_manager.py}: Molecular data management.
+          \item \texttt{opt\_mol.py}: Molecular optimization.
+          \item \texttt{optimizer.py}: Optimization algorithms.
+          \item \texttt{visualizer.py}: Visualization tools.
+          \item \texttt{\_\_pycache\_\_}: Python cache files.
       \end{itemize}
       \item \texttt{temp\_results\_autograd/}
       \begin{itemize}[label={}, left=2em]
-          \item \texttt{energy\_evolution.png}: Gráfica de la evolución de la energía.
-          \item \texttt{filtered\_report\_autograd.txt}: Informe filtrado de resultados.
-          \item \texttt{final\_geometries\_3D.png}: Imagen de las geometrías finales en 3D.
-          \item \texttt{nuclear\_coordinates.png}: Coordenadas nucleares.
-          \item \texttt{output.txt}: Salida de datos del programa.
-          \item \texttt{profile\_output\_autograd.txt}: Perfil de salida de Autograd.
+          \item \texttt{energy\_evolution.png}: Energy evolution graph.
+          \item \texttt{filtered\_report\_autograd.txt}: Filtered results report.
+          \item \texttt{final\_geometries\_3D.png}: Image of the final 3D geometries.
+          \item \texttt{nuclear\_coordinates.png}: Nuclear coordinates.
+          \item \texttt{output.txt}: Program data output.
+          \item \texttt{profile\_output\_autograd.txt}: Autograd profile output.
       \end{itemize}
-      \item \texttt{test/}: Directorio para pruebas.
+      \item \texttt{test/}: Directory for tests.
   \end{itemize}
 \end{ProjectStructure}
-\subsubsection{Estructura Modular}
-Después de decidir la interfaz a utilizar, con la primera version de codigo implementada, decidimos hacer una redistribución para que el proyecto fuera mas preciso, con una estructura mas modular, ofreciendo la posibilidad de poder añadir de forma senzilla mas lineas de codigo.
 
-\subsubsection{Descripción de Archivos y Directorios}
+\subsubsection{Modular Structure}
+After deciding on the interface to use and implementing the first version of the code, we decided to reorganize the project to make it more precise and modular. This structure offers the possibility to easily add more lines of code and functionalities.
+
+\subsubsection{Description of Files and Directories}
 
 \begin{itemize}
-    \item \textbf{Archivo Principal (\texttt{quantum\_simulation.py})}: Explica su función como punto de entrada del programa.
-    \item \textbf{Módulos Auxiliares (\texttt{mol\_optimizer.py})}: Detalla las funciones y clases incluidas, y cómo se dividen las responsabilidades.
-    \item \textbf{Archivos de Datos (\texttt{data/})}: Describe cómo y dónde se almacenan los datos de entrada y resultados.
-    \item \textbf{Dependencias (\texttt{requirements.txt})}: Menciona la importancia de gestionar las dependencias para la reproducibilidad.
+    \item \textbf{Main File (\texttt{quantum\_simulation.py})}: Explains its function as the entry point of the program.
+    \item \textbf{Auxiliary Modules (\texttt{mol\_optimizer.py})}: Details the included functions and classes, and how responsibilities are divided.
+    \item \textbf{Data Files (\texttt{data/})}: Describes how and where input data and results are stored.
+    \item \textbf{Dependencies (\texttt{requirements.txt})}: Mentions the importance of managing dependencies for reproducibility.
 \end{itemize}
 
-\subsection{Herramientas y Tecnologías Utilizadas}
 
-\subsubsection{Control de Versiones}
-El control de las distintas versiones, se efectuó con el uso de Git, permitiendo un seguimiento detallado de los cambios y facilitando la colaboración en el proyecto de los supervisores de forma continua.  Principalmente, al inició del proyecto, se utilizo una unica rama para desenvolupar el proyecto e ir conociendo las possibilidades del framework. Una vez se tuvo una version estable, se crearon ramas para poder hacer pruebas y desarrollos de nuevas funcionalidades, las primeras ramas creadas furon las distintas versiones de las interfazes. En cada una de las ramas se depuro el codigo para que utilizaran corrieran el mismo codigo en las distintas interfazes. Finalmente, se volvierón a unir con a la rama principal, unicamente los cambios de la interfaz que habia salido que era la mas adecuada para el proyecto.
+\subsection{Version Control}
 
-\section{Desarrollo e Implementación}
+Version control was managed using Git, allowing detailed tracking of changes and facilitating continuous collaboration with the supervisors on the project. Primarily, at the start of the project, a single branch was used to develop the project and explore the framework's possibilities. Once a stable version was achieved, branches were created to conduct tests and develop new functionalities. The first branches created were for the different interface versions. In each branch, the code was refined so that the same code would run across the various interfaces. Finally, only the interface changes that proved most suitable for the project were merged back into the main branch.
 
-\subsection{Algoritmos y Métodos Implementados}
+\section{Development and Implementation}
 
-\subsubsection{Variational Quantum Eigensolver (VQE)}
+In our simulator, the method we use to find the energy of the ground state of a quantum system is the VQE. We have already explained the concept of VQE in the state of the art chapter; now we will explain how we have implemented it in our project and how we have integrated it.
 
-El \textbf{Variational Quantum Eigensolver (VQE)} es un algoritmo híbrido cuántico-clásico diseñado para encontrar la energía del estado fundamental de un sistema cuántico, como moléculas en química cuántica. Combina un circuito cuántico parametrizado con un optimizador clásico para minimizar la expectativa del Hamiltoniano del sistema. Este enfoque es particularmente relevante en la estimación de energías moleculares debido a las limitaciones de los dispositivos cuánticos actuales y la complejidad computacional de los métodos clásicos exactos.
+\paragraph{Principle of VQE:}
 
-\paragraph{Principio del VQE:}
-
-El VQE se basa en el principio variacional, que establece que la energía esperada de cualquier estado aproximado \( |\psi(\theta)\rangle \) es siempre mayor o igual a la energía del estado fundamental real \( E_0 \):
+The VQE is based on the variational principle, which states that the expected energy of any approximate state \( |\psi(\theta)\rangle \) is always greater than or equal to the real ground state energy \( E_0 \):
 
 \[
 E(\theta) = \langle \psi(\theta) | H | \psi(\theta) \rangle \geq E_0
 \]
 
-Donde \( H \) es el Hamiltoniano del sistema y \( \theta \) representa un conjunto de parámetros variacionales. El objetivo es encontrar los valores óptimos de \( \theta \) que minimizan \( E(\theta) \), acercándose lo más posible a \( E_0 \).
+We have already discussed this concept, but it is necessary to emphasize it as it is the foundation of the entire algorithm. The idea is to find the parameters \( \theta \) that minimize the expected energy, thereby approaching the real value of the ground state energy.
 
-\paragraph{Relevancia en la estimación de energías moleculares:}
+\bigskip
 
-La estimación precisa de las energías moleculares es esencial para comprender las propiedades químicas y predecir reacciones. Los métodos clásicos exactos, como la Interacción de Configuraciones Completa (FCI), son computacionalmente inviables para sistemas grandes debido al escalamiento exponencial con el tamaño del sistema. El VQE ofrece una alternativa eficiente al aprovechar las capacidades de los dispositivos cuánticos para explorar espacios de estados cuánticos más grandes con recursos computacionales reducidos.
+Next, we will detail how the VQE is implemented in our project, explaining how each component has been developed.
 
-\paragraph{Implementación en el código:}
+\subsection{Implementation of VQE in Our Simulator}
 
-En el código proporcionado, el VQE se implementa a través de varias funciones y pasos clave:
+The VQE algorithm in our simulator consists of several key steps, which we describe below:
 
 \begin{enumerate}
-    \item \textbf{Preparación del ansatz cuántico:}
-    
-    La función \texttt{prepare\_ansatz} construye el circuito cuántico utilizando las excitaciones seleccionadas y los parámetros actuales:
-    
-    \begin{verbatim}
-def prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals):
+  \item \textbf{Preparation of the Quantum Ansatz}
+  
+  The first step to implement the VQE algorithm (Variational Quantum Eigensolver) is to prepare the quantum state of the system. This is achieved using an \textbf{ansatz}, which is a parameterized quantum circuit designed to approximate the system's ground state. In our project, we have implemented an adaptive ansatz that selects the most relevant excitations, thus allowing a more efficient and accurate representation of the ground state.
+  
+  \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Preparation of the Quantum Ansatz, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+def prepare_ansatz(params, hf_state, selected_excitations, 
+spin_orbitals):
     qml.BasisState(hf_state, wires=range(spin_orbitals))
     for i, exc in enumerate(selected_excitations):
         if len(exc) == 2:
             qml.SingleExcitation(params[i], wires=exc)
         elif len(exc) == 4:
             qml.DoubleExcitation(params[i], wires=exc)
-    \end{verbatim}
-    
-    Este ansatz comienza desde el estado de Hartree-Fock y aplica una serie de operaciones de excitación (simple y doble) parametrizadas por \( \theta \).
-    
-    \item \textbf{Definición de la función de costo:}
-    
-    Dentro de \texttt{update\_parameters\_and\_coordinates}, se define la función de costo que calcula el valor esperado del Hamiltoniano:
-    
-    \begin{verbatim}
+  \end{tcblisting}
+  
+  This ansatz starts from the Hartree-Fock state, represented by \texttt{hf\_state}, and applies a series of single and double excitation operations, each parameterized by an angle \(\theta\). The selected excitations are applied using PennyLane's \texttt{SingleExcitation} and \texttt{DoubleExcitation} gates, allowing the construction of a quantum state that captures the system's electronic correlations.
+  
+  \item \textbf{Definition of the Cost Function}
+  
+  With the ansatz defined, the next step is to establish a cost function that evaluates the expected energy of the system given a set of parameters \(\theta\). In our implementation, this cost function is defined within \texttt{update\_parameters\_and\_coordinates} and calculates the expected value of the molecular Hamiltonian:
+  
+  \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Definition of the Cost Function, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
 @qml.qnode(dev, interface=interface)
 def cost_fn(params):
     prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals)
     return qml.expval(hamiltonian)
-    \end{verbatim}
-    
-    Esta función es esencial para evaluar \( E(\theta) \) dado un conjunto de parámetros.
-    
-    \item \textbf{Optimización de los parámetros:}
-    
-    Se utilizan optimizadores clásicos, como \texttt{GradientDescentOptimizer}, para ajustar los parámetros y minimizar la energía:
-    
-    \begin{verbatim}
+  \end{tcblisting}
+  
+  This function is essential for evaluating \(E(\theta)\). By calculating the expected value of the Hamiltonian, we can quantify how close our approximate state is to the true ground state.
+  
+  \item \textbf{Optimization of the Parameters}
+  
+  Finally, we use classical optimizers, such as \texttt{GradientDescentOptimizer}, to adjust the parameters \(\theta\) and minimize the expected energy \(E(\theta)\). This process is critical for finding the quantum state that best approximates the system's ground state.
+  
+  \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Optimization of the Parameters, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
 params, energy = opt.step_and_cost(cost_fn, params)
-    \end{verbatim}
-    
-    Este paso actualiza los parámetros \( \theta \) para encontrar el mínimo de \( E(\theta) \).
-    
-    \item \textbf{Ciclo de optimización:}
-    
-    El bucle principal dentro de \texttt{optimize\_molecule} itera sobre:
-    \begin{itemize}
-        \item Construcción del Hamiltoniano molecular.
-        \item Cálculo de los gradientes de los operadores.
-        \item Selección del operador más significativo basado en los gradientes.
-        \item Actualización de los parámetros del ansatz y las coordenadas nucleares.
-    \end{itemize}
-    
-    Este ciclo continúa hasta que se alcanza el criterio de convergencia o se completa el número máximo de iteraciones.
+  \end{tcblisting}
+  
+  In this step, the parameters \(\theta\) are iteratively updated to reduce the value of the cost function. The \texttt{step\_and\_cost} method performs a parameter update and returns the associated energy, facilitating the tracking of the optimization progress.
 \end{enumerate}
 
-\paragraph{Requerimientos para ejecutar el VQE:}
+\textbf{Optimization Cycle}
+
+In our simulation, we have utilized these basic concepts; however, since the objective of our simulation is to optimize the molecular geometry, we have had to modify the algorithm somewhat. In our case, we have implemented an optimization loop where, in each iteration, the ansatz parameters and the nuclear coordinates are optimized. Below, we will explain the steps of the loop and delve deeper into the methodology used and the steps of each part of the loop.
 
 \begin{itemize}
-    \item \textbf{Hamiltoniano molecular preciso:} Representa las interacciones electrónicas y nucleares del sistema.
-    \item \textbf{Ansatz adecuado:} Capaz de aproximar el estado fundamental del sistema.
-    \item \textbf{Capacidad para evaluar el valor esperado de la energía:} Utilizando mediciones cuánticas.
-    \item \textbf{Optimizador clásico eficiente:} Para ajustar los parámetros del ansatz y minimizar la energía.
+    \item \textbf{Construction of the Molecular Hamiltonian:} The Hamiltonian of the system is generated for the current molecular geometry, incorporating any changes in the nuclear coordinates.
+    \item \textbf{Calculation of the Operator Gradients:} The energy gradients with respect to each operator in the excitation pool are calculated, identifying which excitations contribute most to the energy reduction.
+    \item \textbf{Selection of the Most Significant Operator Based on Gradients:} The operator with the largest gradient (in absolute value) is selected to be included in the ansatz, ensuring that the updates are the most effective.
+    \item \textbf{Updating the Ansatz Parameters and Nuclear Coordinates:} The ansatz parameters \(\theta\) and, if necessary, the positions of the nuclei are adjusted using optimization techniques, aiming to minimize the system's total energy.
 \end{itemize}
 
-\subsubsection{Preparación del Estado de Hartree-Fock}
+The cycle continues until the predefined convergence criteria are met or the established maximum number of iterations is completed. This iterative approach ensures that the ansatz is progressively refined, incorporating the most relevant excitations and adjusting the parameters to accurately approximate the system's ground state.
 
-El estado de Hartree-Fock es una aproximación donde los electrones se consideran independientes, ocupando orbitales moleculares en un campo medio creado por todos los demás electrones. Este estado se utiliza comúnmente como punto de partida en métodos post-Hartree-Fock y algoritmos cuánticos como el VQE.
-
-\paragraph{Proceso de generación del estado inicial:}
+\subsection{Hamiltonian Construction Process}
 
 \begin{enumerate}
-    \item \textbf{Cálculo del número de electrones y orbitales:}
+    \item \textbf{Definition of Molecular Geometry:}
     
-    La función \texttt{initialize\_molecule} determina el número de electrones y orbitales de spin basándose en los símbolos atómicos y las coordenadas iniciales:
+    The geometry is specified by the atomic symbols and the Cartesian coordinates of each atom in the molecule:
     
-    \begin{verbatim}
-def initialize_molecule(symbols, x_init, charge=0, mult=1, basis_name='sto-3g'):
-    ...
-    electrons = molecule.n_electrons
-    n_orbitals = len(molecule.basis_set)
-    spin_orbitals = 2 * n_orbitals
-    ...
-    return electrons, spin_orbitals
-    \end{verbatim}
+    \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+      title=Geometry Definition, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+      listing options={language=Python, basicstyle=\ttfamily\small,
+      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+symbols = ['H', 'H']
+x_init = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.74]) 
+    \end{tcblisting}
     
-    Aquí, se considera que cada orbital espacial puede albergar dos electrones con espines opuestos, lo que resulta en el doble de orbitales de spin.
     
-    \item \textbf{Generación del estado de Hartree-Fock:}
+    \item \textbf{Hamiltonian Construction:}
     
-    Utilizando la función \texttt{generate\_hf\_state}, se crea el estado de referencia de Hartree-Fock:
+    The \texttt{build\_hamiltonian} function generates the molecular Hamiltonian using PennyLane's functions:
     
-    \begin{verbatim}
-def generate_hf_state(electrons, spin_orbitals):
-    hf_state = qml.qchem.hf_state(electrons, spin_orbitals)
-    print(hf_state)
-    return hf_state
-    \end{verbatim}
-    
-    Esta función genera un vector binario donde los primeros \( n \) bits (siendo \( n \) el número de electrones) están en estado '1' (ocupado) y el resto en '0' (vacío), representando la ocupación de los orbitales en el estado de Hartree-Fock.
-\end{enumerate}
-
-\paragraph{Conceptos teóricos relacionados:}
-
-\begin{itemize}
-    \item \textbf{Aproximación de Hartree-Fock:} Simplifica el problema de muchos electrones al asumir que cada electrón se mueve en el potencial promedio creado por los demás, ignorando la correlación electrónica.
-    \item \textbf{Determinante de Slater:} Forma matemática que garantiza que la función de onda sea antisimétrica bajo el intercambio de electrones, cumpliendo con el principio de exclusión de Pauli.
-    \item \textbf{Orbitales moleculares:} Combinaciones lineales de orbitales atómicos que los electrones pueden ocupar en una molécula.
-\end{itemize}
-
-\paragraph{Requerimientos:}
-
-\begin{itemize}
-    \item Información precisa sobre la geometría molecular y los números atómicos para calcular el número de electrones.
-    \item Selección de una base atómica adecuada para representar los orbitales moleculares.
-    \item Uso de herramientas computacionales (como PennyLane) para generar el estado de Hartree-Fock.
-\end{itemize}
-
-\subsubsection{Construcción del Hamiltoniano Molecular}
-
-El Hamiltoniano molecular es una representación matemática que describe la energía total del sistema molecular, incluyendo las contribuciones de energía cinética y las interacciones entre electrones y núcleos. Es fundamental para cualquier cálculo de estructura electrónica y simulaciones de química cuántica.
-
-\paragraph{Proceso de construcción del Hamiltoniano:}
-
-\begin{enumerate}
-    \item \textbf{Definición de la geometría molecular:}
-    
-    La geometría se especifica mediante los símbolos atómicos y las coordenadas cartesianas de cada átomo en la molécula:
-    
-    \begin{verbatim}
-symbols = ['H', 'H']  # Ejemplo para una molécula de hidrógeno
-x_init = np.array([0.0, 0.0, 0.0,  # Coordenadas del primer átomo
-                   0.0, 0.0, 0.74])  # Coordenadas del segundo átomo
-    \end{verbatim}
-    
-    \item \textbf{Elección de la base atómica:}
-    
-    Se selecciona una base, como 'sto-3g', que es un conjunto de funciones de base predefinidas para representar los orbitales atómicos de manera simplificada.
-    
-    \item \textbf{Cálculo de integrales electrónicas:}
-    
-    Las integrales de uno y dos electrones se calculan para obtener los elementos de matriz del Hamiltoniano en la base escogida. Esto incluye:
-    \begin{itemize}
-        \item Integrales de energía cinética de los electrones.
-        \item Integrales de potencial nuclear-electrón.
-        \item Integrales de repulsión electrón-electrón.
-    \end{itemize}
-    
-    \item \textbf{Construcción del Hamiltoniano:}
-    
-    La función \texttt{build\_hamiltonian} genera el Hamiltoniano molecular utilizando las funciones de PennyLane:
-    
-    \begin{verbatim}
+    \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+      title=Hamiltonian Build, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+      listing options={language=Python, basicstyle=\ttfamily\small,
+      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
 def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
     x = np.array(x)
     coordinates = x.reshape(-1, 3)
@@ -269,176 +190,17 @@ def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
     h_coeffs = np.array(h_coeffs)
     hamiltonian = qml.Hamiltonian(h_coeffs, h_ops)
     return hamiltonian
-    \end{verbatim}
+    \end{tcblisting}
+    \textbf{Note:}
+    A basis set, such as 'sto-3g', is selected, which is a predefined set of basis functions to represent atomic orbitals in a simplified manner. This makes the simulation more efficient.
     
-    Esta función realiza:
-    \begin{itemize}
-        \item Cálculo de las integrales electrónicas.
-        \item Transformación del Hamiltoniano al formato de operadores cuánticos (por ejemplo, utilizando la transformación de Jordan-Wigner).
-        \item Devolución del Hamiltoniano como una suma de términos de operadores de Pauli con sus respectivos coeficientes.
-    \end{itemize}
+    \textbf{Function Description:}
+    
+    This function generates the qubit Hamiltonian of a molecule by transforming the electronic Hamiltonian in second quantization into the Pauli matrix framework. Additionally, it allows for the incorporation of net charge effects, spin multiplicity, and an active space defined by a specific number of electrons and orbitals, optimizing the quantum simulation of molecular systems.
+    
 \end{enumerate}
+\subsection{Parameter and Geometry Optimization}
 
-\paragraph{Conceptos teóricos relacionados:}
+\textbf{Has to be finished}
 
-\begin{itemize}
-    \item \textbf{Hamiltoniano electrónico molecular:} Incluye términos de energía cinética electrónica, atracción núcleo-electrón y repulsión electrón-electrón.
-    \item \textbf{Bases atómicas:} Conjuntos de funciones matemáticas (como funciones de tipo Gaussiano) utilizadas para aproximar los orbitales atómicos en cálculos cuánticos.
-    \item \textbf{Segundo cuantización y transformación a qubits:} El Hamiltoniano se expresa en términos de operadores de creación y destrucción y luego se transforma a operadores de qubits para su implementación en circuitos cuánticos.
-\end{itemize}
-
-\paragraph{Requerimientos:}
-
-\begin{itemize}
-    \item \textbf{Geometría molecular precisa:} Necesaria para calcular las distancias y energías de interacción.
-    \item \textbf{Selección adecuada de la base atómica:} Afecta la precisión y el costo computacional del cálculo.
-    \item \textbf{Herramientas computacionales avanzadas:} Para el cálculo de integrales electrónicas y la construcción del Hamiltoniano (e.g., PennyLane QChem).
-    \item \textbf{Transformación de operadores:} Uso de transformaciones como Jordan-Wigner o Bravyi-Kitaev para mapear operadores de fermiones a qubits.
-\end{itemize}
-
-\paragraph{Implementación detallada en el código:}
-
-El código utiliza las capacidades de \texttt{qml.qchem} para automatizar muchos de los pasos complejos:
-
-\begin{itemize}
-    \item \texttt{qml.qchem.molecular\_hamiltonian} calcula las integrales electrónicas y construye el Hamiltoniano.
-    \item El Hamiltoniano se descompone en términos que pueden ser medidos en un circuito cuántico.
-    \item Se considera la carga y multiplicidad de la molécula, lo que permite estudiar moléculas neutras o iones con diferentes estados de espín.
-\end{itemize}
-
-\paragraph{Relación con los conceptos teóricos:}
-
-La construcción del Hamiltoniano en el código refleja directamente los pasos teóricos necesarios para modelar un sistema molecular. Al transformar el Hamiltoniano a un formato compatible con qubits, se cierra la brecha entre la teoría química y la implementación práctica en un dispositivo cuántico.
-
-\subsubsection{Conclusión}
-
-El código proporcionado implementa el algoritmo VQE para estimar la energía del estado fundamental de una molécula, comenzando desde el estado de Hartree-Fock y construyendo el Hamiltoniano molecular a partir de la geometría y la base seleccionada. Cada paso del código está estrechamente relacionado con conceptos teóricos clave en química cuántica y computación cuántica, proporcionando una metodología completa que va desde la definición del sistema molecular hasta la optimización de los parámetros en un circuito cuántico. Esta implementación demuestra cómo los algoritmos cuánticos pueden aplicarse para resolver problemas complejos en química, aprovechando tanto la teoría como las herramientas computacionales modernas.
-\subsection{Optimización de Parámetros y Geometría}
-
-\subsubsection{Selección de Operadores}
-Explica cómo se generó el pool de operadores y se seleccionaron las excitaciones más relevantes.
-
-\subsubsection{Optimización de Parámetros Variacionales}
-Detalla el proceso de ajuste de los parámetros del circuito cuántico para minimizar la energía esperada.
-
-\subsubsection{Actualización de Coordenadas Moleculares}
-Describe cómo se integró la optimización geométrica en el algoritmo, ajustando las posiciones atómicas para encontrar la geometría de menor energía.
-
-\subsection{Modificaciones y Decisiones Técnicas}
-
-\subsubsection{Cambio de Optimizadores}
-Justifica la transición de optimizadores basados en JAX y Optax a los optimizadores nativos de PennyLane.
-
-\subsubsection{Uso de la Interfaz Autograd}
-Explica los beneficios de utilizar autograd para el cálculo automático de gradientes con arrays de NumPy.
-
-\subsubsection{Gestión del Estado del Optimizador}
-Detalla cómo se manejó el estado interno de los optimizadores de PennyLane y las simplificaciones realizadas en el código.
-
-\section{Registro y Análisis del Rendimiento}
-
-\subsection{Registro de Tiempos de Ejecución}
-
-\subsubsection{Motivación}
-Explica la importancia de medir los tiempos de ejecución para comparar el rendimiento de diferentes optimizadores y configuraciones.
-
-\subsubsection{Implementación}
-Describe la función \texttt{write\_simulation\_times} y cómo se aseguró la correcta escritura y actualización de los datos en el archivo \texttt{execution\_times.csv}.
-
-\subsubsection{Manejo de Datos Duplicados}
-Detalla la solución implementada para evitar la superposición de columnas y actualizar los resultados de simulaciones previas.
-
-\subsection{Análisis de Resultados}
-
-\subsubsection{Comparación de Optimizadores}
-Explica cómo se evaluó el desempeño de los diferentes optimizadores en términos de velocidad de convergencia y precisión.
-
-\subsubsection{Interpretación de Métricas}
-Describe las métricas utilizadas, como el tiempo total de optimización y el valor final de la energía.
-
-\section{Pruebas y Validación}
-
-\subsection{Casos de Prueba}
-
-\subsubsection{Moléculas Sencillas}
-Justifica la elección de moléculas como el hidrógeno molecular (H\textsubscript{2}) para validar el funcionamiento básico del código.
-
-\subsubsection{Resultados Esperados vs. Obtenidos}
-Compara los resultados obtenidos con valores teóricos o de referencia para verificar la precisión de las simulaciones.
-
-\subsection{Verificación del Código}
-
-\subsubsection{Depuración y Manejo de Errores}
-Describe las técnicas de depuración empleadas para identificar y corregir errores en el código.
-
-\subsubsection{Pruebas Unitarias}
-Explica si se implementaron pruebas unitarias o de integración para asegurar la correcta funcionalidad de los componentes clave.
-
-\section{Limitaciones y Consideraciones}
-
-\subsection{Complejidad Computacional}
-Discute las limitaciones en términos de recursos computacionales y cómo afectan la escalabilidad a moléculas más grandes.
-
-\subsection{Aproximaciones Utilizadas}
-Reconoce las aproximaciones inherentes al método VQE y al uso de bases reducidas como STO-3G.
-
-\subsection{Dependencia de Herramientas Externas}
-Menciona cómo las actualizaciones en los frameworks o bibliotecas podrían afectar la reproducibilidad y estabilidad del proyecto.
-
-\section{Futuras Mejoras y Trabajos Relacionados}
-
-\subsection{Optimización de Recursos}
-Propón estrategias para optimizar el uso de recursos, como el empleo de simuladores cuánticos más eficientes o la paralelización de tareas.
-
-\subsection{Extensión a Moléculas Más Complejas}
-Sugiere cómo podría ampliarse el enfoque para simular sistemas moleculares más grandes y complejos.
-
-\subsection{Integración con Hardware Cuántico}
-Explora la posibilidad de ejecutar las simulaciones en dispositivos cuánticos reales y los desafíos asociados.
-
-\section{Conclusión de la Metodología}
-
-\subsection{Resumen de la Estrategia}
-Recapitula los pasos clave de la metodología y cómo contribuyen al cumplimiento de los objetivos del proyecto.
-
-\subsection{Reflexión Personal}
-Comparte aprendizajes significativos obtenidos durante el desarrollo y cómo las decisiones tomadas afectaron positivamente el resultado final.
-
-Una vez decidido el framework, el siguiente paso fue estructurar el proyecto para que fuera escalable. Dentro del 
-
-
-
-
-\section{Code Listings}
-
-The \texttt{tcblistings} environment of the \texttt{tcolorbox} package (\cite{tcolorbox}) inserts code listings generated by the \texttt{listings} or \texttt{minted} packages into a \texttt{tcolorbox}, thereby achieving very well-presented and highly con\-fi\-gu\-ra\-ble listings.
-
-As an example, the following is the listing of a program in Python language that implements the "Sieve of Eratosthenes" algorithm for calculating prime numbers less than a certain given number. Note that the "listings" package is capable of automatically interpreting and highlighting the language's syntax.
-
-
-\newcommand\ListTitle{\ifcase\doclanguage\or
-  Exemple de Python: Sedàs d'Eratòstenes\or
-  Ejemplo de Python: Criba de Eratóstenes\else
-  Python Example: Sieve of Eratosthenes\fi
-}
-\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
-    title=\ListTitle, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
-    listing options={language=python,basicstyle=\ttfamily\small,
-    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
-def sieve_of_eratosthenes(limit):
-  primes = []
-  sieve = [True] * (limit + 1)
-  for num in range(2, limit + 1):
-    if sieve[num]:
-      primes.append(num)
-      for multiple in range(num*num, limit + 1, num):
-        sieve[multiple] = False
-  return primes
-
-# Example usage:
-if __name__ == "__main__":
-  limit = 30
-  print(f"The prime numbers up to {limit} are:
-          {sieve_of_eratosthenes(limit)}")
-\end{tcblisting}
-
+\textbf{To be continued...}

@@ -7,34 +7,33 @@ import pandas as pd
 TEMP_RESULTS_DIR = "temp_results_autograd"
 def write_simulation_times(symbols, interface, optimizer_name, execution_times):
     """
-    Escribe los tiempos de ejecución de una simulación en un archivo CSV común sin sobrescribir datos existentes.
-    Si la simulación ya existe, reemplaza los datos antiguos por los nuevos.
+    Writes the execution time of a simulation to a CSV file.
+    If the simulation ID already exists, its execution time is updated.
+    Otherwise, a new entry is appended.
+
+    :param csv_file: Path to the CSV file.
+    :param simulation_id: Unique identifier for the simulation.
+    :param execution_time: Execution time of the simulation.
     """
     filename = "execution_times.csv"
     simulation_id = f"{symbols}_{interface}_{optimizer_name}"
 
-    # Crear un DataFrame con los tiempos de ejecución de esta simulación
     df_new = pd.DataFrame(list(execution_times.items()), columns=['Function', simulation_id])
     df_new.set_index('Function', inplace=True)
 
-    # Usar bloqueo de archivo para operaciones de lectura y escritura
     with portalocker.Lock(filename, 'a+', timeout=10) as fh:
-        fh.seek(0)  # Mover el puntero al inicio del archivo antes de leer
+        fh.seek(0)
         if os.path.getsize(filename) > 0:
-            # Leer el archivo existente
             df_existing = pd.read_csv(fh, index_col='Function')
 
-            # Si el simulation_id ya existe, eliminar la columna antigua
             if simulation_id in df_existing.columns:
                 df_existing.drop(columns=[simulation_id], inplace=True)
 
-            # Combinar los DataFrames
+            # Combining DataFrames
             df_combined = df_existing.join(df_new, how='outer')
         else:
-            # Si el archivo está vacío, usar el DataFrame nuevo
             df_combined = df_new
 
-        # Escribir el DataFrame combinado en el archivo
         fh.seek(0)
         fh.truncate()
         df_combined.to_csv(fh)
@@ -103,7 +102,6 @@ def visualize_final_geometries(results, symbols):
     fig = plt.figure(figsize=(10, 8))
     ax = fig.add_subplot(111, projection='3d')
 
-    # Define colors and markers for each optimizer and interface
     colors = {'Gradient Descent': 'r', 'Adam': 'g', 'Quantum Natural Gradient': 'b'}
     markers = {'autograd': 'o', 'jax': '^'}
 
@@ -114,17 +112,17 @@ def visualize_final_geometries(results, symbols):
             final_coords = data['final_x'].reshape(-1, 3)
             all_coords.append(final_coords)
     all_coords = np.concatenate(all_coords)
-    max_range = np.ptp(all_coords, axis=0).max()  # Maximum range in any axis
+    max_range = np.ptp(all_coords, axis=0).max()
 
-    # Scale for point sizes
-    size_scale = 200 / max_range  # Adjust 200 as needed
+
+    size_scale = 200 / max_range 
 
     for interface, interface_results in results.items():
         for optimizer_name, data in interface_results.items():
             final_coords = data["final_x"].reshape(-1, 3)
             color = colors.get(optimizer_name, 'k')
             marker = markers.get(interface, 's')
-            # Calculate point sizes based on distance from the molecule center
+            
             center = final_coords.mean(axis=0)
             distances = np.linalg.norm(final_coords - center, axis=1)
             sizes = distances * size_scale + 50

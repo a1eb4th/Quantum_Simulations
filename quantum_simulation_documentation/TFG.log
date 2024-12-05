@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.10.4)  2 DEC 2024 19:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.10.4)  5 DEC 2024 17:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1204,11 +1204,35 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \float@box=\box94
 \@float@everytoks=\toks59
 \@floatcapt=\box95
-)) (/usr/local/texlive/2024/texmf-dist/tex/latex/base/inputenc.sty
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/base/inputenc.sty
 Package: inputenc 2021/02/14 v1.3d Input encoding file
 \inpenc@prehook=\toks60
 \inpenc@posthook=\toks61
-) (./config/styles.tex
+)) (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count536
+\lst@gtempboxa=\box96
+\lst@token=\toks62
+\lst@length=\count537
+\lst@currlwidth=\dimen363
+\lst@column=\count538
+\lst@pos=\count539
+\lst@lostspace=\dimen364
+\lst@width=\dimen365
+\lst@newlines=\count540
+\lst@lineno=\count541
+\lst@maxwidth=\dimen366
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstpatch.sty
+File: lstpatch.sty 2024/02/21 1.10 (Carsten Heinz)
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2024/02/21 1.10 (Carsten Heinz)
+\c@lstnumber=\count542
+\lst@skipnumbers=\count543
+\lst@framebox=\box97
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2024/02/21 1.10 listings configuration
+))
+Package: listings 2024/02/21 1.10 (Carsten Heinz)
+ (./config/styles.tex
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: 
 * paper: a4paper
@@ -1291,7 +1315,7 @@ Package: tikzfill.image 2023/08/08 v1.0.1 Image filling library for TikZ
 Package: tikzfill-common 2023/08/08 v1.0.1 Auxiliary code for tikzfill
 ) (/usr/local/texlive/2024/texmf-dist/tex/latex/tikzfill/tikzlibraryfill.image.code.tex
 File: tikzlibraryfill.image.code.tex 2023/08/08 v1.0.1 Image filling library
-\l__tikzfill_img_box=\box96
+\l__tikzfill_img_box=\box98
 )) (/usr/local/texlive/2024/texmf-dist/tex/latex/tcolorbox/tcbskinsjigsaw.code.tex
 Library (tcolorbox): 'tcbskinsjigsaw.code.tex' version '6.2.0'
 )) (/usr/local/texlive/2024/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
@@ -1300,38 +1324,14 @@ Library (tcolorbox): 'tcbbreakable.code.tex' version '6.2.0'
 Package: pdfcol 2022-09-21 v1.7 Handle new color stacks for pdfTeX (HO)
 )
 Package pdfcol Info: New color stack `tcb@breakable' = 1 on input line 23.
-\tcb@testbox=\box97
-\tcb@totalupperbox=\box98
-\tcb@totallowerbox=\box99
+\tcb@testbox=\box99
+\tcb@totalupperbox=\box100
+\tcb@totallowerbox=\box101
 ) (/usr/local/texlive/2024/texmf-dist/tex/latex/tcolorbox/tcblistingsutf8.code.tex
 Library (tcolorbox): 'tcblistingsutf8.code.tex' version '6.2.0'
 (/usr/local/texlive/2024/texmf-dist/tex/latex/tcolorbox/tcblistings.code.tex
 Library (tcolorbox): 'tcblistings.code.tex' version '6.2.0'
-(/usr/local/texlive/2024/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count536
-\lst@gtempboxa=\box100
-\lst@token=\toks62
-\lst@length=\count537
-\lst@currlwidth=\dimen363
-\lst@column=\count538
-\lst@pos=\count539
-\lst@lostspace=\dimen364
-\lst@width=\dimen365
-\lst@newlines=\count540
-\lst@lineno=\count541
-\lst@maxwidth=\dimen366
- (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstpatch.sty
-File: lstpatch.sty 2024/02/21 1.10 (Carsten Heinz)
-) (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2024/02/21 1.10 (Carsten Heinz)
-\c@lstnumber=\count542
-\lst@skipnumbers=\count543
-\lst@framebox=\box101
-) (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/listings.cfg
-File: listings.cfg 2024/02/21 1.10 listings configuration
-))
-Package: listings 2024/02/21 1.10 (Carsten Heinz)
- (/usr/local/texlive/2024/texmf-dist/tex/latex/tcolorbox/tcblistingscore.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/latex/tcolorbox/tcblistingscore.code.tex
 Library (tcolorbox): 'tcblistingscore.code.tex' version '6.2.0'
 (/usr/local/texlive/2024/texmf-dist/tex/latex/tcolorbox/tcbprocessing.code.tex
 Library (tcolorbox): 'tcbprocessing.code.tex' version '6.2.0'
@@ -1548,7 +1548,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LibertinusSans-TLF' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<img/Campillo.png, id=266, 40.15pt x 50.1875pt>
+<img/Campillo.png, id=193, 40.15pt x 50.1875pt>
 File: img/Campillo.png Graphic file (type png)
 <use img/Campillo.png>
 Package pdftex.def Info: img/Campillo.png  used on input line 10.
@@ -1567,12 +1567,12 @@ LaTeX Font Info:    Font shape `T1/LibertinusSans-TLF/b/n' will be
 (Font)              scaled to size 12.0pt on input line 37.
 LaTeX Font Info:    Font shape `T1/LibertinusSans-TLF/b/sc' will be
 (Font)              scaled to size 12.0pt on input line 37.
-<img/logos/Logo_UPC_ETSETB_tight.pdf, id=268, 606.70775pt x 117.92917pt>
+<img/logos/Logo_UPC_ETSETB_tight.pdf, id=195, 606.70775pt x 117.92917pt>
 File: img/logos/Logo_UPC_ETSETB_tight.pdf Graphic file (type pdf)
 <use img/logos/Logo_UPC_ETSETB_tight.pdf>
 Package pdftex.def Info: img/logos/Logo_UPC_ETSETB_tight.pdf  used on input line 53.
 (pdftex.def)             Requested size: 256.16713pt x 49.79231pt.
-<img/logos/logo_telecos.png, id=269, 2370.8575pt x 1321.93875pt>
+<img/logos/logo_telecos.png, id=196, 2370.8575pt x 1321.93875pt>
 File: img/logos/logo_telecos.png Graphic file (type png)
 <use img/logos/logo_telecos.png>
 Package pdftex.def Info: img/logos/logo_telecos.png  used on input line 53.
@@ -1701,18 +1701,18 @@ LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
 (Font)              scaled to size 17.28pt on input line 23.
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/b/n' will be
 (Font)              scaled to size 17.28pt on input line 23.
-LaTeX Font Info:    Trying to load font information for TS1+LibertinusSerif-TLF on input line 26.
+LaTeX Font Info:    Trying to load font information for TS1+LibertinusSerif-TLF on input line 27.
 (/usr/local/texlive/2024/texmf-dist/tex/latex/libertinus-type1/TS1LibertinusSerif-TLF.fd
 File: TS1LibertinusSerif-TLF.fd 2022/11/07 (autoinst) Font definitions for TS1/LibertinusSerif-TLF.
 )
 LaTeX Font Info:    Font shape `TS1/LibertinusSerif-TLF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 26.
+(Font)              scaled to size 12.0pt on input line 27.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LibertinusSerif-TLF' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-Overfull \hbox (2.63165pt too wide) in paragraph at lines 26--26
+Overfull \hbox (2.63165pt too wide) in paragraph at lines 27--28
 []\T1/LibertinusSerif-TLF/m/n/12 (-20) Developing a quan-tum sim-u-la-tion pro-gram ca-pa-ble of ef-fi-ciently mod-el-ing molecules
  []
 
@@ -1720,35 +1720,35 @@ Overfull \hbox (2.63165pt too wide) in paragraph at lines 26--26
 
 {/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_rlktsf.enc}]
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
-(Font)              scaled to size 14.4pt on input line 38.
+(Font)              scaled to size 14.4pt on input line 43.
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/b/n' will be
-(Font)              scaled to size 14.4pt on input line 38.
+(Font)              scaled to size 14.4pt on input line 43.
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/sc' will be
-(Font)              scaled to size 12.0pt on input line 45.
+(Font)              scaled to size 12.0pt on input line 50.
  [12] [13]
-LaTeX Font Info:    Trying to load font information for T1+DejaVuSansMono-TLF on input line 64.
+LaTeX Font Info:    Trying to load font information for T1+DejaVuSansMono-TLF on input line 69.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/dejavu/T1DejaVuSansMono-TLF.fd
 File: T1DejaVuSansMono-TLF.fd 2011/06/01 Font definitions for T1/DejaVuSansMono-TLF.
 )
 LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/m/n' will be
-(Font)              scaled to size 9.60004pt on input line 64.
+(Font)              scaled to size 9.60004pt on input line 69.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `DejaVuSansMono-TLF' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<img/Gantt_diagram.png, id=424, 1260.71pt x 505.89pt>
+<img/Gantt_diagram.png, id=334, 1260.71pt x 505.89pt>
 File: img/Gantt_diagram.png Graphic file (type png)
 <use img/Gantt_diagram.png>
-Package pdftex.def Info: img/Gantt_diagram.png  used on input line 68.
+Package pdftex.def Info: img/Gantt_diagram.png  used on input line 73.
 (pdftex.def)             Requested size: 426.79135pt x 171.25926pt.
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/it' will be
-(Font)              scaled to size 10.0pt on input line 69.
+(Font)              scaled to size 10.0pt on input line 74.
 
 
-LaTeX Warning: Citation 'skalagantt' on page 14 undefined on input line 69.
+LaTeX Warning: Citation 'skalagantt' on page 14 undefined on input line 74.
 
 
-LaTeX Warning: Citation 'skalagantt' on page 14 undefined on input line 69.
+LaTeX Warning: Citation 'skalagantt' on page 14 undefined on input line 74.
 
 ) (./chapters/state_of_art.tex [14{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/dejavu/dejavumono_t1-type1.enc} <./img/Gantt_diagram.png>]
 Chapter 2.
@@ -1758,7 +1758,7 @@ Chapter 2.
 Underfull \vbox (badness 1558) has occurred while \output is active []
 
  [16]
-<img/bit_vs_qbit.png, id=439, 655.12755pt x 397.84634pt>
+<img/bit_vs_qbit.png, id=349, 655.12755pt x 397.84634pt>
 File: img/bit_vs_qbit.png Graphic file (type png)
 <use img/bit_vs_qbit.png>
 Package pdftex.def Info: img/bit_vs_qbit.png  used on input line 35.
@@ -1769,69 +1769,55 @@ Chapter 3.
 
 ]
 LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/b/n' will be
-(Font)              scaled to size 9.60004pt on input line 75.
-
-Underfull \vbox (badness 5374) has occurred while \output is active []
-
+(Font)              scaled to size 9.60004pt on input line 62.
  [25] [26]
-Overfull \hbox (30.3168pt too wide) in paragraph at lines 118--118
- []\T1/DejaVuSansMono-TLF/m/n/12 def prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals): 
- []
-
-
-Overfull \hbox (24.53662pt too wide) in paragraph at lines 136--136
- []    \T1/DejaVuSansMono-TLF/m/n/12 prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals)[] 
- []
-
-[27]
-Overfull \hbox (64.9979pt too wide) in paragraph at lines 186--186
- []\T1/DejaVuSansMono-TLF/m/n/12 def initialize_molecule(symbols, x_init, charge=0, mult=1, basis_name='sto-3g'): 
- []
-
-[28] [29]
-Overfull \hbox (24.53662pt too wide) in paragraph at lines 262--262
- []\T1/DejaVuSansMono-TLF/m/n/12 def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'): 
- []
-
-
-Overfull \hbox (18.75644pt too wide) in paragraph at lines 266--266
- []        \T1/DejaVuSansMono-TLF/m/n/12 symbols, coordinates, charge=charge, mult=mult, basis=basis_name[] 
- []
-
-[30]
-Overfull \hbox (7.10323pt too wide) in paragraph at lines 301--302
-[] []\T1/LibertinusSerif-TLF/b/n/12 (-20) Im-ple-mentación de-tal-lada en el código:[] \T1/LibertinusSerif-TLF/m/n/12 (-20) El código uti-liza las ca-paci-dades de \T1/DejaVuSansMono-TLF/m/n/12 qml.qchem
- []
-
-[31] [32]
-LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
-(Font)              scaled to size 8.0pt on input line 364.
- [33] [34]
-
-LaTeX Warning: Citation 'tcolorbox' on page 35 undefined on input line 414.
-
 \g__tcobox_out_iow=\write9
 \openout9 = `TFG.listing'.
 
-(/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
 )
 LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/m/n' will be
-(Font)              scaled to size 8.76003pt on input line 443.
+(Font)              scaled to size 8.76003pt on input line 112.
  (./TFG.listing
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
 (Font)              scaled to size 10.95pt on input line 1.
 LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/b/n' will be
 (Font)              scaled to size 8.76003pt on input line 1.
-LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/m/it' will be
-(Font)              scaled to size 8.76003pt on input line 11.
-) [35]) (./chapters/results.tex [36]
+)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing
+Overfull \hbox (28.9546pt too wide) in paragraph at lines 3--4
+[][][][][][][][][][][][][][][][][][] 
+ []
+
+) [27]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing) [28]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing
+Overfull \hbox (28.9546pt too wide) in paragraph at lines 1--2
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (23.69855pt too wide) in paragraph at lines 5--6
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+)) (./chapters/results.tex [29]
 Chapter 4.
-) (./chapters/sustainability.tex [37
+) (./chapters/sustainability.tex [30
 
 ]
 Chapter 5.
-) (./chapters/conclusions.tex [38
+) (./chapters/conclusions.tex [31
 
 ]
 Chapter 6.
@@ -1839,16 +1825,18 @@ Chapter 6.
 
 LaTeX Warning: Empty bibliography on input line 184.
 
-(./chapters/appendices.tex [39
+(./chapters/appendices.tex [32
 
 ]
 Appendix A.
 
 Underfull \vbox (badness 1057) has occurred while \output is active []
 
- [40
+ [33
 
 ]
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
+(Font)              scaled to size 8.0pt on input line 132.
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
 (Font)              scaled to size 6.0pt on input line 132.
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/b/it' will be
@@ -1856,7 +1844,7 @@ LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/b/it' will be
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [41{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_opzo24.enc}]
+ [34{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_opzo24.enc}]
 Overfull \hbox (11.88362pt too wide) detected at line 198
 \LS1/libertinust1math/m/it/12 U\LS1/libertinust1math/m/n/12 .\LS1/libertinust1math/m/it/12 ^^^\LS1/libertinust1math/m/n/12 / = []
  []
@@ -1866,7 +1854,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 208--191
 []\T1/LibertinusSerif-TLF/m/n/12 (+20) These gates are im-ple-mented in Pen-ny-Lane as \T1/DejaVuSansMono-TLF/m/n/12 qml.SingleExcitation \T1/LibertinusSerif-TLF/m/n/12 (+20) and
  []
 
-[42] [43
+[35] [36
 
 ] (./TFG.aux)
  ***********
@@ -1878,7 +1866,7 @@ L3 programming layer <2024-02-20>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `TFG.out' has not changed.
-(rerunfilecheck)             Checksum: 95C68D2D6710C295C9B14BDBD0357CCC;11567.
+(rerunfilecheck)             Checksum: DC7489BF2C4E89B2C8F259A0BEAA17CD;7711.
 
 Package biblatex Warning: Please (re)run Biber on the file:
 (biblatex)                TFG
@@ -1889,18 +1877,18 @@ Package logreq Info: Writing requests to 'TFG.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 79385 strings out of 474116
- 1969610 string characters out of 5743682
- 3194919 words of memory out of 5000000
- 100156 multiletter control sequences out of 15000+600000
- 739729 words of font info for 358 fonts, out of 8000000 for 9000
+ 79340 strings out of 474116
+ 1968546 string characters out of 5743682
+ 3197899 words of memory out of 5000000
+ 100166 multiletter control sequences out of 15000+600000
+ 737620 words of font info for 347 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  89i,19n,120p,1478b,3193s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono-Oblique.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSans-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSans-Regular.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-BoldItalic.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Italic.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Regular.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinust1math/LibertinusT1Math.pfb>
-Output written on TFG.pdf (43 pages, 1176759 bytes).
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSans-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSans-Regular.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-BoldItalic.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Italic.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Regular.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinust1math/LibertinusT1Math.pfb>
+Output written on TFG.pdf (36 pages, 1149015 bytes).
 PDF statistics:
- 747 PDF objects out of 1000 (max. 8388607)
- 657 compressed objects within 7 object streams
- 186 named destinations out of 1000 (max. 500000)
- 103470 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 588 PDF objects out of 1000 (max. 8388607)
+ 508 compressed objects within 6 object streams
+ 139 named destinations out of 1000 (max. 500000)
+ 100766 words of extra memory for PDF output out of 106986 (max. 10000000)
 

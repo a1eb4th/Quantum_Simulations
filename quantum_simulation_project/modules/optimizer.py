@@ -1,6 +1,7 @@
 from pennylane import numpy as np
 from .hamiltonian_builder import build_hamiltonian, generate_hf_state, get_operator_pool
 from .ansatz_preparer import prepare_ansatz, compute_operator_gradients, select_operator
+from .visualizer import write_simulation_times
 import pennylane as qml
 import time
 from tabulate import tabulate
@@ -9,6 +10,7 @@ from tabulate import tabulate
 MAX_ITER = 5   # Adjust as needed
 CONV = 1e-8    # Convergence criterion
 STEP_SIZE = 0.01   # Step size for the optimizers
+
 def compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, interface='autograd', charge=0, mult=1, basis_name='sto-3g'):
     """
     Calculates the energy gradients with respect to the nuclear coordinates x.

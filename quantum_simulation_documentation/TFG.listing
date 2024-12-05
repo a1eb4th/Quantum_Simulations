@@ -1,15 +1,10 @@
-def sieve_of_eratosthenes(limit):
-  primes = []
-  sieve = [True] * (limit + 1)
-  for num in range(2, limit + 1):
-    if sieve[num]:
-      primes.append(num)
-      for multiple in range(num*num, limit + 1, num):
-        sieve[multiple] = False
-  return primes
-
-# Example usage:
-if __name__ == "__main__":
-  limit = 30
-  print(f"The prime numbers up to {limit} are:
-          {sieve_of_eratosthenes(limit)}")
+def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
+    x = np.array(x)
+    coordinates = x.reshape(-1, 3)
+    hamiltonian, qubits = qml.qchem.molecular_hamiltonian(
+        symbols, coordinates, charge=charge, mult=mult, basis=basis_name
+    )
+    h_coeffs, h_ops = hamiltonian.terms()
+    h_coeffs = np.array(h_coeffs)
+    hamiltonian = qml.Hamiltonian(h_coeffs, h_ops)
+    return hamiltonian

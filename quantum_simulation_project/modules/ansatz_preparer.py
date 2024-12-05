@@ -29,7 +29,6 @@ def compute_operator_gradients(operator_pool, selected_excitations, params, hami
     Returns:
         gradients (list o jnp.ndarray): Lista de gradientes absolutos para cada operador.
     """
-    # Implementación existente para autograd
     gradients = []
     for gate_wires in operator_pool:
         param_init_autograd = np.array(0.0, requires_grad=True)
