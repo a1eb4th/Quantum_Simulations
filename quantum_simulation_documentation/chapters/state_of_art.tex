@@ -195,7 +195,7 @@ The steps of state preparation, measurement, and optimization are repeated until
 
 \subsection{Adaptive Circuits}
 
-\textbf{Adaptive circuits} allow optimizing the design of quantum circuits for specific problems. They dynamically adjust their structure based on feedback and optimization criteria during the execution process.
+\textbf{Adaptive circuits} are designed to optimize quantum circuits dynamically by selecting components that most effectively reduce the system's energy. In this project, we implemented an adaptive strategy where the ansatz is built iteratively by selecting excitations (operators) from a predefined pool based on their gradient contribution to lowering the energy. This approach enhances efficiency by focusing computational resources on the most impactful degrees of freedom, ensuring faster convergence and reduced circuit complexity.
 
 An example is found in \textit{Variational Quantum Algorithms} (VQA), which use classical optimization techniques to adjust the parameters of a quantum circuit and minimize a cost function. These algorithms are especially useful in current quantum devices, which are noisy and of limited size (NISQ).
 
@@ -226,8 +226,3 @@ Within the iterative loop of the VQE algorithm, the optimizer updates the parame
 Integrating optimizers into the quantum-classical workflow is crucial because they connect quantum computations with classical numerical methods. They enable effective exploration of the parameter space, addressing challenges such as multiple local minima and flat regions in the energy landscape that are inherent in quantum systems.
 
 By employing appropriate optimization techniques, this project aims to enhance the efficiency and accuracy of molecular simulations. Optimizers play a pivotal role in leveraging the capabilities of quantum computing to achieve results that are difficult to obtain with classical computational methods alone, thus contributing to the advancement of quantum simulation despite current technological limitations.
-
-
-
-
-

@@ -33,54 +33,36 @@
 \contentsline {subsection}{\numberline {2.4.2}Adaptive Circuits}{22}{subsection.2.4.2}%
 \contentsline {section}{\numberline {2.5}Optimizers}{22}{section.2.5}%
 \contentsline {chapter}{\numberline {3}Methodology / project development}{24}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Framework Selection}{24}{section.3.1}%
+\contentsline {section}{\numberline {3.1}Tools and Frameworks Selection}{24}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Framework Selection}{24}{subsection.3.1.1}%
 \contentsline {section}{\numberline {3.2}Project Structuring}{25}{section.3.2}%
 \contentsline {subsection}{\numberline {3.2.1}Code Organization}{25}{subsection.3.2.1}%
-\contentsline {subsubsection}{Modular Structure}{25}{subsubsection*.13}%
-\contentsline {subsubsection}{Description of Files and Directories}{25}{subsubsection*.14}%
 \contentsline {subsection}{\numberline {3.2.2}Version Control}{26}{subsection.3.2.2}%
-\contentsline {section}{\numberline {3.3}Development and Implementation}{27}{section.3.3}%
-\contentsline {paragraph}{Principle of VQE:}{27}{paragraph*.15}%
-\contentsline {subsection}{\numberline {3.3.1}Implementation of VQE in Our Simulator}{27}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Hamiltonian Construction Process}{29}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}Parameter and Geometry Optimization}{30}{subsection.3.3.3}%
-\contentsline {paragraph}{Integration into the Optimization Cycle:}{30}{paragraph*.16}%
-\contentsline {paragraph}{Parameter Update Mechanism:}{30}{paragraph*.17}%
-\contentsline {paragraph}{Nuclear Geometry Updates:}{31}{paragraph*.18}%
-\contentsline {paragraph}{Coupling Electronic and Nuclear Optimizations:}{32}{paragraph*.19}%
-\contentsline {paragraph}{Convergence and Termination:}{32}{paragraph*.20}%
-\contentsline {subsubsection}{Selection of the Most Significant Operator Based on Gradients}{32}{subsubsection*.21}%
-\contentsline {paragraph}{Gradient-Based Operator Ranking:}{32}{paragraph*.22}%
-\contentsline {subsubsection}{Updating the Ansatz Parameters and Nuclear Coordinates}{33}{subsubsection*.23}%
-\contentsline {paragraph}{Joint Electronic-Nuclear Optimization:}{33}{paragraph*.24}%
-\contentsline {paragraph}{Outcome:}{34}{paragraph*.25}%
-\contentsline {section}{\numberline {3.4}Elección de Optimizador}{34}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Foundations of VQE and Justification for Its Selection}{35}{section.3.5}%
-\contentsline {section}{\numberline {3.6}Implementing VQE in the Simulator}{36}{section.3.6}%
-\contentsline {subsection}{\numberline {3.6.1}Preparing the Quantum Ansatz}{36}{subsection.3.6.1}%
-\contentsline {subsection}{\numberline {3.6.2}Defining the Cost Function}{36}{subsection.3.6.2}%
-\contentsline {subsection}{\numberline {3.6.3}Parameter Optimization of the Ansatz}{37}{subsection.3.6.3}%
-\contentsline {section}{\numberline {3.7}The Optimization Cycle: Parameters and Nuclear Geometry}{37}{section.3.7}%
-\contentsline {section}{\numberline {3.8}Molecular Hamiltonian Construction}{37}{section.3.8}%
-\contentsline {section}{\numberline {3.9}Simultaneous Parameter and Geometry Updates}{38}{section.3.9}%
-\contentsline {section}{\numberline {3.10}Selecting the Most Significant Operator from Gradients}{38}{section.3.10}%
-\contentsline {section}{\numberline {3.11}Optimizer Comparison and Selection}{39}{section.3.11}%
-\contentsline {section}{\numberline {3.12}Limitations and Mitigation Measures}{39}{section.3.12}%
-\contentsline {chapter}{\numberline {4}Results}{41}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Experiments and Tests}{41}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Data Visualization}{41}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Limitations}{41}{section.4.3}%
-\contentsline {chapter}{\numberline {5}Sustainability Analysis and Ethical Implications}{42}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Conclusions and Future Work}{43}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Conclusions}{43}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Future Directions}{43}{section.6.2}%
-\contentsline {chapter}{\numberline {A}Logic Gates}{44}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Simple Logic Gates}{44}{section.A.1}%
-\contentsline {paragraph}{X Gate (Pauli-X)}{44}{paragraph*.26}%
-\contentsline {paragraph}{Y Gate (Pauli-Y)}{44}{paragraph*.27}%
-\contentsline {paragraph}{Z Gate (Pauli-Z)}{44}{paragraph*.28}%
-\contentsline {paragraph}{Hadamard Gate (H)}{45}{paragraph*.29}%
-\contentsline {section}{\numberline {A.2}Multi-Qubit Logic Gates}{45}{section.A.2}%
-\contentsline {paragraph}{Controlled-NOT Gate (CNOT)}{45}{paragraph*.30}%
-\contentsline {paragraph}{Single Excitation Gate (\textit {SingleExcitation})}{45}{paragraph*.31}%
-\contentsline {paragraph}{Double Excitation Gate (\textit {DoubleExcitation})}{46}{paragraph*.32}%
+\contentsline {section}{\numberline {3.3}Development and Implementation}{26}{section.3.3}%
+\contentsline {paragraph}{Principle of VQE:}{27}{paragraph*.13}%
+\contentsline {subsection}{\numberline {3.3.1}Hamiltonian Construction Process}{27}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Adaptive Ansatz Construction}{28}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Cost Function Definition}{29}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Optimization Process}{30}{subsection.3.3.4}%
+\contentsline {paragraph}{Steps in the Optimization Loop:}{30}{paragraph*.14}%
+\contentsline {paragraph}{Justification for the Combined Optimization Approach:}{31}{paragraph*.15}%
+\contentsline {subsection}{\numberline {3.3.5}Visualization Tools}{31}{subsection.3.3.5}%
+\contentsline {section}{\numberline {3.4}Limitations and Mitigation Measures}{32}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Results}{33}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Experiments and Tests}{33}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Data Visualization}{33}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Limitations}{33}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Sustainability Analysis and Ethical Implications}{34}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Conclusions and Future Work}{35}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Conclusions}{35}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Future Directions}{35}{section.6.2}%
+\contentsline {chapter}{\numberline {A}Logic Gates}{36}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Simple Logic Gates}{36}{section.A.1}%
+\contentsline {paragraph}{X Gate (Pauli-X)}{36}{paragraph*.16}%
+\contentsline {paragraph}{Y Gate (Pauli-Y)}{36}{paragraph*.17}%
+\contentsline {paragraph}{Z Gate (Pauli-Z)}{36}{paragraph*.18}%
+\contentsline {paragraph}{Hadamard Gate (H)}{37}{paragraph*.19}%
+\contentsline {section}{\numberline {A.2}Multi-Qubit Logic Gates}{37}{section.A.2}%
+\contentsline {paragraph}{Controlled-NOT Gate (CNOT)}{37}{paragraph*.20}%
+\contentsline {paragraph}{Single Excitation Gate (\textit {SingleExcitation})}{37}{paragraph*.21}%
+\contentsline {paragraph}{Double Excitation Gate (\textit {DoubleExcitation})}{38}{paragraph*.22}%

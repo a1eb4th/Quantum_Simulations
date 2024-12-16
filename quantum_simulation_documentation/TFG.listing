@@ -1,5 +1,4 @@
-selected_gate, max_grad_value = select_operator(gradients, operator_pool_copy, convergence)
-if selected_gate is None:
-    # No more relevant operators
-    break
-selected_excitations.append(selected_gate)
+params, x, energy_history, x_history, opt_state = update_parameters_and_coordinates(
+    opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
+    learning_rate_x, convergence, interface, charge, mult, basis_name
+)
