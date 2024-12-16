@@ -2,9 +2,9 @@ import numpy as np
 from .hamiltonian_builder import build_hamiltonian, compute_exact_energy
 from .optimizer import optimize_molecule
 from .molecule_manager import initialize_molecule 
-from .visualizer import visualize_results
+from .visualizer import visualize_results, visualize_energy_vs_time
 
-def mol_optimizer(selected_molecules):
+def mol_optimizer(selected_molecules, optimizers, results_dir, ansatz_list):
     """
     Tests the molecular optimization for a list of selected molecules.
 
@@ -29,6 +29,7 @@ def mol_optimizer(selected_molecules):
 
         electrons, spin_orbitals = initialize_molecule(symbols, x_init, charge, mult, basis_name)
 
-        results = optimize_molecule(symbols, x_init, electrons, spin_orbitals, charge, mult, basis_name)
+        results = optimize_molecule(symbols, x_init, electrons, spin_orbitals,  optimizers, charge, mult, basis_name, ansatz_list)
         
-        visualize_results(results, symbols)
+        visualize_results(results, symbols, results_dir)
+        visualize_energy_vs_time(results, results_dir)

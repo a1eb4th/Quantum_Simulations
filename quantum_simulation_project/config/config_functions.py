@@ -1,6 +1,10 @@
 # config_functions.py
 import argparse
 import pennylane as qml
+from pennylane.optimize import (
+    AdamOptimizer, AdagradOptimizer, NesterovMomentumOptimizer, 
+    MomentumOptimizer, RMSPropOptimizer, GradientDescentOptimizer, QNGOptimizer
+)
 import sys
 import json
 from pennylane import numpy as np
@@ -20,10 +24,12 @@ def from_user_input():
     parser.add_argument('--reaction', action='store_true', help='Simulate a chemical reaction.')
     parser.add_argument('--opt', action= 'store_true', help='Molecule(s) to optimize (multiple molecules can be separated by spaces).')
     parser.add_argument('--basis_set', type=str, default='sto-3g', help='Basis set to use.')
-    parser.add_argument('--optimizer', type=str, default='GradientDescent', help='Optimizer to use.')
+    parser.add_argument('--optimizer', type=str, nargs='+', help='Optimizer(s) to use (use abbreviations: Adam, Adagrad, NMomentum, Momentum, RMSProp, GD, QNG).')
     parser.add_argument('--max_iterations', type=int, default=50, help='Maximum number of optimization iterations.')
+    parser.add_argument('--ansatz', type=str, nargs='+', help='Ansatz to use (use abbreviations: uccsd, vqe ).')
     parser.add_argument('--conv_tol', type=float, default=1e-6, help='Convergence tolerance.')
-    parser.add_argument('--stepsize', type=float, default=0.4, help='Step size for the optimizer.')
+    parser.add_argument('--stepsize', type=float, nargs='+', default=[0.4], help='Step size(s) for the optimizer. Provide multiple values separated by spaces.')
+
     parser.add_argument('--save', action='store_true', help='Save results to the results folder.')
     parser.add_argument('--save_dir', type=str, help='Name of the directory where results will be saved.')
     parser.add_argument('--plot', action='store_true', help='Show the energy convergence plot.')
@@ -34,42 +40,66 @@ def from_user_input():
                         help='Values for scanning the coordinate: start, stop, step')
 
     args = parser.parse_args()
+    
+    optimizer_map = {
+        "Adam": AdamOptimizer,
+        "Adagrad": AdagradOptimizer,
+        "NMomentum": NesterovMomentumOptimizer,
+        "Momentum": MomentumOptimizer,
+        "RMSProp": RMSPropOptimizer,
+        "GD": GradientDescentOptimizer,
+        "QNG": QNGOptimizer
+    }
+    if args.ansatz:
+        ansatz_list = args.ansatz
+    else:
+        ansatz_list = ["uccsd"]
+    
+    if args.optimizer:
+        optimizers = {}
+        new_ansatz_list = []
+        for opt in args.optimizer:
+            if opt not in optimizer_map:
+                print(f"Error: Optimizer '{opt}' is not recognized. Use one of: {', '.join(optimizer_map.keys())}")
+                sys.exit(1)
+            for step in args.stepsize:
+                for ans in ansatz_list:
+                    opt_name = f"{opt}_{step}_{ans}"
+                    optimizers[opt_name] = optimizer_map[opt](stepsize=step)
+                    new_ansatz_list.append(ans)
+        ansatz_list = new_ansatz_list
+    else:
+        optimizers={}
+        new_ansatz_list = []
+        for step in args.stepsize:
+            for ans in ansatz_list: 
+                opt_name = f"NMomentum_{step}_{ans}"
+                optimizers[opt_name] = NesterovMomentumOptimizer(stepsize=step)
+                new_ansatz_list.append(ans)
+        ansatz_list = new_ansatz_list
 
     # If the user wants to add a new molecule
     if args.add_molecule:
-        add_new_molecule()  # Method that handles adding a new molecule
-        sys.exit(0)  # Exit the program after adding the molecule
+        add_new_molecule()  
+        sys.exit(0)  
 
-    # Determine if the input is a molecule or a reaction
-    if args.reaction:
-        input_type = 'reaction'
-    elif args.opt:
-        input_type = 'optimization'
-        print("=== Molecular Optimization Simulation with PennyLane ===\n")
-    else:
-        print("Error: You must specify a type simulation.")
-        sys.exit(1)
-    
-    # If the input is a reaction
-    if args.reaction:
-        return [], args, input_type
 
-    # Load the defined molecules from a JSON file
-    predefined_molecules = load_molecules()  # Method that loads molecules from the JSON file
+
+    predefined_molecules = load_molecules() 
     molecules = []
 
     if args.molecule:
         molecule_names = args.molecule
         for molecule_name in molecule_names:
-            # Check if the specified molecule exists in the loaded database
+            
             if molecule_name not in predefined_molecules:
                 print(f"Molecule '{molecule_name}' is not defined. Use '--add_molecule' to add it.")
-                sys.exit(1)  # Terminate the program if the molecule is not defined
+                sys.exit(1)  
 
-            # Get the data of the specified molecule
+            
             molecule_data = predefined_molecules[molecule_name]
 
-            # Create the molecule using PennyLane
+            
             molecule = qml.qchem.Molecule(
                 symbols=molecule_data['symbols'],
                 coordinates=np.array(molecule_data['coordinates']),
@@ -79,13 +109,13 @@ def from_user_input():
             )
             molecules.append(molecule)
     else:
-        # Present options to the user
+        
         print("Select a molecule to simulate:")
         for idx, molecule_name in enumerate(predefined_molecules.keys(), start=1):
             print(f"{idx}. {molecule_name}")
         print(f"{len(predefined_molecules) + 1}. Exit")
         
-        # Prompt the user to choose a molecule
+        
         while True:
             try:
                 choice = int(input(f"\nEnter the number of the molecule to simulate (1-{len(predefined_molecules) + 1}): "))
@@ -111,8 +141,7 @@ def from_user_input():
         )
         molecules.append(molecule)
 
-    # Return the list of molecules, the user-provided arguments, and the input type
-    return molecules, args, input_type
+    return molecules, optimizers, ansatz_list
 
 
 def add_new_molecule():

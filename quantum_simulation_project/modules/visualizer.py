@@ -1,19 +1,14 @@
 import os
-from pennylane import numpy as np
-import matplotlib.pyplot as plt
-import portalocker
 import pandas as pd
+import portalocker
+import matplotlib.pyplot as plt
+import numpy as np
+from itertools import combinations
+import random
 
-TEMP_RESULTS_DIR = "temp_results_autograd"
 def write_simulation_times(symbols, interface, optimizer_name, execution_times):
     """
-    Writes the execution time of a simulation to a CSV file.
-    If the simulation ID already exists, its execution time is updated.
-    Otherwise, a new entry is appended.
-
-    :param csv_file: Path to the CSV file.
-    :param simulation_id: Unique identifier for the simulation.
-    :param execution_time: Execution time of the simulation.
+    Escribe los tiempos de ejecución en un CSV. Si ya existe la columna, la reemplaza.
     """
     filename = "execution_times.csv"
     simulation_id = f"{symbols}_{interface}_{optimizer_name}"
@@ -25,11 +20,8 @@ def write_simulation_times(symbols, interface, optimizer_name, execution_times):
         fh.seek(0)
         if os.path.getsize(filename) > 0:
             df_existing = pd.read_csv(fh, index_col='Function')
-
             if simulation_id in df_existing.columns:
                 df_existing.drop(columns=[simulation_id], inplace=True)
-
-            # Combining DataFrames
             df_combined = df_existing.join(df_new, how='outer')
         else:
             df_combined = df_new
@@ -38,109 +30,249 @@ def write_simulation_times(symbols, interface, optimizer_name, execution_times):
         fh.truncate()
         df_combined.to_csv(fh)
 
-def visualize_results(results, symbols):
+def _compute_offset_for_log(results):
     """
-    Generates plots to compare optimizers and visualize the evolution of coordinates.
-
-    Visualization code to compare results across interfaces and optimizers
-    Plot energy over optimization steps comparing optimizers and interfaces
-
-    Args:
-        results (dict): Dictionary with results for each optimizer.
-        symbols (list): List of atomic symbols.
+    Computa el offset necesario si hay energías negativas.
+    Devuelve offset = abs(min_energy) + un pequeño delta si min_energy < 0, 
+    en caso contrario, 0.
     """
-    plt.figure(figsize=(10, 6))
+    min_energy = None
     for interface, interface_results in results.items():
         for optimizer_name, data in interface_results.items():
-            if data["energy_history"]:
+            energy_hist = data.get("energy_history", [])
+            if energy_hist:
+                local_min = min(energy_hist)
+                if min_energy is None or local_min < min_energy:
+                    min_energy = local_min
+    if min_energy is None:
+
+        return 0.0
+    if min_energy < 0:
+        return abs(min_energy) + 1e-6
+    else:
+        return 0.0
+
+def visualize_results(results, symbols, results_dir):
+    """
+    Visualiza:
+    - Energía vs Iteración (lineal y log con offset)
+    - Distancias interatómicas
+    - Geometrías finales en 3D
+    - Luego llama a visualize_energy_vs_time
+    """
+
+    offset = _compute_offset_for_log(results)
+
+    # Energy vs Iteration (Linear)
+    plt.figure(figsize=(10, 6))
+    plt.title('Energy Evolution (Linear Scale)', fontsize=16)
+    all_energies = []
+    for interface, interface_results in results.items():
+        for optimizer_name, data in interface_results.items():
+            energy_hist = data.get("energy_history", [])
+            if energy_hist:
                 label = f"{optimizer_name} ({interface})"
-                plt.plot(data["energy_history"], label=label)
+                plt.plot(energy_hist, marker='o', linestyle='-', linewidth=1.0, markersize=4, label=label)
+
+                plt.plot(len(energy_hist)-1, energy_hist[-1], marker='*', markersize=10, color='red')
+                all_energies.extend(energy_hist)
+
     plt.xlabel('Optimization Step', fontsize=14)
     plt.ylabel('Energy (Ha)', fontsize=14)
-    plt.title('Energy Evolution During Optimization', fontsize=16)
-    plt.grid(True)
-    plt.legend()
+    plt.grid(True, which='both', linestyle='--', alpha=0.7)
+    plt.legend(fontsize=10)
+    plt.autoscale()
     plt.tight_layout()
-    plt.savefig(os.path.join(TEMP_RESULTS_DIR, "energy_evolution.png"))
+    plt.savefig(os.path.join(results_dir, "energy_evolution_linear.png"))
     plt.close()
 
-    # Visualization of nuclear coordinates in a single figure
+    # Energy vs Iteration (Log with Offset)
+    plt.figure(figsize=(10, 6))
+    plt.title('Energy Evolution (Log Scale with Offset)', fontsize=16)
+    for interface, interface_results in results.items():
+        for optimizer_name, data in interface_results.items():
+            energy_hist = data.get("energy_history", [])
+            if energy_hist:
+                energy_offset = [e + offset for e in energy_hist]
+                label = f"{optimizer_name} ({interface})"
+                plt.plot(energy_offset, marker='o', linestyle='-', linewidth=1.0, markersize=4, label=label)
+
+                plt.plot(len(energy_offset)-1, energy_offset[-1], marker='*', markersize=10, color='red')
+
+    plt.xlabel('Optimization Step', fontsize=14)
+    ylabel = 'Energy (Ha)'
+    if offset > 0:
+        ylabel += f' + {offset:.2e}'
+    plt.ylabel(ylabel, fontsize=14)
+    plt.yscale('log')
+    plt.grid(True, which='both', linestyle='--', alpha=0.7)
+    plt.legend(fontsize=10)
+    plt.autoscale()
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, "energy_evolution_log_offset.png"))
+    plt.close()
+
+    # Distancias interatómicas
+    visualize_interatomic_distances(results, symbols, results_dir)
+    # Geometrías finales
+    visualize_final_geometries(results, symbols, results_dir)
+
+    # Energía vs tiempo
+    visualize_energy_vs_time(results, results_dir, offset)
+
+def visualize_energy_vs_time(results, results_dir, offset=0.0):
+    """
+    Visualiza energía vs tiempo en dos escalas:
+    - Lineal (sin offset)
+    - Log con offset (si offset > 0)
+    """
+    # Energy vs Time (Linear)
+    plt.figure(figsize=(10, 6))
+    plt.title('Energy vs Time (Linear)', fontsize=16)
+    for interface, interface_results in results.items():
+        for optimizer_name, data in interface_results.items():
+            energy_history = data.get("energy_history", [])
+            execution_times = data.get("execution_times", {})
+            iteration_keys = [k for k in execution_times.keys() if k.startswith("Iteration")]
+            iteration_keys.sort(key=lambda x: int(x.split()[1]))
+            if energy_history and iteration_keys:
+                cumulative_times = []
+                current_time = 0.0
+                for i_key in iteration_keys:
+                    current_time += execution_times[i_key]
+                    cumulative_times.append(current_time)
+
+                min_length = min(len(energy_history), len(cumulative_times))
+                time_slice = cumulative_times[:min_length]
+                energy_slice = energy_history[:min_length]
+
+                label = f"{optimizer_name} ({interface})"
+                plt.plot(time_slice, energy_slice, marker='o', linestyle='-', linewidth=1.0, markersize=4, label=label)
+
+                plt.plot(time_slice[-1], energy_slice[-1], marker='*', markersize=10, color='red')
+
+    plt.xlabel('Time (s)', fontsize=14)
+    plt.ylabel('Energy (Ha)', fontsize=14)
+    plt.grid(True, which='both', linestyle='--', alpha=0.7)
+    plt.legend(fontsize=10)
+    plt.autoscale()
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, "energy_vs_time_linear.png"))
+    plt.close()
+
+    # Energy vs Time (Log With Offset)
+    plt.figure(figsize=(10,6))
+    plt.title('Energy vs Time (Log Scale with Offset)', fontsize=16)
+    for interface, interface_results in results.items():
+        for optimizer_name, data in interface_results.items():
+            energy_history = data.get("energy_history", [])
+            execution_times = data.get("execution_times", {})
+            iteration_keys = [k for k in execution_times.keys() if k.startswith("Iteration")]
+            iteration_keys.sort(key=lambda x: int(x.split()[1]))
+            if energy_history and iteration_keys:
+                cumulative_times = []
+                current_time = 0.0
+                for i_key in iteration_keys:
+                    current_time += execution_times[i_key]
+                    cumulative_times.append(current_time)
+                min_length = min(len(energy_history), len(cumulative_times))
+                time_slice = cumulative_times[:min_length]
+                energy_offset = [e + offset for e in energy_history[:min_length]]
+
+                label = f"{optimizer_name} ({interface})"
+                plt.plot(time_slice, energy_offset, marker='o', linestyle='-', linewidth=1.0, markersize=4, label=label)
+                
+                plt.plot(time_slice[-1], energy_offset[-1], marker='*', markersize=10, color='red')
+
+    plt.xlabel('Time (s)', fontsize=14)
+    ylabel = 'Energy (Ha)'
+    if offset > 0:
+        ylabel += f' + {offset:.2e}'
+    plt.ylabel(ylabel, fontsize=14)
+    plt.yscale('log')
+    plt.grid(True, which='both', linestyle='--', alpha=0.7)
+    plt.legend(fontsize=10)
+    plt.autoscale()
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, "energy_vs_time_log_offset.png"))
+    plt.close()
+
+def visualize_interatomic_distances(results, symbols, results_dir):
     num_atoms = len(symbols)
-    axes = ['x', 'y', 'z']
-    num_axes = len(axes)
-
-    fig, axs = plt.subplots(num_atoms, num_axes, figsize=(5*num_axes, 4*num_atoms), sharex=True)
-
-    for atom_index in range(num_atoms):
-        for axis_index, axis_name in enumerate(axes):
-            ax = axs[atom_index, axis_index] if num_atoms > 1 else axs[axis_index]
-            for interface, interface_results in results.items():
-                for optimizer_name, data in interface_results.items():
-                    x_history = np.array(data["x_history"])
-                    num_iterations = len(x_history)
-                    coord_history = x_history[:, 3*atom_index + axis_index]
+    atom_pairs = list(combinations(range(num_atoms), 2))
+    if len(atom_pairs) == 0:
+        return
+    for pair in atom_pairs:
+        i, j = pair
+        plt.figure(figsize=(10, 6))
+        plt.title(f'Distance {symbols[i]}-{symbols[j]} During Optimization', fontsize=16)
+        for interface, interface_results in results.items():
+            for optimizer_name, data in interface_results.items():
+                x_history = np.array(data.get("x_history", []))
+                if len(x_history) > 0:
+                    coords = x_history.reshape((len(x_history), num_atoms, 3))
+                    dist = np.linalg.norm(coords[:, j, :] - coords[:, i, :], axis=1)
                     label = f"{optimizer_name} ({interface})"
-                    ax.plot(range(num_iterations), coord_history, label=label)
-            if atom_index == num_atoms - 1:
-                ax.set_xlabel('Optimization Step', fontsize=12)
-            ax.set_ylabel(f'{symbols[atom_index]} - {axis_name} (Å)', fontsize=12)
-            ax.grid(True)
-            if atom_index == 0 and axis_index == num_axes - 1:
-                ax.legend()
+                    plt.plot(dist, marker='o', linestyle='-', linewidth=1.0, markersize=4, label=label)
+                    plt.plot(len(dist)-1, dist[-1], marker='*', markersize=10, color='red')
+        plt.xlabel('Optimization Step', fontsize=14)
+        plt.ylabel('Distance (Å)', fontsize=14)
+        plt.grid(True, which='both', linestyle='--', alpha=0.7)
+        plt.legend(fontsize=10)
+        plt.autoscale()
+        plt.tight_layout()
+        plt.savefig(os.path.join(results_dir, f"distance_{symbols[i]}_{symbols[j]}.png"))
+        plt.close()
 
-    plt.tight_layout()
-    plt.savefig(os.path.join(TEMP_RESULTS_DIR, "nuclear_coordinates.png"))
-    plt.close()
-
-    # 3D Visualization of the final geometries
-    visualize_final_geometries(results, symbols)
-
-def visualize_final_geometries(results, symbols):
-    """
-    Generates a 3D plot showing the final geometries for each optimizer and interface.
-    """
+def visualize_final_geometries(results, symbols, results_dir):
     fig = plt.figure(figsize=(10, 8))
     ax = fig.add_subplot(111, projection='3d')
 
-    colors = {'Gradient Descent': 'r', 'Adam': 'g', 'Quantum Natural Gradient': 'b'}
-    markers = {'autograd': 'o', 'jax': '^'}
-
-    # Get the range of coordinates to adjust point sizes
+    colors = ['r', 'g', 'b', 'm', 'c', 'y', 'k']
+    markers = ['o', '^', 's', 'D', 'P', 'X', '*']
     all_coords = []
     for interface_results in results.values():
         for data in interface_results.values():
             final_coords = data['final_x'].reshape(-1, 3)
             all_coords.append(final_coords)
-    all_coords = np.concatenate(all_coords)
-    max_range = np.ptp(all_coords, axis=0).max()
+    if all_coords:
+        all_coords = np.concatenate(all_coords)
+        max_range = np.ptp(all_coords, axis=0).max()
+        size_scale = 200 / max_range if max_range != 0 else 200
+    else:
+        size_scale = 100
 
-
-    size_scale = 200 / max_range 
+    used_labels = set()
 
     for interface, interface_results in results.items():
         for optimizer_name, data in interface_results.items():
             final_coords = data["final_x"].reshape(-1, 3)
-            color = colors.get(optimizer_name, 'k')
-            marker = markers.get(interface, 's')
-            
+            random.seed(str((optimizer_name, interface)))
+            color = random.choice(colors)
+            marker = random.choice(markers)
             center = final_coords.mean(axis=0)
             distances = np.linalg.norm(final_coords - center, axis=1)
             sizes = distances * size_scale + 50
-
+            label_shown = False
             for i, atom in enumerate(symbols):
-                label = f"{atom} - {optimizer_name} ({interface})" if i == 0 else ""
+                label = f"{atom} - {optimizer_name} ({interface})" if not label_shown else ""
+                label_shown = True
                 ax.scatter(final_coords[i, 0], final_coords[i, 1], final_coords[i, 2],
-                           color=color, marker=marker, s=sizes[i], label=label)
+                           color=color, marker=marker, s=sizes[i],
+                           label=label if label and label not in used_labels else "")
+                if label and label not in used_labels:
+                    used_labels.add(label)
                 ax.text(final_coords[i, 0], final_coords[i, 1], final_coords[i, 2],
-                        f"{atom}", size=10, color=color)
+                        f"{atom}", size=8, color=color)
 
-    ax.set_xlabel('x (Å)')
-    ax.set_ylabel('y (Å)')
-    ax.set_zlabel('z (Å)')
-    ax.set_title('Final Geometries of Optimizers and Interfaces')
+    ax.set_xlabel('x (Å)', fontsize=12)
+    ax.set_ylabel('y (Å)', fontsize=12)
+    ax.set_zlabel('z (Å)', fontsize=12)
+    ax.set_title('Final Geometries of Optimizers and Interfaces', fontsize=14)
+    ax.grid(True, which='both', linestyle='--', alpha=0.7)
     handles, labels = ax.get_legend_handles_labels()
     by_label = dict(zip(labels, handles))
-    ax.legend(by_label.values(), by_label.keys())
+    ax.legend(by_label.values(), by_label.keys(), fontsize=10)
     plt.tight_layout()
-    plt.savefig(os.path.join(TEMP_RESULTS_DIR, "final_geometries_3D.png"))
+    plt.savefig(os.path.join(results_dir, "final_geometries_3D.png"))
     plt.close()
