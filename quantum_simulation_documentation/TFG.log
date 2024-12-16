@@ -1778,13 +1778,13 @@ LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/b/n' will be
 File: lstlang1.sty 2024/02/21 1.10 listings language file
 )
 LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/m/n' will be
-(Font)              scaled to size 8.76003pt on input line 112.
+(Font)              scaled to size 8.76003pt on input line 127.
  (./TFG.listing
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
 (Font)              scaled to size 10.95pt on input line 1.
 LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/b/n' will be
 (Font)              scaled to size 8.76003pt on input line 1.
-)
+) [27]
 \openout9 = `TFG.listing'.
 
  (./TFG.listing
@@ -1792,13 +1792,13 @@ Overfull \hbox (28.9546pt too wide) in paragraph at lines 3--4
 [][][][][][][][][][][][][][][][][][] 
  []
 
-) [27]
-\openout9 = `TFG.listing'.
-
- (./TFG.listing)
+)
 \openout9 = `TFG.listing'.
 
  (./TFG.listing) [28]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
 \openout9 = `TFG.listing'.
 
  (./TFG.listing
@@ -1811,13 +1811,128 @@ Overfull \hbox (23.69855pt too wide) in paragraph at lines 5--6
 [][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-)) (./chapters/results.tex [29]
+) [29]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing
+LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/m/it' will be
+(Font)              scaled to size 8.76003pt on input line 1.
+) [30{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinust1math/libusBMR.enc}]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing
+Overfull \hbox (57.39655pt too wide) in paragraph at lines 1--2
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (141.49347pt too wide) in paragraph at lines 2--3
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing
+Overfull \hbox (36.37231pt too wide) in paragraph at lines 3--4
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (167.77376pt too wide) in paragraph at lines 4--5
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+) [31]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing
+Overfull \hbox (94.18895pt too wide) in paragraph at lines 1--2
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+) [32]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing
+Overfull \hbox (57.39655pt too wide) in paragraph at lines 7--8
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (141.49347pt too wide) in paragraph at lines 8--9
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+) [33]
+Overfull \hbox (20.54338pt too wide) in paragraph at lines 354--355
+[]\T1/LibertinusSerif-TLF/m/n/12 (-20) Como se puede ob-ser-var, el cam-bio prin-ci-pal rad-ica en el uso de un bu-cle \T1/DejaVuSansMono-TLF/m/n/12 for optimizer_name,
+ []
+
+[34]
+Overfull \hbox (6.1831pt too wide) in paragraph at lines 374--375
+[]\T1/LibertinusSerif-TLF/b/n/12 (-20) Suitability for NISQ de-vices: \T1/LibertinusSerif-TLF/m/n/12 (-20) VQE is par-tic-u-larly well-suited for noisy intermediate-
+ []
+
+[35]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing
+Overfull \hbox (4.83597pt too wide) in paragraph at lines 1--2
+[][][][][][][][][][][][][][][][][][][] 
+ []
+
+)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+Underfull \vbox (badness 1509) has occurred while \output is active []
+
+ [36]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing) [37]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing
+Overfull \hbox (57.39655pt too wide) in paragraph at lines 1--2
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (141.49347pt too wide) in paragraph at lines 2--3
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing
+Overfull \hbox (94.18895pt too wide) in paragraph at lines 1--2
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+) [38]
+Overfull \hbox (66.82332pt too wide) in paragraph at lines 513--514
+\T1/LibertinusSerif-TLF/m/n/12 (-20) To re-fine the method-ol-ogy, we eval-u-ated dif-fer-ent clas-si-cal op-ti-miz-ers (e.g., \T1/DejaVuSansMono-TLF/m/n/12 GradientDescentOptimizer\T1/LibertinusSerif-TLF/m/n/12 (-20) ,
+ []
+
+[39]) (./chapters/results.tex [40]
 Chapter 4.
-) (./chapters/sustainability.tex [30
+) (./chapters/sustainability.tex [41
 
 ]
 Chapter 5.
-) (./chapters/conclusions.tex [31
+) (./chapters/conclusions.tex [42
 
 ]
 Chapter 6.
@@ -1825,14 +1940,14 @@ Chapter 6.
 
 LaTeX Warning: Empty bibliography on input line 184.
 
-(./chapters/appendices.tex [32
+(./chapters/appendices.tex [43
 
 ]
 Appendix A.
 
 Underfull \vbox (badness 1057) has occurred while \output is active []
 
- [33
+ [44
 
 ]
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
@@ -1844,7 +1959,7 @@ LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/b/it' will be
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [34{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_opzo24.enc}]
+ [45{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_opzo24.enc}]
 Overfull \hbox (11.88362pt too wide) detected at line 198
 \LS1/libertinust1math/m/it/12 U\LS1/libertinust1math/m/n/12 .\LS1/libertinust1math/m/it/12 ^^^\LS1/libertinust1math/m/n/12 / = []
  []
@@ -1854,7 +1969,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 208--191
 []\T1/LibertinusSerif-TLF/m/n/12 (+20) These gates are im-ple-mented in Pen-ny-Lane as \T1/DejaVuSansMono-TLF/m/n/12 qml.SingleExcitation \T1/LibertinusSerif-TLF/m/n/12 (+20) and
  []
 
-[35] [36
+[46] [47
 
 ] (./TFG.aux)
  ***********

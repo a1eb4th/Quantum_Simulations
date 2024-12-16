@@ -59,10 +59,25 @@ After deciding on the interface to use and implementing the first version of the
 \subsubsection{Description of Files and Directories}
 
 \begin{itemize}
-    \item \textbf{Main File (\texttt{quantum\_simulation.py})}: Explains its function as the entry point of the program.
-    \item \textbf{Auxiliary Modules (\texttt{mol\_optimizer.py})}: Details the included functions and classes, and how responsibilities are divided.
-    \item \textbf{Data Files (\texttt{data/})}: Describes how and where input data and results are stored.
-    \item \textbf{Dependencies (\texttt{requirements.txt})}: Mentions the importance of managing dependencies for reproducibility.
+    \item \textbf{Main File (\texttt{main.py})}:  
+    This file serves as the entry point of the program. It initializes the initial conditions, sets up the molecule's configuration, defines optimization options, and orchestrates the execution of the quantum simulation and geometry optimization process. It is the first file to execute when running the application.
+
+    \item \textbf{Auxiliary Modules (\texttt{modules/})}:  
+    This directory contains various modules that encapsulate the core logic and operations of the project:
+    \begin{itemize}
+        \item \texttt{ansatz\_preparer.py}: Includes functions for constructing the quantum circuit from the variational ansatz, preparing states, and applying excitations.
+        \item \texttt{hamiltonian\_builder.py}: Responsible for generating the molecular Hamiltonian based on nuclear coordinates and the selected electronic basis.
+        \item \texttt{molecule\_manager.py}: Manages information related to the molecule, such as its charge, multiplicity, number of electrons, and required orbitals.
+        \item \texttt{opt\_mol.py}: Functions that orchestrate the molecular optimization process, invoking the optimizer and recording the simulation's progress.
+        \item \texttt{optimizer.py}: Implements the optimization logic, combining routines for evaluating the cost (energy) with the selected optimization algorithms, updating parameters, and geometries.
+        \item \texttt{visualizer.py}: Generates graphical outputs and reports that display the evolution of energy, nuclear coordinates, and other relevant data during optimization.
+    \end{itemize}
+
+    \item \textbf{Temporary Results Directories (\texttt{temp\_results\_autograd})}:  
+    Several directories with names starting with \texttt{temp\_results\_autograd} store output data, time logs, and visualizations generated for different simulations and configurations. For documentation purposes, these directories are treated as a single repository for temporary results.
+
+    \item \textbf{Dependencies (\texttt{requirements.txt})}:  
+    This file lists the required libraries and their versions to reproduce the project's execution environment. Keeping it updated ensures reproducibility of the simulation across different systems, facilitating the installation of necessary dependencies.
 \end{itemize}
 
 
@@ -201,6 +216,319 @@ def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
 \end{enumerate}
 \subsection{Parameter and Geometry Optimization}
 
+In this phase of the simulation, the algorithm refines both the electronic and nuclear degrees of freedom within a unified optimization loop. As previously discussed in the optimization cycle, each iteration not only adjusts the parameters \(\theta\) of the variational ansatz but also updates the nuclear coordinates \(\mathbf{X}\). By doing so, the approach brings the system closer to its true ground state energy and equilibrium molecular geometry simultaneously.
+
+\paragraph{Integration into the Optimization Cycle:}  
+The optimization cycle described above involves four key steps: constructing the molecular Hamiltonian, computing operator gradients, selecting the most relevant operator, and finally updating both the ansatz parameters and the nuclear coordinates. While the initial steps focus on identifying and incorporating crucial excitations into the ansatz, this last step ensures that the molecular structure itself becomes more stable. By optimizing \(\theta\) and \(\mathbf{X}\) together, the algorithm effectively searches the coupled electronic-nuclear energy landscape, guiding the molecule toward a configuration that yields a lower overall energy.
+
+\paragraph{Parameter Update Mechanism:}  
+After selecting the most significant operator, we append a new parameter corresponding to that operator to the ansatz. This step, as seen in the code snippet below, ensures that at each iteration the ansatz gains complexity in the most relevant direction:
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Parameter Extension, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+# Inside the main optimization loop:
+selected_excitations.append(selected_gate)
+
+# Append a new parameter for the chosen operator
+params = np.append(params, 0.0)
+params = np.array(params, requires_grad=True)
+\end{tcblisting}
+
+Here we re-initialize the optimizer after extending the parameter vector:
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Optimizer Re-initialization, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+opt = type(opt)(stepsize=STEP_SIZE)
+\end{tcblisting}
+
+\textbf{Justification:}  
+Re-initializing the optimizer ensures that changes in parameter dimensionality do not disrupt the internal state of algorithms like Adam or RMSProp, which store momentum terms. Although this approach discards historical gradients, it guarantees that each iteration starts consistently, preventing errors that could arise from dimension mismatches. While this may slow convergence slightly, it prioritizes correctness and stability of the optimization process.
+
+\paragraph{Nuclear Geometry Updates:}  
+In parallel with parameter updates, the nuclear geometry is also refined. The code below illustrates how the nuclear gradients are computed and applied:
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Updating Parameters and Coordinates, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+params, x, energy_history, x_history, opt_state = update_parameters_and_coordinates(
+    opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
+    learning_rate_x, convergence, interface, charge, mult, basis_name
+)
+\end{tcblisting}
+
+Within \texttt{update\_parameters\_and\_coordinates}, both \(\theta\) and \(\mathbf{X}\) are optimized:
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Parameter and Geometry Steps, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+for opt_step in range(10):
+    params, energy = opt.step_and_cost(cost_fn, params)
+    grad_x = compute_nuclear_gradients(params, x, symbols, selected_excitations, 
+                                       dev, hf_state, spin_orbitals, interface, charge, mult, basis_name)
+    x = x - learning_rate_x * grad_x
+\end{tcblisting}
+
+\textbf{Justification:}  
+Performing multiple optimization sub-steps (\texttt{opt\_step}) in each main iteration smooths out fluctuations and ensures a more stable descent in the nuclear coordinates. The choice of \texttt{learning\_rate\_x} is crucial: a too-large value may drive the molecule into unrealistic configurations, while a too-small one may slow down convergence. After experimenting with various rates, we chose a moderate value (e.g., \texttt{0.01}) to balance speed and stability.
+
+\paragraph{Coupling Electronic and Nuclear Optimizations:}  
+By updating the electronic parameters and the molecular geometry within the same loop, the algorithm follows a path that reflects physical reality—electrons and nuclei influence each other. This integrated approach ensures that the final state is not only electronically optimized but also structurally sound, representing a stable molecular configuration close to the equilibrium structure. As the number of iterations progresses, both parameters and coordinates converge, indicated by diminishing energy gradients and more stable final geometries.
+
+\paragraph{Convergence and Termination:}  
+As the optimization proceeds, criteria such as the maximum gradient value falling below a predefined threshold (\texttt{CONV}) or reaching the maximum number of iterations (\texttt{MAX\_ITER}) trigger termination. This ensures that the algorithm stops when it either finds a stable solution or when further progress becomes negligible.
+
+\textbf{Justification:}  
+Defining explicit convergence criteria prevents infinite loops and ensures that the simulation delivers a result within a reasonable time. For this project, we have chosen a stringent \texttt{CONV} value (e.g., \(10^{-8}\)) to ensure the final geometry and energy parameters are well-converged. This high precision may increase computational cost but results in more reliable and reproducible outcomes.
+
+\subsubsection{Selection of the Most Significant Operator Based on Gradients}
+
+Identifying which operator to add to the ansatz at each iteration is a crucial step in refining the variational representation of the molecular ground state. In our approach, we compute the gradient of the expected energy with respect to each candidate operator in the excitation pool. This procedure provides a quantitative measure of how much impact a given operator has on lowering the system's energy if included in the ansatz.
+
+\paragraph{Gradient-Based Operator Ranking:}  
+By evaluating the energy gradients, the algorithm can distinguish which excitations are most promising. The operator associated with the largest absolute gradient value is the one that, if turned on (i.e., given a nonzero parameter), offers the steepest descent in energy. This ensures that each added operator contributes effectively to reducing the total energy, rather than randomly guessing or adding operators that have minimal effect.
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Operator Selection Code Snippet, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+selected_gate, max_grad_value = select_operator(gradients, operator_pool_copy, convergence)
+if selected_gate is None:
+    # No more significant operators to add
+    break
+selected_excitations.append(selected_gate)
+\end{tcblisting}
+
+\textbf{Justification:}  
+This gradient-driven choice is not arbitrary; it ensures that resources (in terms of computational effort and circuit complexity) are invested in the most impactful directions. By systematically adding operators that yield the greatest immediate reduction in energy, the ansatz grows in complexity in a controlled and meaningful manner. This strategy strikes a balance between accuracy and computational efficiency, as it avoids introducing unnecessary parameters that would provide negligible energy improvements.
+
+\subsubsection{Updating the Ansatz Parameters and Nuclear Coordinates}
+
+Once the most relevant operator has been selected and incorporated into the ansatz, the next step is to refine both the electronic and nuclear configurations. This refinement process involves adjusting the variational parameters \(\theta\) associated with the chosen operators and, if needed, the nuclear coordinates \(\mathbf{X}\) of the molecule.
+
+\paragraph{Joint Electronic-Nuclear Optimization:}  
+In many simulations, molecular structure and electronic configurations are interdependent. The electronic state depends on the positions of the nuclei, and the equilibrium nuclear geometry is influenced by the electronic distribution. By updating \(\theta\) and \(\mathbf{X}\) together within the same optimization loop, the algorithm can move the system toward a self-consistent solution that minimizes the total energy. This integrated approach ensures that improving the variational state is not done in isolation but rather aligned with finding the best molecular geometry.
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Parameter and Geometry Update Code Snippet, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+params = np.append(params, 0.0)
+params = np.array(params, requires_grad=True)
+
+# Re-initialize optimizer after changing parameter dimension
+opt = type(opt)(stepsize=STEP_SIZE)
+
+params, x, energy_history, x_history, opt_state = update_parameters_and_coordinates(
+    opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
+    learning_rate_x, convergence, interface, charge, mult, basis_name
+)
+\end{tcblisting}
+
+\textbf{Justification:}  
+This process is guided by gradient-based optimizers that adjust \(\theta\) to decrease the energy. Simultaneously, nuclear gradients inform how to shift the atoms' positions, nudging the molecule toward a more stable, lower-energy structure. The chosen learning rates for parameters and nuclear coordinates have been tuned to ensure smooth convergence. If the learning rates are too high, the system may exhibit oscillatory or erratic behavior; if too low, convergence may be excessively slow. By carefully selecting these optimization parameters, we achieve a stable and efficient path toward a well-converged solution.
+
+\paragraph{Outcome:}  
+The combined approach of adding impactful operators at each iteration and updating both electronic and nuclear degrees of freedom results in a methodical journey toward a more accurate molecular ground state. With each iteration, the ansatz becomes richer, and the geometry refines, culminating in a final state that closely approximates the molecule's true equilibrium configuration and ground-state energy.
+
+
 \textbf{Has to be finished}
 
 \textbf{To be continued...}
+\section{Elección de Optimizador}
+
+Para poder conseguir el objetivo de desarrollar un simulador cuántico de la manera más optimizada, el primer paso fue generar una comparación entre distintas simulaciones utilizando los mismos parámetros y condiciones, pero variando el optimizador. De esta forma, podríamos determinar cuál de ellos convergía de manera más estable y rápida, sin incrementar excesivamente el tiempo de cómputo. Además, esta comparación nos permitiría contar con una base sólida para futuras decisiones, como la elección del ansatz más adecuado o la optimización de la geometría molecular.
+
+Al inicio, el código no contemplaba la ejecución con múltiples optimizadores a la vez. Estaba enfocado en un único optimizador, dificultando el análisis comparativo. Para solventar esto, se implementó una modificación en el script principal que:
+\begin{enumerate}
+    \item Define un diccionario con diversos optimizadores disponibles.
+    \item Itera sobre cada uno de ellos para ejecutar la misma simulación.
+    \item Registra y compara los resultados (energía final, número de iteraciones, tiempo total, etc.).
+\end{enumerate}
+
+A continuación se muestran las líneas de código clave que se han añadido o modificado para realizar dicha comparación. Cabe destacar que el siguiente fragmento se integra en la función principal de optimización (por ejemplo, \texttt{optimize\_molecule}), en el punto donde antes se usaba un único optimizador.
+
+Como se puede observar, el cambio principal radica en el uso de un bucle \texttt{for optimizer\_name, opt in optimizers.items():} que nos permite ejecutar el mismo procedimiento de optimización molecular con cada optimizador de la lista. Esto no sólo agiliza la comparación, sino que también evita duplicar código.
+
+Al generar la simulación con cada uno de los optimizadores, se puede observar cómo estos se comportan a medida que la ejecución avanza. Cada optimizador presenta ligeras diferencias en:
+\begin{itemize}
+    \item La velocidad a la que disminuye la energía.
+    \item El número de iteraciones requeridas para alcanzar la convergencia.
+    \item La estabilidad ante fluctuaciones en los parámetros.
+\end{itemize}
+
+Posteriormente, comentaremos los resultados de las distintas simulaciones que efectuamos. Pero podemos adelantar que, en las pruebas realizadas, el optimizador que mejor se comporta ha resultado ser \textbf{RMSProp}. El hecho de que RMSProp funcione de manera particularmente efectiva en este contexto podría atribuirse a su capacidad de adaptar la tasa de aprendizaje por parámetro, estabilizando así el descenso hacia el mínimo energético.
+
+Un dato a tener en cuenta es que, como indicaremos en el apartado de resultados y discusión, el tiempo total de ejecución entre los distintos optimizadores apenas varió. Este punto es relevante ya que, si todos tardan un tiempo similar, el factor clave pasa a ser \textit{la calidad y la velocidad de la convergencia}. En otras palabras, lo que buscamos es el optimizador que alcance el valor mínimo de energía con menos iteraciones y mayor estabilidad, y en nuestras corridas experimentales, RMSProp destaca en este sentido.
+
+Si bien se podría considerar también la influencia del ansatz, la cantidad de parámetros y otros factores, esta primera comparación se centró exclusivamente en el impacto de distintos algoritmos de optimización, manteniendo invariables otros aspectos. Así, el usuario dispone ahora de una referencia clara sobre qué optimizador ofrecería un mejor punto de partida para simulaciones más complejas.
+
+\section{Foundations of VQE and Justification for Its Selection}
+
+The \textit{Variational Quantum Eigensolver} (VQE) was chosen as the primary method to estimate the ground state energy of the studied quantum system. VQE combines limited quantum processing (measurements and applicability in moderately deep circuits) with classical optimization techniques. Its selection is justified by:
+
+\begin{itemize}
+    \item \textbf{Suitability for NISQ devices:} VQE is particularly well-suited for noisy intermediate-scale quantum (NISQ) devices, as it requires circuits of relatively low depth.
+    \item \textbf{Flexible Ansatz:} It allows the use of various adaptive variational ansätze that capture essential electronic correlations.
+    \item \textbf{Direct coupling to classical optimizers:} The VQE cost function (the expected energy) can be minimized with a wide range of classical methods, making it easy to experiment with different optimizers.
+\end{itemize}
+
+The core principle of VQE is the variational theorem, which guarantees that the expected energy of the ansatz is always an upper bound to the true ground state energy. By optimizing the ansatz parameters, the algorithm progressively approaches the actual energy minimum.
+
+\section{Implementing VQE in the Simulator}
+
+The integration of VQE in the simulator follows a step-by-step scheme detailed below:
+
+\subsection{Preparing the Quantum Ansatz}
+
+The first step is to define the ansatz, i.e., the parameterized quantum circuit that aims to approximate the system’s ground state. Our approach starts from the Hartree-Fock state (\texttt{hf\_state}) and applies a series of electronic excitations (single and double excitation operators) whose amplitudes are controlled by parameters \(\theta\):
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Quantum Ansatz Preparation, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+def prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals):
+    qml.BasisState(hf_state, wires=range(spin_orbitals))
+    for i, exc in enumerate(selected_excitations):
+        if len(exc) == 2:
+            qml.SingleExcitation(params[i], wires=exc)
+        elif len(exc) == 4:
+            qml.DoubleExcitation(params[i], wires=exc)
+\end{tcblisting}
+
+This adaptive ansatz grows in complexity as new excitations, selected based on their energy gradients, are added. Thus, not only predefined excitations are used, but the algorithm itself determines which are most relevant for lowering the energy.
+
+\subsection{Defining the Cost Function}
+
+The cost function in VQE is the expected energy of the molecular Hamiltonian for a given set of parameters \(\theta\). Through this function, we evaluate the quantum state prepared by the ansatz:
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Cost Function Definition, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+@qml.qnode(dev, interface=interface)
+def cost_fn(params):
+    prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals)
+    return qml.expval(hamiltonian)
+\end{tcblisting}
+
+Based on this function, the classical optimizer adjusts \(\theta\) to minimize the energy. In this manner, VQE forms a bridge between quantum mechanics (state preparation and Hamiltonian measurement) and classical optimization (searching for the energy minimum).
+
+\subsection{Parameter Optimization of the Ansatz}
+
+Parameter optimization (\(\theta\)) is performed with classical optimizers, for example:
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Parameter Optimization, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+params, energy = opt.step_and_cost(cost_fn, params)
+\end{tcblisting}
+
+In each iteration, the optimizer updates \(\theta\) to reduce the cost function. This process repeats until a convergence criterion is met (e.g., an energy variation below a given threshold).
+
+\section{The Optimization Cycle: Parameters and Nuclear Geometry}
+
+Our approach is novel in that we not only optimize the electronic state but also the molecular geometry. The optimization cycle integrates several steps:
+
+\begin{enumerate}
+    \item \textbf{Molecular Hamiltonian Construction:} The qubit Hamiltonian is computed for the current geometry.
+    \item \textbf{Operator Gradient Calculation:} Energy derivatives with respect to each candidate operator in the excitation pool are determined.
+    \item \textbf{Selection of the Most Relevant Operator:} The operator with the highest gradient is chosen for inclusion in the ansatz, increasing its variational expressiveness.
+    \item \textbf{Updating Parameters and Nuclear Coordinates:} Both \(\theta\) and the nuclear positions \(\mathbf{X}\) are optimized simultaneously. This brings the system closer not only to the electronic minimum but also to a more stable molecular structure.
+\end{enumerate}
+
+This cycle repeats until the convergence criteria are met, whether energetic, geometric, or related to the maximum number of iterations.
+
+\section{Molecular Hamiltonian Construction}
+
+The molecular Hamiltonian is generated from the atomic geometry definition. For example:
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+  title=Geometry Definition, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+  listing options={language=Python, basicstyle=\ttfamily\small,
+  showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+symbols = ['H', 'H']
+x_init = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.74]) 
+\end{tcblisting}
+
+The Hamiltonian construction function:
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+  title=Hamiltonian Construction, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+  listing options={language=Python, basicstyle=\ttfamily\small,
+  showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
+    x = np.array(x)
+    coordinates = x.reshape(-1, 3)
+    hamiltonian, qubits = qml.qchem.molecular_hamiltonian(
+        symbols, coordinates, charge=charge, mult=mult, basis=basis_name
+    )
+    h_coeffs, h_ops = hamiltonian.terms()
+    h_coeffs = np.array(h_coeffs)
+    hamiltonian = qml.Hamiltonian(h_coeffs, h_ops)
+    return hamiltonian
+\end{tcblisting}
+
+A chosen basis set (e.g., 'sto-3g') represents atomic orbitals efficiently, balancing precision and complexity to avoid a combinatorial explosion in the number of qubits.
+
+\section{Simultaneous Parameter and Geometry Updates}
+
+During each main optimization iteration, multiple sub-steps are performed on \(\theta\) and the nuclear gradients are recalculated. This allows updating atomic coordinates to minimize the total energy (both electronic and geometric) of the molecule:
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Joint Parameter and Coordinate Update, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+params, x, energy_history, x_history, opt_state = update_parameters_and_coordinates(
+    opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
+    learning_rate_x, convergence, interface, charge, mult, basis_name
+)
+\end{tcblisting}
+
+The choice of the learning rate for nuclear coordinates (\texttt{learning\_rate\_x}) and the number of sub-steps ensures a smooth and stable descent, avoiding unrealistic physical configurations or numerical divergences.
+
+\section{Selecting the Most Significant Operator from Gradients}
+
+To determine which operator to add to the ansatz at each iteration, we compute the energy gradient with respect to each operator in the excitation pool. The operator with the largest absolute gradient offers the greatest potential for reducing the energy if assigned a nonzero parameter:
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Operator Selection, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+selected_gate, max_grad_value = select_operator(gradients, operator_pool_copy, convergence)
+if selected_gate is None:
+    # No more relevant operators
+    break
+selected_excitations.append(selected_gate)
+\end{tcblisting}
+
+This approach ensures that the ansatz grows in the most effective direction, optimizing computational resources and improving convergence.
+
+\section{Optimizer Comparison and Selection}
+
+To refine the methodology, we evaluated different classical optimizers (e.g., \texttt{GradientDescentOptimizer}, \texttt{RMSProp}, \texttt{Adam}) under the same initial conditions. This comparative analysis identified the most robust optimizer, one that converges quickly and stably toward the energy minimum.
+
+Initially, the code was oriented toward a single optimizer, making comparison difficult. We introduced a dictionary of optimizers and a loop to iterate over them, running the same simulation:
+
+\begin{enumerate}
+    \item Define a dictionary with various optimizers.
+    \item Iterate over each and run the simulation.
+    \item Compare results (final energy, iterations, total time).
+\end{enumerate}
+
+The results showed that \textbf{RMSProp} performed excellently, combining speed and stability in convergence. This can be attributed to its ability to adapt the learning rate per parameter, preventing oscillations and improving the descent toward the energy minimum. Additionally, the total execution time did not significantly differ among optimizers, so the decisive factor was the quality of convergence.
+
+\section{Limitations and Mitigation Measures}
+
+Among the limitations of this approach are:
+\begin{itemize}
+    \item \textbf{Scalability:} As the system grows in the number of electrons and orbitals, the complexity of Hamiltonian construction and the excitation space increases exponentially.
+    \item \textbf{Quantum Noise and Errors:} On real devices, noise affects measurement fidelity. Our work, primarily simulation-oriented, plans to integrate mitigation techniques in future studies.
+    \item \textbf{Ansatz Choice:} Although the adaptive ansatz helps, there is no guarantee that the excitation selection is optimal. Future work might explore more complex heuristics.
+\end{itemize}
+
+To mitigate these issues, we opted for reduced basis sets, strategies such as re-initializing the optimizer when increasing the parameter space, and verifying convergence through multiple criteria (energetic and geometric).

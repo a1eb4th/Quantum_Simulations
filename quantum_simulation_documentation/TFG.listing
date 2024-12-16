@@ -1,10 +1,5 @@
-def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
-    x = np.array(x)
-    coordinates = x.reshape(-1, 3)
-    hamiltonian, qubits = qml.qchem.molecular_hamiltonian(
-        symbols, coordinates, charge=charge, mult=mult, basis=basis_name
-    )
-    h_coeffs, h_ops = hamiltonian.terms()
-    h_coeffs = np.array(h_coeffs)
-    hamiltonian = qml.Hamiltonian(h_coeffs, h_ops)
-    return hamiltonian
+selected_gate, max_grad_value = select_operator(gradients, operator_pool_copy, convergence)
+if selected_gate is None:
+    # No more relevant operators
+    break
+selected_excitations.append(selected_gate)
