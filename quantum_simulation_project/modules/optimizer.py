@@ -1,5 +1,6 @@
 import os
 import time
+import concurrent.futures
 from pennylane import numpy as np
 import pennylane as qml
 from pennylane.optimize import (
@@ -17,45 +18,29 @@ from .hamiltonian_builder import build_hamiltonian, generate_hf_state, get_opera
 from .ansatz_preparer import prepare_ansatz, compute_operator_gradients, select_operator
 import scipy.sparse.linalg
 
-
-# Constants
-MAX_ITER = 20     # Maximum number of main iterations
-CONV = 1e-8       # Convergence criterion based on energy difference
+MAX_ITER = 10
+CONV = 1e-9
+CONSECUTIVE_CONV = 3  # number of consecutive small improvements required to declare convergence
 
 def compute_exact_energy(symbols, coordinates, charge, mult, basis_name='sto-3g'):
     """
-    Compute the FCI (exact) ground state energy by constructing the molecular Hamiltonian
-    and then performing exact diagonalization using sparse linear algebra methods.
-
-    Args:
-        symbols (list): Atomic symbols of the molecule.
-        coordinates (array): Flattened array of atomic coordinates [x1, y1, z1, x2, y2, z2, ...].
-        charge (int): Molecular charge.
-        mult (int): Spin multiplicity.
-        basis_name (str): Basis set name.
-
-    Returns:
-        float: The exact ground state (FCI) energy in Hartrees.
+    Compute FCI (exact) energy using sparse diagonalization.
     """
     coordinates = np.array(coordinates)
     hamiltonian, qubits = qml.qchem.molecular_hamiltonian(
         symbols, coordinates.reshape(-1, 3), charge=charge, mult=mult, basis=basis_name
     )
-
     sparse_hamiltonian= hamiltonian.sparse_matrix()
     eigenvalues, _ = scipy.sparse.linalg.eigsh(sparse_hamiltonian, k=1, which='SA')
-    exact_energy = float(eigenvalues[0])
-    return exact_energy
+    return float(eigenvalues[0])
 
 def compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, interface='autograd', charge=0, mult=1, basis_name='sto-3g'):
     """
-    Compute energy gradients with respect to nuclear coordinates.
+    Compute nuclear gradients via finite differences.
     """
     delta = 1e-3
-    num_coords = len(x)
     grad_x = np.zeros_like(x)
-
-    for i in range(num_coords):
+    for i in range(len(x)):
         x_plus = x.copy()
         x_minus = x.copy()
         x_plus[i] += delta
@@ -76,16 +61,30 @@ def compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_
         energy_plus = cost_fn_plus(params)
         energy_minus = cost_fn_minus(params)
         grad_x[i] = (energy_plus - energy_minus) / (2 * delta)
-
     return grad_x
 
-def update_parameters_and_coordinates(opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, learning_rate_x, convergence, interface='autograd', charge=0, mult=1, basis_name='sto-3g'):
+def check_convergence(energy, prev_energy, recent_diffs):
     """
-    Update parameters and nuclear coordinates for 10 steps.
+    Check convergence based on recent energy differences.
+    We store the absolute difference and check if we have had several consecutive small differences.
+    """
+    if prev_energy is not None:
+        diff = abs(energy - prev_energy)
+        recent_diffs.append(diff)
+        if len(recent_diffs) > CONSECUTIVE_CONV:
+            recent_diffs.pop(0)
+        # If we have CONSECUTIVE_CONV consecutive differences below threshold, consider it converged
+        if len(recent_diffs) == CONSECUTIVE_CONV and all(d < CONV for d in recent_diffs):
+            return True
+    return False
+
+def update_parameters_and_coordinates(opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, learning_rate_x, interface, charge, mult, basis_name, prev_energy, recent_diffs):
+    """
+    Update parameters and geometry for 10 steps, checking convergence after each update.
     """
     energy_history = []
     x_history = []
-
+    converged = False
     for opt_step in range(10):
         params, energy = opt.step_and_cost(cost_fn, params)
         energy = np.real(energy)
@@ -95,23 +94,25 @@ def update_parameters_and_coordinates(opt, opt_state, cost_fn, params, x, symbol
         grad_x = compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, interface, charge, mult, basis_name)
         x = x - learning_rate_x * grad_x
 
-    return params, x, energy_history, x_history, opt_state
+        # Check convergence after each step
+        if check_convergence(energy, prev_energy, recent_diffs):
+            print(f"Convergence reached: Energy difference < {CONV} for several consecutive steps")
+            converged = True
+            prev_energy = energy
+            break
 
-def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, operator_pool_copy, selected_excitations, opt, opt_state, max_iterations, learning_rate_x, convergence):
-    """
-    Optimize with a UCCSD ansatz.
-    Convergence: if abs(energy_diff) < CONV between consecutive main iterations.
-    """
-    execution_times = {
-        'build_hamiltonian': 0.0,
-        'compute_operator_gradients': 0.0,
-        'update_parameters_and_coordinates': 0.0,
-        'Total Time': 0.0
-    }
+        prev_energy = energy
 
+    return params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs
+
+def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, operator_pool_copy, selected_excitations, opt, opt_state, max_iterations, learning_rate_x):
+    execution_times = {'build_hamiltonian':0.0,'compute_operator_gradients':0.0,'update_parameters_and_coordinates':0.0,'Total Time':0.0}
     energy_history_total = []
     x_history_total = []
     params_history = []
+    recent_diffs = []
+    prev_energy = None
+
     optimizer_start_time = time.time()
 
     def cost_fn_factory(hamiltonian):
@@ -121,11 +122,8 @@ def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, 
             return qml.expval(hamiltonian)
         return cost_fn
 
-    prev_energy = None
-
     for iteration in range(max_iterations):
         iter_start_time = time.time()
-
         start_time = time.time()
         hamiltonian = build_hamiltonian(x, symbols, charge, mult, basis_name)
         end_time = time.time()
@@ -138,20 +136,20 @@ def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, 
         end_time = time.time()
         execution_times['compute_operator_gradients'] += end_time - start_time
 
-        selected_gate, max_grad_value = select_operator(gradients, operator_pool_copy, convergence)
+        selected_gate, max_grad_value = select_operator(gradients, operator_pool_copy, CONV)
         if selected_gate is None:
             print("No operators selected. Stopping optimization for uccsd.")
             break
-
         selected_excitations.append(selected_gate)
         params = np.append(params, 0.0)
         params = np.array(params, requires_grad=True)
         opt = type(opt)(stepsize=learning_rate_x)
 
         start_time = time.time()
-        params, x, energy_history, x_history, opt_state = update_parameters_and_coordinates(
-            opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, 
-            spin_orbitals, learning_rate_x, convergence, interface, charge, mult, basis_name
+        params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs = update_parameters_and_coordinates(
+            opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
+            learning_rate_x, interface='autograd', charge=charge, mult=mult, basis_name=basis_name,
+            prev_energy=prev_energy, recent_diffs=recent_diffs
         )
         end_time = time.time()
         execution_times['update_parameters_and_coordinates'] += end_time - start_time
@@ -159,16 +157,12 @@ def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, 
         energy_history_total.extend(energy_history)
         x_history_total.extend(x_history)
         params_history.append(params.copy())
-
         current_energy = energy_history[-1]
+
         print(f"Iteration {iteration + 1}, Energy = {current_energy:.8f} Ha, Max Gradient = {max_grad_value:.5e}")
 
-        # Convergence check: difference in final energies
-        if prev_energy is not None:
-            if abs(prev_energy - current_energy) < 1e-8:
-                print("Convergence reached: Energy difference < 1e-8")
-                break
-        prev_energy = current_energy
+        if converged:
+            break
 
         iter_end_time = time.time()
         iteration_time = iter_end_time - iter_start_time
@@ -178,24 +172,16 @@ def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, 
     total_time = optimizer_end_time - optimizer_start_time
     execution_times['Total Time'] = total_time
     print(f"Total optimization time (uccsd): {total_time:.2f} seconds")
-
     return params, x, energy_history_total, x_history_total, params_history, execution_times
 
-def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, selected_excitations, opt, opt_state, max_iterations, learning_rate_x, convergence):
-    """
-    Optimize a VQE hardware-efficient ansatz.
-    Convergence: difference in final energies < 1e-8.
-    """
-    execution_times = {
-        'build_hamiltonian': 0.0,
-        'compute_operator_gradients': 0.0,
-        'update_parameters_and_coordinates': 0.0,
-        'Total Time': 0.0
-    }
-
+def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, selected_excitations, opt, opt_state, max_iterations, learning_rate_x):
+    execution_times = {'build_hamiltonian':0.0,'compute_operator_gradients':0.0,'update_parameters_and_coordinates':0.0,'Total Time':0.0}
     energy_history_total = []
     x_history_total = []
     params_history = []
+    recent_diffs = []
+    prev_energy = None
+
     optimizer_start_time = time.time()
 
     def cost_fn_factory(hamiltonian):
@@ -205,22 +191,19 @@ def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, ch
             return qml.expval(hamiltonian)
         return cost_fn
 
-    prev_energy = None
-
     for iteration in range(max_iterations):
         iter_start_time = time.time()
-
         start_time = time.time()
         hamiltonian = build_hamiltonian(x, symbols, charge, mult, basis_name)
         end_time = time.time()
         execution_times['build_hamiltonian'] += end_time - start_time
 
         cost_fn = cost_fn_factory(hamiltonian)
-
         start_time = time.time()
-        params, x, energy_history, x_history, opt_state = update_parameters_and_coordinates(
+        params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs = update_parameters_and_coordinates(
             opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
-            learning_rate_x, convergence, interface, charge, mult, basis_name
+            learning_rate_x, interface='autograd', charge=charge, mult=mult, basis_name=basis_name,
+            prev_energy=prev_energy, recent_diffs=recent_diffs
         )
         end_time = time.time()
         execution_times['update_parameters_and_coordinates'] += end_time - start_time
@@ -228,16 +211,11 @@ def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, ch
         energy_history_total.extend(energy_history)
         x_history_total.extend(x_history)
         params_history.append(params.copy())
-
         current_energy = energy_history[-1]
         print(f"Iteration {iteration + 1}, Energy = {current_energy:.8f} Ha")
 
-        # Convergence check
-        if prev_energy is not None:
-            if abs(prev_energy - current_energy) < 1e-8:
-                print("Convergence reached: Energy difference < 1e-8")
-                break
-        prev_energy = current_energy
+        if converged:
+            break
 
         iter_end_time = time.time()
         iteration_time = iter_end_time - iter_start_time
@@ -247,110 +225,143 @@ def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, ch
     total_time = optimizer_end_time - optimizer_start_time
     execution_times['Total Time'] = total_time
     print(f"Total optimization time (vqe_classic): {total_time:.2f} seconds")
-
     return params, x, energy_history_total, x_history_total, params_history, execution_times
 
-def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, charge=0, mult=1, basis_name='sto-3g', ansatz_type=["uccsd"]):
+def run_single_optimizer(optimizer_name, opt, ansatz_type_opt, symbols, x_init, electrons, spin_orbitals, charge, mult, basis_name, hf_state, dev, operator_pool, exact_energy, results_dir):
     """
-    Optimize the molecule using VQE. The exact FCI energy is computed for reference.
-    Convergence based on energy difference between consecutive main iterations.
+    Run a single optimizer. Since we are dealing with a single molecule scenario,
+    we do not show the molecule information here again. Just the optimization details.
     """
-    interface = 'autograd'
-    print(f"\n===== Starting optimization with interface: {interface} =====\n")
-    hf_state = generate_hf_state(electrons, spin_orbitals)
-    dev = qml.device("default.qubit", wires=spin_orbitals)
-    operator_pool = get_operator_pool(electrons, spin_orbitals, excitation_level='both')
+    output_file = os.path.join(results_dir, f"output_{optimizer_name}.txt")
+    with open(output_file, "w", buffering=1) as f:
+        orig_stdout = os.sys.stdout
+        os.sys.stdout = f
 
-    exact_energy = compute_exact_energy(symbols, x_init, charge, mult, basis_name)
-    print(f"Exact Energy (FCI): {exact_energy:.8f} Ha")
-
-    interface_results = {}
-    cont = 0
-    convergence = CONV
-    max_iterations = MAX_ITER
-
-    for optimizer_name, opt in optimizers.items():
-        print(f"\n--- Optimizing with {optimizer_name} ---")
-        ansatz_type_opt = ansatz_type[cont]
-        cont += 1
+        interface = 'autograd'
         learning_rate_x = opt.stepsize
-
         operator_pool_copy = operator_pool.copy()
         selected_excitations = []
         x = x_init.copy()
 
+        print(f"\n--- Optimizing with {optimizer_name} ---\n")
+
         if ansatz_type_opt == "vqe_classic":
-            # For vqe_classic: random initialization
             num_layers = 30
             params_per_layer = 2 * spin_orbitals
             total_params = num_layers * params_per_layer
             params = 0.01 * np.random.randn(total_params)
             params = np.array(params, requires_grad=True)
             (params, x, energy_history_total, x_history_total, params_history, execution_times
-             ) = run_optimization_vqe_classic(
-                symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name,
-                dev, interface, selected_excitations,
-                opt, None, max_iterations, learning_rate_x, convergence
-             )
+                ) = run_optimization_vqe_classic(
+                    symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name,
+                    dev, interface, selected_excitations, opt, None, MAX_ITER, learning_rate_x
+                )
         else:
-            # uccsd
             params = np.array([], requires_grad=True)
             (params, x, energy_history_total, x_history_total, params_history, execution_times
-             ) = run_optimization_uccsd(
-                symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name,
-                dev, interface, operator_pool_copy, selected_excitations,
-                opt, None, max_iterations, learning_rate_x, convergence
-             )
+                ) = run_optimization_uccsd(
+                    symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name,
+                    dev, interface, operator_pool_copy, selected_excitations, opt, None, MAX_ITER, learning_rate_x
+                )
 
         final_energy = energy_history_total[-1] if energy_history_total else None
+        os.sys.stdout = orig_stdout
 
-        interface_results[optimizer_name] = {
-            "energy_history": energy_history_total,
-            "x_history": x_history_total,
-            "params_history": params_history,
-            "final_energy": final_energy,
-            "final_params": params,
-            "final_x": x,
-            "interface": interface,
-            "total_time": execution_times['Total Time'],
-            "execution_times": execution_times,
-            "exact_energy_reference": exact_energy
-        }
+    result = {
+        "energy_history": energy_history_total,
+        "x_history": x_history_total,
+        "params_history": params_history,
+        "final_energy": final_energy,
+        "final_params": params,
+        "final_x": x,
+        "interface": 'autograd',
+        "exact_energy_reference": exact_energy,
+        "execution_times": execution_times,
+        "selected_excitations": selected_excitations
+    }
+    return optimizer_name, result
 
+def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, charge=0, mult=1, basis_name='sto-3g', ansatz_type=["uccsd"]):
+    """
+    Optimize a single molecule scenario with improved convergence criteria and layout.
+    If user wants multiple molecules scenario, they should adapt the code similarly.
+    """
+    results_dir = "temp_results_autograd"
+    if not os.path.exists(results_dir):
+        os.makedirs(results_dir)
+
+    exact_energy = compute_exact_energy(symbols, x_init, charge, mult, basis_name)
+    hf_state = generate_hf_state(electrons, spin_orbitals)
+    dev = qml.device("default.qubit", wires=spin_orbitals)
+    operator_pool = get_operator_pool(electrons, spin_orbitals, excitation_level='both')
+    futures = []
+    interface_results = {}
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        cont = 0
+        for optimizer_name, opt in optimizers.items():
+            ansatz_type_opt = ansatz_type[cont] if cont < len(ansatz_type) else "uccsd"
+            cont += 1
+            futures.append(
+                executor.submit(
+                    run_single_optimizer,
+                    optimizer_name, opt, ansatz_type_opt, symbols, x_init, electrons, spin_orbitals, charge, mult, basis_name,
+                    hf_state, dev, operator_pool, exact_energy, results_dir
+                )
+            )
+        for future in concurrent.futures.as_completed(futures):
+            optimizer_name, data = future.result()
+            interface_results[optimizer_name] = data
+
+    # Concatenate outputs and remove temp files
+    sorted_keys = list(optimizers.keys())
+    for optimizer_name in sorted_keys:
+        output_file = os.path.join(results_dir, f"output_{optimizer_name}.txt")
+        with open(output_file, "r") as f:
+            content = f.read()
+        print(content, end="")
+        os.remove(output_file)
+
+        print()
+        final_energy = interface_results[optimizer_name]["final_energy"]
+        exact_energy_ref = interface_results[optimizer_name]["exact_energy_reference"]
+        diff = final_energy - exact_energy_ref if final_energy is not None else None
         if final_energy is not None:
-            diff = final_energy - exact_energy
-            print(f"\nFinal energy with {optimizer_name} ({interface}) = {final_energy:.8f} Ha")
-            print(f"Difference from exact (FCI) energy: {diff:.8e} Ha")
+            print(f"Final energy with {optimizer_name} (autograd) = {final_energy:.8f} Ha")
+            print(f"Difference from exact (FCI) energy: {diff:.8e} Ha\n")
         else:
-            print(f"\nNo final energy obtained with {optimizer_name} ({interface})")
+            print(f"No final energy obtained with {optimizer_name} (autograd)\n")
 
-        final_x = x
-        print(f"\nFinal geometry with {optimizer_name} ({interface}):")
-        atom_coords = []
+        final_x = interface_results[optimizer_name]["final_x"]
+        atoms_coords = []
         final_x_np = np.array(final_x)
         for i, atom in enumerate(symbols):
-            atom_coords.append([atom, final_x_np[3 * i], final_x_np[3 * i + 1], final_x_np[3 * i + 2]])
-        print(tabulate(atom_coords, headers=["Symbol", "x (Å)", "y (Å)", "z (Å)"], floatfmt=".6f"))
+            atoms_coords.append([atom, final_x_np[3*i], final_x_np[3*i+1], final_x_np[3*i+2]])
+        print("Final geometry:")
+        print(tabulate(atoms_coords, headers=["Symbol", "x (Å)", "y (Å)", "z (Å)"], floatfmt=".6f"))
+        print()
 
-        # Show final circuit
-        hamiltonian = build_hamiltonian(x, symbols, charge, mult, basis_name)
-        @qml.qnode(dev, interface=interface)
+        hamiltonian = build_hamiltonian(final_x, symbols, charge, mult, basis_name)
+        selected_excitations = interface_results[optimizer_name]["selected_excitations"]
+        @qml.qnode(dev, interface='autograd')
         def final_cost_fn(p):
-            prepare_ansatz(p, hf_state, selected_excitations, spin_orbitals, ansatz_type=ansatz_type_opt)
+            prepare_ansatz(p, hf_state, selected_excitations, spin_orbitals, ansatz_type="uccsd")
             return qml.expval(hamiltonian)
 
-        print(f"Quantum Circuit with {optimizer_name} ({interface}):\n")
+        params = interface_results[optimizer_name]["final_params"]
+        print("Quantum Circuit:\n")
         print(qml.draw(final_cost_fn)(params))
+        print()
 
-        write_simulation_times(symbols, interface, optimizer_name, execution_times)
+    print("=== Total Optimization Times ===\n")
+    print("Interface: autograd")
+    for optimizer_name in sorted_keys:
+        total_time = interface_results[optimizer_name]["execution_times"].get('Total Time', 0)
+        print(f"Optimizer: {optimizer_name}, Time: {total_time:.2f} seconds")
 
-    results = {interface: interface_results}
+    profiler_output_path = os.path.join(results_dir, "profile_output_autograd.txt")
+    filtered_report_path = os.path.join(results_dir, "filtered_report_autograd.txt")
+    print(f"Report completely saved on: {profiler_output_path}")
+    print(f"Filtered report saved on: {filtered_report_path}")
 
-    print("\n=== Total Optimization Times ===")
-    for interface, interface_results in results.items():
-        print(f"\nInterface: {interface}")
-        for optimizer_name, data in interface_results.items():
-            total_time = data.get("total_time", 0)
-            print(f"Optimizer: {optimizer_name}, Time: {total_time:.2f} seconds")
+    return {"autograd": interface_results}
 
-    return results
