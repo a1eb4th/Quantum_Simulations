@@ -13,19 +13,13 @@ from pennylane.optimize import (
     RMSPropOptimizer
 )
 from tabulate import tabulate
-from .visualizer import write_simulation_times
-from .hamiltonian_builder import build_hamiltonian, generate_hf_state, get_operator_pool
-from .ansatz_preparer import prepare_ansatz, compute_operator_gradients, select_operator
 import scipy.sparse.linalg
 
 MAX_ITER = 10
 CONV = 1e-9
-CONSECUTIVE_CONV = 3  # number of consecutive small improvements required to declare convergence
+CONSECUTIVE_CONV = 3
 
 def compute_exact_energy(symbols, coordinates, charge, mult, basis_name='sto-3g'):
-    """
-    Compute FCI (exact) energy using sparse diagonalization.
-    """
     coordinates = np.array(coordinates)
     hamiltonian, qubits = qml.qchem.molecular_hamiltonian(
         symbols, coordinates.reshape(-1, 3), charge=charge, mult=mult, basis=basis_name
@@ -35,9 +29,8 @@ def compute_exact_energy(symbols, coordinates, charge, mult, basis_name='sto-3g'
     return float(eigenvalues[0])
 
 def compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, interface='autograd', charge=0, mult=1, basis_name='sto-3g'):
-    """
-    Compute nuclear gradients via finite differences.
-    """
+    from .hamiltonian_builder import build_hamiltonian
+    from .ansatz_preparer import prepare_ansatz
     delta = 1e-3
     grad_x = np.zeros_like(x)
     for i in range(len(x)):
@@ -64,24 +57,16 @@ def compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_
     return grad_x
 
 def check_convergence(energy, prev_energy, recent_diffs):
-    """
-    Check convergence based on recent energy differences.
-    We store the absolute difference and check if we have had several consecutive small differences.
-    """
     if prev_energy is not None:
         diff = abs(energy - prev_energy)
         recent_diffs.append(diff)
         if len(recent_diffs) > CONSECUTIVE_CONV:
             recent_diffs.pop(0)
-        # If we have CONSECUTIVE_CONV consecutive differences below threshold, consider it converged
         if len(recent_diffs) == CONSECUTIVE_CONV and all(d < CONV for d in recent_diffs):
             return True
     return False
 
 def update_parameters_and_coordinates(opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, learning_rate_x, interface, charge, mult, basis_name, prev_energy, recent_diffs):
-    """
-    Update parameters and geometry for 10 steps, checking convergence after each update.
-    """
     energy_history = []
     x_history = []
     converged = False
@@ -94,18 +79,19 @@ def update_parameters_and_coordinates(opt, opt_state, cost_fn, params, x, symbol
         grad_x = compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, interface, charge, mult, basis_name)
         x = x - learning_rate_x * grad_x
 
-        # Check convergence after each step
         if check_convergence(energy, prev_energy, recent_diffs):
-            print(f"Convergence reached: Energy difference < {CONV} for several consecutive steps")
+            print(f"Convergence reached: Energy difference < {CONV}")
             converged = True
             prev_energy = energy
             break
-
         prev_energy = energy
 
     return params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs
 
 def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, operator_pool_copy, selected_excitations, opt, opt_state, max_iterations, learning_rate_x):
+    from .hamiltonian_builder import build_hamiltonian
+    from .ansatz_preparer import prepare_ansatz, compute_operator_gradients, select_operator
+
     execution_times = {'build_hamiltonian':0.0,'compute_operator_gradients':0.0,'update_parameters_and_coordinates':0.0,'Total Time':0.0}
     energy_history_total = []
     x_history_total = []
@@ -175,6 +161,9 @@ def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, 
     return params, x, energy_history_total, x_history_total, params_history, execution_times
 
 def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, selected_excitations, opt, opt_state, max_iterations, learning_rate_x):
+    from .hamiltonian_builder import build_hamiltonian
+    from .ansatz_preparer import prepare_ansatz
+
     execution_times = {'build_hamiltonian':0.0,'compute_operator_gradients':0.0,'update_parameters_and_coordinates':0.0,'Total Time':0.0}
     energy_history_total = []
     x_history_total = []
@@ -199,14 +188,11 @@ def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, ch
         execution_times['build_hamiltonian'] += end_time - start_time
 
         cost_fn = cost_fn_factory(hamiltonian)
-        start_time = time.time()
         params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs = update_parameters_and_coordinates(
             opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
             learning_rate_x, interface='autograd', charge=charge, mult=mult, basis_name=basis_name,
             prev_energy=prev_energy, recent_diffs=recent_diffs
         )
-        end_time = time.time()
-        execution_times['update_parameters_and_coordinates'] += end_time - start_time
 
         energy_history_total.extend(energy_history)
         x_history_total.extend(x_history)
@@ -228,13 +214,12 @@ def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, ch
     return params, x, energy_history_total, x_history_total, params_history, execution_times
 
 def run_single_optimizer(optimizer_name, opt, ansatz_type_opt, symbols, x_init, electrons, spin_orbitals, charge, mult, basis_name, hf_state, dev, operator_pool, exact_energy, results_dir):
-    """
-    Run a single optimizer. Since we are dealing with a single molecule scenario,
-    we do not show the molecule information here again. Just the optimization details.
-    """
+    from .hamiltonian_builder import build_hamiltonian, generate_hf_state, get_operator_pool
+    from .ansatz_preparer import prepare_ansatz, compute_operator_gradients, select_operator
+
     output_file = os.path.join(results_dir, f"output_{optimizer_name}.txt")
+    orig_stdout = os.sys.stdout
     with open(output_file, "w", buffering=1) as f:
-        orig_stdout = os.sys.stdout
         os.sys.stdout = f
 
         interface = 'autograd'
@@ -280,12 +265,10 @@ def run_single_optimizer(optimizer_name, opt, ansatz_type_opt, symbols, x_init, 
         "selected_excitations": selected_excitations
     }
     return optimizer_name, result
-
 def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, charge=0, mult=1, basis_name='sto-3g', ansatz_type=["uccsd"]):
-    """
-    Optimize a single molecule scenario with improved convergence criteria and layout.
-    If user wants multiple molecules scenario, they should adapt the code similarly.
-    """
+    from .hamiltonian_builder import build_hamiltonian, generate_hf_state, get_operator_pool
+    from .ansatz_preparer import prepare_ansatz
+
     results_dir = "temp_results_autograd"
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
@@ -294,9 +277,10 @@ def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, cha
     hf_state = generate_hf_state(electrons, spin_orbitals)
     dev = qml.device("default.qubit", wires=spin_orbitals)
     operator_pool = get_operator_pool(electrons, spin_orbitals, excitation_level='both')
-    futures = []
     interface_results = {}
+
     with concurrent.futures.ProcessPoolExecutor() as executor:
+        futures = []
         cont = 0
         for optimizer_name, opt in optimizers.items():
             ansatz_type_opt = ansatz_type[cont] if cont < len(ansatz_type) else "uccsd"
@@ -308,20 +292,18 @@ def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, cha
                     hf_state, dev, operator_pool, exact_energy, results_dir
                 )
             )
+
         for future in concurrent.futures.as_completed(futures):
             optimizer_name, data = future.result()
             interface_results[optimizer_name] = data
 
-    # Concatenate outputs and remove temp files
-    sorted_keys = list(optimizers.keys())
-    for optimizer_name in sorted_keys:
+    # Leer archivos tras la finalización de todos los procesos
+    for optimizer_name in optimizers.keys():
         output_file = os.path.join(results_dir, f"output_{optimizer_name}.txt")
-        with open(output_file, "r") as f:
-            content = f.read()
-        print(content, end="")
-        os.remove(output_file)
-
-        print()
+        if os.path.exists(output_file):
+            with open(output_file, "r", encoding="utf-8") as f:
+                content = f.read()
+            print(content, end="")
         final_energy = interface_results[optimizer_name]["final_energy"]
         exact_energy_ref = interface_results[optimizer_name]["exact_energy_reference"]
         diff = final_energy - exact_energy_ref if final_energy is not None else None
@@ -348,13 +330,14 @@ def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, cha
             return qml.expval(hamiltonian)
 
         params = interface_results[optimizer_name]["final_params"]
+        circuit_str = qml.draw(final_cost_fn)(params)
         print("Quantum Circuit:\n")
-        print(qml.draw(final_cost_fn)(params))
+        print(circuit_str)
         print()
 
     print("=== Total Optimization Times ===\n")
     print("Interface: autograd")
-    for optimizer_name in sorted_keys:
+    for optimizer_name in optimizers.keys():
         total_time = interface_results[optimizer_name]["execution_times"].get('Total Time', 0)
         print(f"Optimizer: {optimizer_name}, Time: {total_time:.2f} seconds")
 
@@ -364,4 +347,3 @@ def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, cha
     print(f"Filtered report saved on: {filtered_report_path}")
 
     return {"autograd": interface_results}
-
