@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.10.4)  16 DEC 2024 17:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.10.4)  20 DEC 2024 17:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1548,7 +1548,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LibertinusSans-TLF' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<img/Campillo.png, id=206, 40.15pt x 50.1875pt>
+<img/Campillo.png, id=210, 40.15pt x 50.1875pt>
 File: img/Campillo.png Graphic file (type png)
 <use img/Campillo.png>
 Package pdftex.def Info: img/Campillo.png  used on input line 10.
@@ -1567,12 +1567,12 @@ LaTeX Font Info:    Font shape `T1/LibertinusSans-TLF/b/n' will be
 (Font)              scaled to size 12.0pt on input line 37.
 LaTeX Font Info:    Font shape `T1/LibertinusSans-TLF/b/sc' will be
 (Font)              scaled to size 12.0pt on input line 37.
-<img/logos/Logo_UPC_ETSETB_tight.pdf, id=208, 606.70775pt x 117.92917pt>
+<img/logos/Logo_UPC_ETSETB_tight.pdf, id=212, 606.70775pt x 117.92917pt>
 File: img/logos/Logo_UPC_ETSETB_tight.pdf Graphic file (type pdf)
 <use img/logos/Logo_UPC_ETSETB_tight.pdf>
 Package pdftex.def Info: img/logos/Logo_UPC_ETSETB_tight.pdf  used on input line 53.
 (pdftex.def)             Requested size: 256.16713pt x 49.79231pt.
-<img/logos/logo_telecos.png, id=209, 2370.8575pt x 1321.93875pt>
+<img/logos/logo_telecos.png, id=213, 2370.8575pt x 1321.93875pt>
 File: img/logos/logo_telecos.png Graphic file (type png)
 <use img/logos/logo_telecos.png>
 Package pdftex.def Info: img/logos/logo_telecos.png  used on input line 53.
@@ -1736,7 +1736,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `DejaVuSansMono-TLF' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<img/Gantt_diagram.png, id=344, 1260.71pt x 505.89pt>
+<img/Gantt_diagram.png, id=349, 1260.71pt x 505.89pt>
 File: img/Gantt_diagram.png Graphic file (type png)
 <use img/Gantt_diagram.png>
 Package pdftex.def Info: img/Gantt_diagram.png  used on input line 73.
@@ -1758,7 +1758,7 @@ Chapter 2.
 Underfull \vbox (badness 1558) has occurred while \output is active []
 
  [16]
-<img/bit_vs_qbit.png, id=359, 655.12755pt x 397.84634pt>
+<img/bit_vs_qbit.png, id=364, 655.12755pt x 397.84634pt>
 File: img/bit_vs_qbit.png Graphic file (type png)
 <use img/bit_vs_qbit.png>
 Package pdftex.def Info: img/bit_vs_qbit.png  used on input line 35.
@@ -1802,51 +1802,48 @@ Overfull \hbox (23.69855pt too wide) in paragraph at lines 5--6
 [][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-)
-\openout9 = `TFG.listing'.
-
- (./TFG.listing
-Overfull \hbox (36.37231pt too wide) in paragraph at lines 1--2
-[][][][][][][][][][][][][][][][][][][] 
- []
-
 ) [28]
 \openout9 = `TFG.listing'.
 
- (./TFG.listing) [29]
-\openout9 = `TFG.listing'.
-
- (./TFG.listing)
-Overfull \hbox (5.3676pt too wide) in paragraph at lines 209--210
-[]\T1/LibertinusSerif-TLF/m/n/12 (-20) The molec-u-lar Hamil-to-nian is re-cal-cu-lated at each step us-ing the \T1/DejaVuSansMono-TLF/m/n/12 build_hamiltonian
+ (./TFG.listing
+Overfull \hbox (278.15097pt too wide) in paragraph at lines 1--2
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-\openout9 = `TFG.listing'.
 
-(./TFG.listing
-Overfull \hbox (97.28336pt too wide) in paragraph at lines 1--2
+Overfull \hbox (120.46924pt too wide) in paragraph at lines 2--3
 [][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/m/it' will be
+(Font)              scaled to size 8.76003pt on input line 5.
+
+Overfull \hbox (36.37231pt too wide) in paragraph at lines 5--6
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (31.11626pt too wide) in paragraph at lines 6--7
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 )
+Overfull \hbox (46.88443pt too wide) in paragraph at lines 8--177
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[29]
 \openout9 = `TFG.listing'.
 
- (./TFG.listing
-Overfull \hbox (86.77124pt too wide) in paragraph at lines 1--2
-[][][][][][][][][][][][][][][][][][][][][][] 
- []
+ (./TFG.listing) [30{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinust1math/libusBMR.enc}]
+\openout9 = `TFG.listing'.
 
-
-Overfull \hbox (170.86816pt too wide) in paragraph at lines 2--3
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (7.93037pt too wide) in paragraph at lines 3--4
-[][][][][][][][][][][][][][][][][][][][][] 
- []
-
-) [30{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinust1math/libusBMR.enc}] [31]) (./chapters/results.tex [32]
+ (./TFG.listing)
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
+(Font)              scaled to size 8.0pt on input line 238.
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
+(Font)              scaled to size 6.0pt on input line 238.
+ [31]) (./chapters/results.tex [32]
 Chapter 4.
 ) (./chapters/sustainability.tex [33
 
@@ -1870,10 +1867,6 @@ Underfull \vbox (badness 1057) has occurred while \output is active []
  [36
 
 ]
-LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
-(Font)              scaled to size 8.0pt on input line 132.
-LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
-(Font)              scaled to size 6.0pt on input line 132.
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/b/it' will be
 (Font)              scaled to size 12.0pt on input line 154.
 
@@ -1901,16 +1894,13 @@ L3 programming layer <2024-02-20>
 LaTeX Warning: There were undefined references.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
 Package rerunfilecheck Warning: File `TFG.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `TFG.out':
-(rerunfilecheck)             Before: 4803DEE5052F338EBCF6A891CA0147CB;8219
-(rerunfilecheck)             After:  AFAF2D14F3A03D0ED2F0EE34B3913EA8;8379.
+(rerunfilecheck)             Before: 37826B18647EFEBBEA72878044085459;8680
+(rerunfilecheck)             After:  B9CC1BD9EC99C0F2F6920A25123626DC;8515.
 
 Package biblatex Warning: Please (re)run Biber on the file:
 (biblatex)                TFG
@@ -1921,18 +1911,21 @@ Package logreq Info: Writing requests to 'TFG.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 79391 strings out of 474116
- 1969567 string characters out of 5743682
- 3199899 words of memory out of 5000000
- 100182 multiletter control sequences out of 15000+600000
- 738962 words of font info for 357 fonts, out of 8000000 for 9000
+ 79374 strings out of 474116
+ 1969311 string characters out of 5743682
+ 3196899 words of memory out of 5000000
+ 100175 multiletter control sequences out of 15000+600000
+ 739080 words of font info for 354 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  89i,19n,120p,1285b,3193s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSans-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSans-Regular.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-BoldItalic.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Italic.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Regular.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinust1math/LibertinusT1Math.pfb>
-Output written on TFG.pdf (39 pages, 1161300 bytes).
+
+pdfTeX warning (dest): name{subsection.3.3.5} has been referenced but does not exist, replaced by a fixed one
+
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono-Oblique.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSans-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSans-Regular.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-BoldItalic.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Italic.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Regular.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinust1math/LibertinusT1Math.pfb>
+Output written on TFG.pdf (39 pages, 1177091 bytes).
 PDF statistics:
- 634 PDF objects out of 1000 (max. 8388607)
- 550 compressed objects within 6 object streams
- 154 named destinations out of 1000 (max. 500000)
- 100790 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 641 PDF objects out of 1000 (max. 8388607)
+ 555 compressed objects within 6 object streams
+ 153 named destinations out of 1000 (max. 500000)
+ 103358 words of extra memory for PDF output out of 106986 (max. 10000000)
 

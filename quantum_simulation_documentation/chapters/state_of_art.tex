@@ -195,13 +195,11 @@ The steps of state preparation, measurement, and optimization are repeated until
 
 \subsection{Adaptive Circuits}
 
-\textbf{Adaptive circuits} are designed to optimize quantum circuits dynamically by selecting components that most effectively reduce the system's energy. In this project, we implemented an adaptive strategy where the ansatz is built iteratively by selecting excitations (operators) from a predefined pool based on their gradient contribution to lowering the energy. This approach enhances efficiency by focusing computational resources on the most impactful degrees of freedom, ensuring faster convergence and reduced circuit complexity.
+\textbf{Adaptive circuits} dynamically optimize quantum circuits by iteratively selecting components that most effectively reduce the system's energy. In this project, we implemented an adaptive strategy where the ansatz is constructed step-by-step by incorporating excitations (operators) from a predefined pool. Operators are chosen based on their gradient contributions to lowering the system's energy, ensuring that computational resources are focused on the most impactful degrees of freedom. This approach accelerates convergence, reduces circuit complexity, and maximizes efficiency.
 
-An example is found in \textit{Variational Quantum Algorithms} (VQA), which use classical optimization techniques to adjust the parameters of a quantum circuit and minimize a cost function. These algorithms are especially useful in current quantum devices, which are noisy and of limited size (NISQ).
+The variational principle underpins this method, guaranteeing that any trial state $|\psi(\theta)\rangle$ yields an energy $E(\theta)$ that serves as an upper bound to the true ground state energy $E_0$, i.e., $E(\theta) \ge E_0$. By iteratively refining the ansatz with the most relevant operators, the adaptive approach reduces the dimensionality of the problem at each step, avoiding wasted computational and optimization efforts on irrelevant regions of the parameter space.
 
-For more information and practical examples on adaptive circuits:
-
-\url{https://pennylane.ai/qml/demos/tutorial_adaptive_circuits/}
+In quantum chemical problems, the excitation space grows combinatorially with the number of molecular orbitals, making it increasingly challenging to navigate and optimize as system size increases. Including all possible single and double excitations would create an unmanageable parameter landscape. The adaptive ansatz mitigates this challenge by strategically traversing the solution space, selecting only the operators that contribute meaningfully to capturing electronic correlations. This targeted methodology not only improves scalability but also ensures that each optimization step contributes directly to achieving a more accurate representation of the system’s ground state.
 
 \section{Optimizers}
 
