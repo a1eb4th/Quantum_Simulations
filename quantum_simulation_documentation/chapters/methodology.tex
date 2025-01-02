@@ -126,7 +126,7 @@ x_init = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.74])
     \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
       title=Hamiltonian Build, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
       listing options={language=Python, basicstyle=\ttfamily\small,
-      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt, breaklines=true}}
 def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
     x = np.array(x)
     coordinates = x.reshape(-1, 3)
@@ -165,7 +165,7 @@ A simplified code snippet, consistent with the project’s structure, may appear
 \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
   title=Adaptive Operator Selection, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
   listing options={language=Python, basicstyle=\ttfamily\small,
-  showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+  showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt, breaklines=true}}
 gradients = compute_operator_gradients(operator_pool, selected_excitations, params, hamiltonian, hf_state, dev, spin_orbitals)
 selected_gate, max_grad_value = select_operator(gradients, operator_pool, convergence_threshold)
 if selected_gate:
@@ -192,7 +192,7 @@ With the ansatz defined, the next step is to establish a cost function that eval
   \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
     title=Definition of the Cost Function, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
     listing options={language=Python, basicstyle=\ttfamily\small,
-    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt, breaklines=true}}
 @qml.qnode(dev, interface=interface)
 def cost_fn(params):
     prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals)
@@ -215,7 +215,7 @@ In many standard methodologies, the electronic structure is optimized at a fixed
     \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
       title=Initialization Example, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
       listing options={language=Python, basicstyle=\ttfamily\small,
-      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt, breaklines=true}}
 symbols = ['H', 'H']
 x_init = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.74])
 params = np.array([], requires_grad=True)
