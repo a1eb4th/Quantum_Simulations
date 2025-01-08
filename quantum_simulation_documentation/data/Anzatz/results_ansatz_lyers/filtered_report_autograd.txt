@@ -1,0 +1,2 @@
+         7053698 function calls (6870000 primitive calls) in 194.874 seconds
+

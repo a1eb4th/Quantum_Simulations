@@ -7,8 +7,11 @@
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Comparison of computation time for molecular simulations: classical vs quantum.}}{18}{figure.caption.8}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Tiempo de ejecución de las distintas moleculas segun su iteración en la simulación.}}{40}{figure.caption.13}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Tiempo de ejecución en distintas partes del codigo.}}{41}{figure.caption.14}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Tiempo de ejecución de las distintas moléculas según la iteración en la simulación.}}{42}{figure.caption.14}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Tiempo de ejecución en distintas partes del código.}}{43}{figure.caption.17}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Energy vs Time for different ansatz and iterations.}}{45}{figure.caption.18}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Energy vs Time for different ansatz.}}{45}{figure.caption.19}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Selección óptima de \emph {step size} para cada optimizador y molécula.}}{46}{figure.caption.20}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

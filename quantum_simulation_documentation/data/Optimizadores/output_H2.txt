@@ -1,0 +1,280 @@
+=== Molecular Optimization Simulation with PennyLane ===
+
+Exact Energy (FCI): -1.13469066 Ha
+
+--- Molecule Information ---
+Symbols: H, H
+Number of electrons: 2
+Number of orbitals: 2
+Number of spin orbitals: 4
+
+
+===== Starting optimization with interface: autograd =====
+
+[1 1 0 0]
+Number of both excitations: 3
+
+--- Optimizing with Adam ---
+Iteration 1, Energy = -1.12517288 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.13515907 Ha, Max Gradient = 1.10875e-01
+Iteration 3, Energy = -1.13554426 Ha, Max Gradient = 2.12981e-02
+Iteration 4, Energy = -1.13568256 Ha, Max Gradient = 2.87702e-03
+Iteration 5, Energy = -1.13593733 Ha, Max Gradient = 1.18253e-02
+Iteration 6, Energy = -1.13597842 Ha, Max Gradient = 8.72068e-03
+Iteration 7, Energy = -1.13611862 Ha, Max Gradient = 1.33463e-02
+Iteration 8, Energy = -1.13614012 Ha, Max Gradient = 1.42978e-02
+Iteration 9, Energy = -1.13614003 Ha, Max Gradient = 1.55293e-02
+Iteration 10, Energy = -1.13618852 Ha, Max Gradient = 1.99041e-02
+Total optimization time with Adam (autograd): 153.44 seconds
+
+Final energy with Adam (autograd) = -1.13618852 Ha
+
+Final geometry with Adam (autograd):
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.033050  0.000000  0.000000
+H         1.466950  0.000000  0.000000
+Quantum Circuit with Adam (autograd):
+
+0: ─╭|Ψ⟩─╭G²(0.17)─╭G²(0.07)─╭G²(-0.01)─╭G²(-0.01)─╭G²(0.00)─╭G²(-0.00)─╭G²(0.00)─╭G²(-0.00)
+1: ─├|Ψ⟩─├G²(0.17)─├G²(0.07)─├G²(-0.01)─├G²(-0.01)─├G²(0.00)─├G²(-0.00)─├G²(0.00)─├G²(-0.00)
+2: ─├|Ψ⟩─├G²(0.17)─├G²(0.07)─├G²(-0.01)─├G²(-0.01)─├G²(0.00)─├G²(-0.00)─├G²(0.00)─├G²(-0.00)
+3: ─╰|Ψ⟩─╰G²(0.17)─╰G²(0.07)─╰G²(-0.01)─╰G²(-0.01)─╰G²(0.00)─╰G²(-0.00)─╰G²(0.00)─╰G²(-0.00)
+
+──╭G²(0.00)─╭G²(-0.00)─┤ ╭<𝓗>
+──├G²(0.00)─├G²(-0.00)─┤ ├<𝓗>
+──├G²(0.00)─├G²(-0.00)─┤ ├<𝓗>
+──╰G²(0.00)─╰G²(-0.00)─┤ ╰<𝓗>
+
+--- Optimizing with Adagrad ---
+Iteration 1, Energy = -1.11929065 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.13043904 Ha, Max Gradient = 1.48273e-01
+Iteration 3, Energy = -1.13561082 Ha, Max Gradient = 8.03083e-02
+Iteration 4, Energy = -1.13594479 Ha, Max Gradient = 6.50282e-03
+Iteration 5, Energy = -1.13614492 Ha, Max Gradient = 1.09668e-03
+Iteration 6, Energy = -1.13632402 Ha, Max Gradient = 1.05778e-03
+Iteration 7, Energy = -1.13647825 Ha, Max Gradient = 9.84983e-04
+Iteration 8, Energy = -1.13661060 Ha, Max Gradient = 9.15942e-04
+Iteration 9, Energy = -1.13672380 Ha, Max Gradient = 8.50602e-04
+Iteration 10, Energy = -1.13682028 Ha, Max Gradient = 7.88920e-04
+Total optimization time with Adagrad (autograd): 153.59 seconds
+
+Final energy with Adagrad (autograd) = -1.13682028 Ha
+
+Final geometry with Adagrad (autograd):
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.034592  0.000000  0.000000
+H         1.465408  0.000000  0.000000
+Quantum Circuit with Adagrad (autograd):
+
+0: ─╭|Ψ⟩─╭G²(0.13)─╭G²(0.08)─╭G²(0.03)─╭G²(0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)
+1: ─├|Ψ⟩─├G²(0.13)─├G²(0.08)─├G²(0.03)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+2: ─├|Ψ⟩─├G²(0.13)─├G²(0.08)─├G²(0.03)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+3: ─╰|Ψ⟩─╰G²(0.13)─╰G²(0.08)─╰G²(0.03)─╰G²(0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)
+
+──╭G²(-0.00)─╭G²(-0.00)─┤ ╭<𝓗>
+──├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──╰G²(-0.00)─╰G²(-0.00)─┤ ╰<𝓗>
+
+--- Optimizing with Nesterov Momentum ---
+Iteration 1, Energy = -1.12266289 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.13257865 Ha, Max Gradient = 1.31822e-01
+Iteration 3, Energy = -1.13548457 Ha, Max Gradient = 6.11422e-02
+Iteration 4, Energy = -1.13595911 Ha, Max Gradient = 1.49625e-02
+Iteration 5, Energy = -1.13617216 Ha, Max Gradient = 3.21327e-04
+Iteration 6, Energy = -1.13634367 Ha, Max Gradient = 1.03489e-03
+Iteration 7, Energy = -1.13649029 Ha, Max Gradient = 7.97160e-04
+Iteration 8, Energy = -1.13661602 Ha, Max Gradient = 6.97124e-04
+Iteration 9, Energy = -1.13672347 Ha, Max Gradient = 6.12555e-04
+Iteration 10, Energy = -1.13681505 Ha, Max Gradient = 5.49937e-04
+Total optimization time with Nesterov Momentum (autograd): 153.80 seconds
+
+Final energy with Nesterov Momentum (autograd) = -1.13681505 Ha
+
+Final geometry with Nesterov Momentum (autograd):
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.034345  0.000000  0.000000
+H         1.465655  0.000000  0.000000
+Quantum Circuit with Nesterov Momentum (autograd):
+
+0: ─╭|Ψ⟩─╭G²(0.14)─╭G²(0.07)─╭G²(0.02)─╭G²(0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)
+1: ─├|Ψ⟩─├G²(0.14)─├G²(0.07)─├G²(0.02)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+2: ─├|Ψ⟩─├G²(0.14)─├G²(0.07)─├G²(0.02)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+3: ─╰|Ψ⟩─╰G²(0.14)─╰G²(0.07)─╰G²(0.02)─╰G²(0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)
+
+──╭G²(-0.00)─╭G²(-0.00)─┤ ╭<𝓗>
+──├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──╰G²(-0.00)─╰G²(-0.00)─┤ ╰<𝓗>
+
+--- Optimizing with Momentum ---
+Iteration 1, Energy = -1.12157133 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.13205540 Ha, Max Gradient = 1.30900e-01
+Iteration 3, Energy = -1.13543192 Ha, Max Gradient = 5.82024e-02
+Iteration 4, Energy = -1.13595394 Ha, Max Gradient = 1.18620e-02
+Iteration 5, Energy = -1.13616547 Ha, Max Gradient = 7.44569e-04
+Iteration 6, Energy = -1.13633734 Ha, Max Gradient = 9.27195e-04
+Iteration 7, Energy = -1.13648496 Ha, Max Gradient = 7.04413e-04
+Iteration 8, Energy = -1.13661153 Ha, Max Gradient = 6.17011e-04
+Iteration 9, Energy = -1.13671970 Ha, Max Gradient = 5.31412e-04
+Iteration 10, Energy = -1.13681190 Ha, Max Gradient = 4.75120e-04
+Total optimization time with Momentum (autograd): 153.77 seconds
+
+Final energy with Momentum (autograd) = -1.13681190 Ha
+
+Final geometry with Momentum (autograd):
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.034276  0.000000  0.000000
+H         1.465724  0.000000  0.000000
+Quantum Circuit with Momentum (autograd):
+
+0: ─╭|Ψ⟩─╭G²(0.14)─╭G²(0.07)─╭G²(0.02)─╭G²(0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)
+1: ─├|Ψ⟩─├G²(0.14)─├G²(0.07)─├G²(0.02)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+2: ─├|Ψ⟩─├G²(0.14)─├G²(0.07)─├G²(0.02)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+3: ─╰|Ψ⟩─╰G²(0.14)─╰G²(0.07)─╰G²(0.02)─╰G²(0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)
+
+──╭G²(-0.00)─╭G²(-0.00)─┤ ╭<𝓗>
+──├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──╰G²(-0.00)─╰G²(-0.00)─┤ ╰<𝓗>
+
+--- Optimizing with RMSProp ---
+Iteration 1, Energy = -1.13023175 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.13520870 Ha, Max Gradient = 7.37894e-02
+Iteration 3, Energy = -1.13551534 Ha, Max Gradient = 1.38219e-03
+Iteration 4, Energy = -1.13578415 Ha, Max Gradient = 1.30210e-03
+Iteration 5, Energy = -1.13601841 Ha, Max Gradient = 1.22267e-03
+Iteration 6, Energy = -1.13622140 Ha, Max Gradient = 1.14461e-03
+Iteration 7, Energy = -1.13639625 Ha, Max Gradient = 1.06815e-03
+Iteration 8, Energy = -1.13654599 Ha, Max Gradient = 9.93539e-04
+Iteration 9, Energy = -1.13667345 Ha, Max Gradient = 9.21014e-04
+Iteration 10, Energy = -1.13678129 Ha, Max Gradient = 8.50896e-04
+Total optimization time with RMSProp (autograd): 201.09 seconds
+
+Final energy with RMSProp (autograd) = -1.13678129 Ha
+
+Final geometry with RMSProp (autograd):
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.033798  0.000000  0.000000
+H         1.466202  0.000000  0.000000
+Quantum Circuit with RMSProp (autograd):
+
+0: ─╭|Ψ⟩─╭G²(0.19)─╭G²(0.05)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)
+1: ─├|Ψ⟩─├G²(0.19)─├G²(0.05)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+2: ─├|Ψ⟩─├G²(0.19)─├G²(0.05)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+3: ─╰|Ψ⟩─╰G²(0.19)─╰G²(0.05)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)
+
+──╭G²(-0.00)─╭G²(-0.00)─┤ ╭<𝓗>
+──├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──╰G²(-0.00)─╰G²(-0.00)─┤ ╰<𝓗>
+
+--- Optimizing with Gradient Descent ---
+Iteration 1, Energy = -1.11456987 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.12039913 Ha, Max Gradient = 1.70724e-01
+Iteration 3, Energy = -1.12637706 Ha, Max Gradient = 1.46319e-01
+Iteration 4, Energy = -1.13111569 Ha, Max Gradient = 1.15506e-01
+Iteration 5, Energy = -1.13414128 Ha, Max Gradient = 8.36470e-02
+Iteration 6, Energy = -1.13573996 Ha, Max Gradient = 5.53593e-02
+Iteration 7, Energy = -1.13646489 Ha, Max Gradient = 3.33275e-02
+Iteration 8, Energy = -1.13676896 Ha, Max Gradient = 1.80998e-02
+Iteration 9, Energy = -1.13690563 Ha, Max Gradient = 8.70077e-03
+Iteration 10, Energy = -1.13698289 Ha, Max Gradient = 3.51161e-03
+Total optimization time with Gradient Descent (autograd): 156.48 seconds
+
+Final energy with Gradient Descent (autograd) = -1.13698289 Ha
+
+Final geometry with Gradient Descent (autograd):
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.038571  0.000000  0.000000
+H         1.461429  0.000000  0.000000
+Quantum Circuit with Gradient Descent (autograd):
+
+0: ─╭|Ψ⟩─╭G²(0.07)─╭G²(0.06)─╭G²(0.04)─╭G²(0.03)─╭G²(0.02)─╭G²(0.01)─╭G²(0.00)─╭G²(0.00)─╭G²(0.00)
+1: ─├|Ψ⟩─├G²(0.07)─├G²(0.06)─├G²(0.04)─├G²(0.03)─├G²(0.02)─├G²(0.01)─├G²(0.00)─├G²(0.00)─├G²(0.00)
+2: ─├|Ψ⟩─├G²(0.07)─├G²(0.06)─├G²(0.04)─├G²(0.03)─├G²(0.02)─├G²(0.01)─├G²(0.00)─├G²(0.00)─├G²(0.00)
+3: ─╰|Ψ⟩─╰G²(0.07)─╰G²(0.06)─╰G²(0.04)─╰G²(0.03)─╰G²(0.02)─╰G²(0.01)─╰G²(0.00)─╰G²(0.00)─╰G²(0.00)
+
+──╭G²(0.00)─┤ ╭<𝓗>
+──├G²(0.00)─┤ ├<𝓗>
+──├G²(0.00)─┤ ├<𝓗>
+──╰G²(0.00)─┤ ╰<𝓗>
+
+--- Optimizing with Quantum Natural Gradient ---
+Iteration 1, Energy = -1.13234926 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.13518168 Ha, Max Gradient = 5.05174e-02
+Iteration 3, Energy = -1.13551886 Ha, Max Gradient = 1.71737e-03
+Iteration 4, Energy = -1.13577940 Ha, Max Gradient = 1.24322e-03
+Iteration 5, Energy = -1.13600456 Ha, Max Gradient = 1.17268e-03
+Iteration 6, Energy = -1.13619909 Ha, Max Gradient = 1.08898e-03
+Iteration 7, Energy = -1.13636661 Ha, Max Gradient = 1.01063e-03
+Iteration 8, Energy = -1.13651042 Ha, Max Gradient = 9.36487e-04
+Iteration 9, Energy = -1.13663351 Ha, Max Gradient = 8.66495e-04
+Iteration 10, Energy = -1.13673858 Ha, Max Gradient = 8.00625e-04
+Total optimization time with Quantum Natural Gradient (autograd): 261.59 seconds
+
+Final energy with Quantum Natural Gradient (autograd) = -1.13673858 Ha
+
+Final geometry with Quantum Natural Gradient (autograd):
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.032691  0.000000  0.000000
+H         1.467309  0.000000  0.000000
+Quantum Circuit with Quantum Natural Gradient (autograd):
+
+0: ─╭|Ψ⟩─╭G²(0.21)─╭G²(0.03)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)
+1: ─├|Ψ⟩─├G²(0.21)─├G²(0.03)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+2: ─├|Ψ⟩─├G²(0.21)─├G²(0.03)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+3: ─╰|Ψ⟩─╰G²(0.21)─╰G²(0.03)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)
+
+──╭G²(-0.00)─╭G²(-0.00)─┤ ╭<𝓗>
+──├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──╰G²(-0.00)─╰G²(-0.00)─┤ ╰<𝓗>
+
+=== Total Optimization Times ===
+
+Interface: autograd
+Optimizer: Adam, Time: 153.44 seconds
+Optimizer: Adagrad, Time: 153.59 seconds
+Optimizer: Nesterov Momentum, Time: 153.80 seconds
+Optimizer: Momentum, Time: 153.77 seconds
+Optimizer: RMSProp, Time: 201.09 seconds
+Optimizer: Gradient Descent, Time: 156.48 seconds
+Optimizer: Quantum Natural Gradient, Time: 261.59 seconds
+--- Adam (autograd) ---
+Length of energy_history: 100
+First 10 energies: [tensor(-1.11169589, requires_grad=True), tensor(-1.11350219, requires_grad=True), tensor(-1.11523365, requires_grad=True), tensor(-1.11688898, requires_grad=True), tensor(-1.11846705, requires_grad=True), tensor(-1.11996691, requires_grad=True), tensor(-1.12138783, requires_grad=True), tensor(-1.12272927, requires_grad=True), tensor(-1.12399097, requires_grad=True), tensor(-1.12517288, requires_grad=True)]
+Last 10 energies: [tensor(-1.13649923, requires_grad=True), tensor(-1.13456237, requires_grad=True), tensor(-1.13648941, requires_grad=True), tensor(-1.13639737, requires_grad=True), tensor(-1.1356375, requires_grad=True), tensor(-1.13606451, requires_grad=True), tensor(-1.13668488, requires_grad=True), tensor(-1.13662497, requires_grad=True), tensor(-1.13621283, requires_grad=True), tensor(-1.13618852, requires_grad=True)]
+--- Adagrad (autograd) ---
+Length of energy_history: 100
+First 10 energies: [tensor(-1.11169589, requires_grad=True), tensor(-1.11350219, requires_grad=True), tensor(-1.11471074, requires_grad=True), tensor(-1.1156593, requires_grad=True), tensor(-1.11645428, requires_grad=True), tensor(-1.11714513, requires_grad=True), tensor(-1.11775949, requires_grad=True), tensor(-1.11831465, requires_grad=True), tensor(-1.11882227, requires_grad=True), tensor(-1.11929065, requires_grad=True)]
+Last 10 energies: [tensor(-1.13681988, requires_grad=True), tensor(-1.13302513, requires_grad=True), tensor(-1.13681902, requires_grad=True), tensor(-1.13682028, requires_grad=True), tensor(-1.13682028, requires_grad=True), tensor(-1.13682028, requires_grad=True), tensor(-1.13682028, requires_grad=True), tensor(-1.13682028, requires_grad=True), tensor(-1.13682028, requires_grad=True), tensor(-1.13682028, requires_grad=True)]
+--- Nesterov Momentum (autograd) ---
+Length of energy_history: 100
+First 10 energies: [tensor(-1.11169589, requires_grad=True), tensor(-1.11233657, requires_grad=True), tensor(-1.11322632, requires_grad=True), tensor(-1.11431659, requires_grad=True), tensor(-1.11556022, requires_grad=True), tensor(-1.1169128, requires_grad=True), tensor(-1.11833354, requires_grad=True), tensor(-1.11978593, requires_grad=True), tensor(-1.12123809, requires_grad=True), tensor(-1.12266289, requires_grad=True)]
+Last 10 energies: [tensor(-1.13681489, requires_grad=True), tensor(-1.13681494, requires_grad=True), tensor(-1.136815, requires_grad=True), tensor(-1.13681504, requires_grad=True), tensor(-1.13681507, requires_grad=True), tensor(-1.13681508, requires_grad=True), tensor(-1.13681508, requires_grad=True), tensor(-1.13681507, requires_grad=True), tensor(-1.13681506, requires_grad=True), tensor(-1.13681505, requires_grad=True)]
+--- Momentum (autograd) ---
+Length of energy_history: 100
+First 10 energies: [tensor(-1.11169589, requires_grad=True), tensor(-1.1120342, requires_grad=True), tensor(-1.11266776, requires_grad=True), tensor(-1.1135505, requires_grad=True), tensor(-1.11463541, requires_grad=True), tensor(-1.11587633, requires_grad=True), tensor(-1.11722923, requires_grad=True), tensor(-1.11865328, requires_grad=True), tensor(-1.1201115, requires_grad=True), tensor(-1.12157133, requires_grad=True)]
+Last 10 energies: [tensor(-1.13681179, requires_grad=True), tensor(-1.13681182, requires_grad=True), tensor(-1.13681185, requires_grad=True), tensor(-1.13681189, requires_grad=True), tensor(-1.13681192, requires_grad=True), tensor(-1.13681194, requires_grad=True), tensor(-1.13681194, requires_grad=True), tensor(-1.13681193, requires_grad=True), tensor(-1.13681191, requires_grad=True), tensor(-1.1368119, requires_grad=True)]
+--- RMSProp (autograd) ---
+Length of energy_history: 100
+First 10 energies: [tensor(-1.11169589, requires_grad=True), tensor(-1.11715856, requires_grad=True), tensor(-1.12044556, requires_grad=True), tensor(-1.12283023, requires_grad=True), tensor(-1.12469405, requires_grad=True), tensor(-1.12620949, requires_grad=True), tensor(-1.12747132, requires_grad=True), tensor(-1.12853808, requires_grad=True), tensor(-1.12944896, requires_grad=True), tensor(-1.13023175, requires_grad=True)]
+Last 10 energies: [tensor(-1.13678083, requires_grad=True), tensor(-1.1027272, requires_grad=True), tensor(-1.13660971, requires_grad=True), tensor(-1.13677784, requires_grad=True), tensor(-1.13678115, requires_grad=True), tensor(-1.13678128, requires_grad=True), tensor(-1.13678129, requires_grad=True), tensor(-1.13678129, requires_grad=True), tensor(-1.13678129, requires_grad=True), tensor(-1.13678129, requires_grad=True)]
+--- Gradient Descent (autograd) ---
+Length of energy_history: 100
+First 10 energies: [tensor(-1.11169589, requires_grad=True), tensor(-1.1120342, requires_grad=True), tensor(-1.11236761, requires_grad=True), tensor(-1.11269618, requires_grad=True), tensor(-1.11301999, requires_grad=True), tensor(-1.1133391, requires_grad=True), tensor(-1.11365357, requires_grad=True), tensor(-1.11396349, requires_grad=True), tensor(-1.1142689, requires_grad=True), tensor(-1.11456987, requires_grad=True)]
+Last 10 energies: [tensor(-1.13697688, requires_grad=True), tensor(-1.13697806, requires_grad=True), tensor(-1.13697906, requires_grad=True), tensor(-1.13697991, requires_grad=True), tensor(-1.13698064, requires_grad=True), tensor(-1.13698125, requires_grad=True), tensor(-1.13698177, requires_grad=True), tensor(-1.13698221, requires_grad=True), tensor(-1.13698258, requires_grad=True), tensor(-1.13698289, requires_grad=True)]
+--- Quantum Natural Gradient (autograd) ---
+Length of energy_history: 100
+First 10 energies: [tensor(-1.11169589, requires_grad=True), tensor(-1.1168119, requires_grad=True), tensor(-1.12080185, requires_grad=True), tensor(-1.12390875, requires_grad=True), tensor(-1.1263251, requires_grad=True), tensor(-1.1282026, requires_grad=True), tensor(-1.12966034, requires_grad=True), tensor(-1.13079154, requires_grad=True), tensor(-1.13166894, requires_grad=True), tensor(-1.13234926, requires_grad=True)]
+Last 10 energies: [tensor(-1.13673818, requires_grad=True), tensor(-1.13673856, requires_grad=True), tensor(-1.13673858, requires_grad=True), tensor(-1.13673858, requires_grad=True), tensor(-1.13673858, requires_grad=True), tensor(-1.13673858, requires_grad=True), tensor(-1.13673858, requires_grad=True), tensor(-1.13673858, requires_grad=True), tensor(-1.13673858, requires_grad=True), tensor(-1.13673858, requires_grad=True)]
+Reporte completo guardado en: temp_results_autograd_H2/profile_output_autograd.txt
+Reporte filtrado guardado en: temp_results_autograd_H2/filtered_report_autograd.txt

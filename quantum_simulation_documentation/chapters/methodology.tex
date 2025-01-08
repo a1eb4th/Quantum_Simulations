@@ -7,19 +7,19 @@ In this chapter, the methodology used in the completion of the work will be deta
 
 In addition to describing the methods themselves, the chapter will also provide justifications for why specific methods were chosen over others. For example, it may explain the choice of a particular programming language, statistical test, or experimental setup. The chapter will also address the limitations of the methodology and how these have been mitigated or accounted for. Readers should come away with a clear understanding of how the project's development has been carried out, why certain choices were made, and how these methods serve to fulfill the initially established objectives.
 
-\section{Tools and Frameworks Selection} 
-\subsection{Framework Selection}
+\section{Tools and Frameworks Selection}
+To achieve the objectives of our project, the first crucial step was to select the framework to be used throughout the development process. This decision was essential, as it directly influenced the progress and success of the project.
+
 To make the decision on which framework to use, we compared the documentation of the two quantum simulation frameworks available in the market: PennyLane and Qiskit. These are the most comprehensive frameworks with similar features available at the time of creating this project. After reviewing the documentation, we ultimately chose to use PennyLane for two reasons.
 
-The first reason was the amount of documentation related to quantum simulation. Once we started looking into how others were using these resources, we realized that in the field of molecular simulation, the existing documentation—both theoretical and especially practical—was substantially greater. This provided us with more examples to begin developing our project.
+The first reason was the amount of documentation related to quantum simulation. Once we started looking into how others were using these resources, we realized that in the field of molecular simulation, the existing documentation—both theoretical and especially practical—was substantially greater. This provided us with more examples to begin developing our project and a more extensive theoretical background to understand the concepts we were working with.
 
-The second reason for our choice was the frequent major changes implemented by Qiskit. We realized that while Qiskit is a tool that promises to be very good, it has historically undergone significant structural changes.
-
-For these reasons, this project has been developed using the PennyLane framework. Below, we will observe how the project has been developed and explain the reasons behind the decisions made.
+The second reason for our choice was the frequent major changes implemented by Qiskit. We realized that while Qiskit is a tool that promises to be very good, it has historically undergone significant structural changes. For these reasons, this project has been developed using the PennyLane framework.
 
 \section{Project Structuring}
 
-After deciding on the interface to use and implementing the first version of the code, we decided to reorganize the project to make it more precise and modular. This structure offers the possibility to easily add more lines of code and functionalities.
+After selecting the interface and implementing the initial version of the code, we reorganized the project to achieve a more modular structure. This revised organization not only makes it easier to add new functionalities but also ensures that the project can handle higher levels of complexity.
+
 \subsection{Code Organization}
 \begin{ProjectStructure}
   \texttt{quantum\_simulation\_project/}
@@ -27,56 +27,73 @@ After deciding on the interface to use and implementing the first version of the
       \item \texttt{config/}
       \begin{itemize}[label={}, left=2em]
           \item \texttt{config\_functions.py}: Configuration functions for the project.
-          \item \texttt{molecules.json}: Molecule data.
-          \item \texttt{\_\_pycache\_\_}: Python cache files.
+          \item \texttt{molecules.json}: JSON file containing molecular data.
       \end{itemize}
-      \item \texttt{main.py}: Main program file.
+      \item \texttt{main.py}: The main entry point for the program.
       \item \texttt{modules/}
       \begin{itemize}[label={}, left=2em]
           \item \texttt{ansatz\_preparer.py}: Quantum ansatz preparation.
           \item \texttt{hamiltonian\_builder.py}: Molecular Hamiltonian construction.
           \item \texttt{molecule\_manager.py}: Molecular data management.
-          \item \texttt{opt\_mol.py}: Molecular optimization.
+          \item \texttt{opt\_mol.py}: End-to-end molecular optimization.
           \item \texttt{optimizer.py}: Optimization algorithms.
           \item \texttt{visualizer.py}: Visualization tools.
-          \item \texttt{\_\_pycache\_\_}: Python cache files.
       \end{itemize}
       \item \texttt{temp\_results\_autograd/}
       \begin{itemize}[label={}, left=2em]
-          \item \texttt{energy\_evolution.png}: Energy evolution graph.
+          \item \texttt{energy\_evolution.png}: Graph of energy convergence.
           \item \texttt{filtered\_report\_autograd.txt}: Filtered results report.
-          \item \texttt{final\_geometries\_3D.png}: Image of the final 3D geometries.
-          \item \texttt{nuclear\_coordinates.png}: Nuclear coordinates.
-          \item \texttt{output.txt}: Program data output.
-          \item \texttt{profile\_output\_autograd.txt}: Autograd profile output.
+          \item \texttt{final\_geometries\_3D.png}: Final 3D geometries.
+          \item \texttt{nuclear\_coordinates.png}: Nuclear coordinates visualization.
+          \item \texttt{output.txt}: Program output log.
+          \item \texttt{profile\_output\_autograd.txt}: Autograd profiling output.
       \end{itemize}
       \item \texttt{test/}: Directory for tests.
   \end{itemize}
 \end{ProjectStructure}
 
-This file serves as the entry point of the program. It initializes the initial conditions, sets up the molecule's configuration, defines optimization options, and orchestrates the execution of the quantum simulation and geometry optimization process. It is the first file to execute when running the application.
+\vspace{1em}
+\noindent\textbf{Summary of Core Files:}
 
-\textbf{Auxiliary Modules (\texttt{modules/})}:  
-This directory contains various modules that encapsulate the core logic and operations of the project:
+\subsection{Main Directory}
 \begin{itemize}
-    \item \texttt{ansatz\_preparer.py}: Includes functions for constructing the quantum circuit from the variational ansatz, preparing states, and applying excitations.
-    \item \texttt{hamiltonian\_builder.py}: Responsible for generating the molecular Hamiltonian based on nuclear coordinates and the selected electronic basis.
-    \item \texttt{molecule\_manager.py}: Manages information related to the molecule, such as its charge, multiplicity, number of electrons, and required orbitals.
-    \item \texttt{opt\_mol.py}: Functions that orchestrate the molecular optimization process, invoking the optimizer and recording the simulation's progress.
-    \item \texttt{optimizer.py}: Implements the optimization logic, combining routines for evaluating the cost (energy) with the selected optimization algorithms, updating parameters, and geometries.
-    \item \texttt{visualizer.py}: Generates graphical outputs and reports that display the evolution of energy, nuclear coordinates, and other relevant data during optimization.
+    \item \texttt{main.py}:
+    Central entry point of the program. It initializes the process by selecting molecules, configuring the optimizer, and setting up the ansatz. It also manages the optimization workflow, handles result storage, and produces comprehensive reports. Profiling tools evaluate computational performance.
 \end{itemize}
 
-\textbf{Temporary Results Directories (\texttt{temp\_results\_autograd})}:  
-    Several directories with names starting with \texttt{temp\_results\_autograd} store output data, time logs, and visualizations generated for different simulations and configurations. For documentation purposes, these directories are treated as a single repository for temporary results.
+\subsection{\texttt{config/} Directory}
+\begin{itemize}
+    \item \texttt{config\_functions.py}:
+    Handles project configuration. This includes loading molecular data, selecting optimization algorithms, and setting initial parameters such as ansatz type and convergence tolerance. The module also allows adding custom molecules and organizing saved results.
+    \item \texttt{molecules.json}:
+    A structured JSON file containing information about molecules, including atomic symbols, coordinates, charges, and spin multiplicities.
+\end{itemize}
 
-\textbf{Dependencies (\texttt{requirements.txt})}:  
-    This file lists the required libraries and their versions to reproduce the project's execution environment. Keeping it updated ensures reproducibility of the simulation across different systems, facilitating the installation of necessary dependencies.
+\subsection{\texttt{modules/} Directory}
+Core computational logic resides here:
+\begin{itemize}
+    \item \texttt{ansatz\_preparer.py}:
+    Implements quantum circuit construction (ansätze) for both adaptive and traditional methods. Includes the UCCSD ansatz (single and double excitations) and hardware-efficient ansatzes featuring multiple circuit layers.
+    \item \texttt{hamiltonian\_builder.py}:
+    Constructs the molecular Hamiltonian, a fundamental component of quantum simulations. Calculates Hartree-Fock reference states and can extract exact energy values from the Hamiltonian matrix.
+    \item \texttt{molecule\_manager.py}:
+    Initializes molecules by processing atomic symbols, initial coordinates, and configuration parameters such as charge and multiplicity. Also computes important properties like the number of electrons and orbitals.
+    \item \texttt{optimizer.py}:
+    Contains optimization algorithms (e.g., Adam, QNG, RMSProp). Integrates parameter updates and nuclear coordinate adjustments in a unified optimization framework.
+    \item \texttt{opt\_mol.py}:
+    Orchestrates the complete molecular optimization pipeline. Brings together Hamiltonian construction, molecule management, optimization routines, and result visualization.
+    \item \texttt{visualizer.py}:
+    Offers visualization tools for energy convergence and molecular geometries. Generates detailed graphical outputs in both linear and logarithmic scales.
+\end{itemize}
 
-
-\subsection{Version Control}
-
-Version control was managed using Git, allowing detailed tracking of changes and facilitating continuous collaboration with the supervisors on the project. Primarily, at the start of the project, a single branch was used to develop the project and explore the framework's possibilities. Once a stable version was achieved, branches were created to conduct tests and develop new functionalities. The first branches created were for the different interface versions. In each branch, the code was refined so that the same code would run across the various interfaces. Finally, only the interface changes that proved most suitable for the project were merged back into the main branch.
+\subsection{\texttt{temp\_results\_autograd/} Directory}
+Contains intermediate results generated during simulations:
+\begin{itemize}
+    \item \texttt{energy\_evolution.png}: Graph of energy convergence over iterations.
+    \item \texttt{nuclear\_coordinates.png}: Visualization of nuclear coordinates during optimization.
+    \item \texttt{filtered\_report\_autograd.txt}: Filtered report of relevant profiling metrics.
+    \item \texttt{output.txt}: Primary output log of the program.
+\end{itemize}
 
 \section{Development and Implementation}
 
@@ -107,22 +124,22 @@ Next, we will detail how the VQE is implemented in our project, explaining how e
 
 \begin{enumerate}
     \item \textbf{Definition of Molecular Geometry:}
-    
-    The geometry is specified by the atomic symbols and the Cartesian coordinates of each atom in the molecule:
+
+    Each molecule is defined by specifying its atomic symbols and Cartesian coordinates:
     
     \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
       title=Geometry Definition, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
       listing options={language=Python, basicstyle=\ttfamily\small,
       showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
 symbols = ['H', 'H']
-x_init = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.74]) 
+x_init = np.array([0.0, 0.0, 0.0,  # Hydrogen 1
+                   0.0, 0.0, 0.74])  # Hydrogen 2
     \end{tcblisting}
-    
-    
+
     \item \textbf{Hamiltonian Construction:}
-    
-    The \texttt{build\_hamiltonian} function generates the molecular Hamiltonian using PennyLane's functions:
-    
+
+    The \texttt{build\_hamiltonian} function creates the molecular Hamiltonian using PennyLane’s quantum chemistry features. This function transforms the electronic Hamiltonian from second quantization into a qubit-based representation.
+
     \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
       title=Hamiltonian Build, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
       listing options={language=Python, basicstyle=\ttfamily\small,
@@ -135,17 +152,21 @@ def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
     )
     h_coeffs, h_ops = hamiltonian.terms()
     h_coeffs = np.array(h_coeffs)
-    hamiltonian = qml.Hamiltonian(h_coeffs, h_ops)
-    return hamiltonian
+    return qml.Hamiltonian(h_coeffs, h_ops)
     \end{tcblisting}
-    \textbf{Note:}
-    A basis set, such as 'sto-3g', is selected, which is a predefined set of basis functions to represent atomic orbitals in a simplified manner. This makes the simulation more efficient.
-    
-    \textbf{Function Description:}
-    
-    This function generates the qubit Hamiltonian of a molecule by transforming the electronic Hamiltonian in second quantization into the Pauli matrix framework. Additionally, it allows for the incorporation of net charge effects, spin multiplicity, and an active space defined by a specific number of electrons and orbitals, optimizing the quantum simulation of molecular systems.
-    
+
+    \noindent\textbf{Note:}
+    A basis set, such as \texttt{sto-3g}, is chosen to represent atomic orbitals. This predefined set of basis functions simplifies the simulation while retaining sufficient accuracy for many molecular systems.
+
+    \noindent\textbf{Function Description:}
+    \begin{itemize}
+        \item Transforms the electronic Hamiltonian into a Pauli-based qubit Hamiltonian suitable for quantum algorithms.
+        \item Incorporates user-defined net charge and spin multiplicity, enabling simulation of various electronic states.
+        \item Simplifies the computational space with a chosen basis set and, optionally, an active space to focus only on relevant orbitals and electrons.
+    \end{itemize}
+
 \end{enumerate}
+
 
 \subsection{Adaptive Ansatz Construction and Operator Selection}
 
@@ -203,51 +224,143 @@ This function is essential for evaluating \(E(\theta)\). By calculating the expe
 
 \subsection{Mixed Electronic and Geometric Optimization Strategy}
 
-In our project, we made a deliberate decision to integrate the refinement of both variational parameters \(\theta\) and nuclear coordinates \(\mathbf{X}\) into a single iterative loop. Rather than treating these aspects separately, as is common in sequential optimization approaches, we chose to couple the electronic and geometric optimizations from the start. By doing so, we ensured that each electronic update immediately reflects the current molecular geometry, and each geometric adjustment leverages the most recent and accurate electronic wavefunction. This approach was guided by our goal of finding the global minimum of the molecular system’s total energy more efficiently, ultimately steering the molecule towards its equilibrium geometry and ground state energy in a more coherent and resource-effective manner.
+In this work, both the variational parameters \(\theta\) (electronic) and the nuclear coordinates \(\mathbf{X}\) (geometric) are refined within a single iterative loop. This coupled approach ensures that each electronic update reflects the current molecular geometry, while each geometric update leverages the most accurate electronic wavefunction available. By jointly optimizing \(\theta\) and \(\mathbf{X}\), the algorithm can converge more efficiently to a physically meaningful global minimum.
 
-\paragraph{Rationale for Our Mixed Approach}
-In many standard methodologies, the electronic structure is optimized at a fixed geometry before the geometry itself is optimized under that electronic configuration. We felt this separation was inefficient for our objectives, as it often leads to unnecessary iterations and suboptimal intermediate solutions. Recognizing that the electronic configuration and nuclear arrangement are intrinsically linked, we decided to continually update both in tandem. This choice was grounded in our understanding that capturing the interplay between the electronic distribution and molecular geometry as it unfolds would reduce computational overhead and converge more rapidly to a stable, physically meaningful equilibrium.
+\paragraph{Rationale for a Coupled Scheme}
+Traditional sequential approaches often optimize electronic parameters at a fixed geometry, then update the geometry using the finalized electronic structure. Such a split workflow can lead to unnecessary iterations and less-precise intermediate results. Because the electronic distribution and the molecular geometry are inherently interdependent, we opt to update both simultaneously, thereby reducing computational overhead and converging more smoothly to the system's equilibrium configuration.
 
-\paragraph{Our Iterative Optimization Steps}
+\paragraph{Iterative Optimization Steps}
 \begin{enumerate}
     \item \textbf{Initialization:}
-    We begin by defining the initial molecular geometry, nuclear coordinates \(\mathbf{X}_0\), and variational parameters \(\theta_0\). For instance:
+    This snippet shows where the code defines the initial geometry \(\mathbf{X}_0\), variational parameters \(\theta_0\), and other required structures.
     \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
-      title=Initialization Example, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
-      listing options={language=Python, basicstyle=\ttfamily\small,
-      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt, breaklines=true}}
-symbols = ['H', 'H']
-x_init = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.74])
-params = np.array([], requires_grad=True)
+        title=Initialization, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+        listing options={language=Python, basicstyle=\ttfamily\small,
+        showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+        stepnumber=1, numbersep=8pt, breaklines=true}}
+import pennylane as qml
+from pennylane import numpy as np
+
+# In run_single_optimizer (lines near 290+ in the code):
+params = np.array([], requires_grad=True)  # Starting with empty parameters
+operator_pool_copy = operator_pool.copy()
+selected_excitations = []
+x = x_init.copy()  # Copy of the initial geometry
+
+# Set up the environment for optimization:
+exact_energy = compute_exact_energy(symbols, x_init, charge, mult, basis_name)
+hf_state = generate_hf_state(electrons, spin_orbitals)
+dev = qml.device("default.qubit", wires=spin_orbitals)
     \end{tcblisting}
-    We selected these initial values based on known molecular structures and our desire to start from a configuration that is simple yet representative.
 
-    \item \textbf{Molecular Hamiltonian Update:}
-    At each iteration, we recalculate the molecular Hamiltonian \(\hat{H}(\mathbf{X})\) using the updated nuclear coordinates. This ensures that our cost function (the expected energy) accurately reflects the current geometry at every step, allowing us to maintain a closer link between the electronic solution and the evolving molecular shape.
+    \item \textbf{Hamiltonian Recalculation:}
+    At each iteration, the molecular Hamiltonian is rebuilt for the current geometry \(\mathbf{X}\).
+    \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+        title=Hamiltonian Recalculation, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+        listing options={language=Python, basicstyle=\ttfamily\small,
+        showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+        stepnumber=1, numbersep=8pt, breaklines=true}}
+# In run_optimization_uccsd (lines near 124+):
+for iteration in range(max_iterations):
+    # Rebuild the Hamiltonian for the current geometry 'x'
+    hamiltonian = build_hamiltonian(x, symbols, charge, mult, basis_name)
+    
+    # Additional iteration logic follows:
+    \end{tcblisting}
 
-    \item \textbf{Operator Gradient Calculation and Selection:}
-    For the electronic part, we compute energy gradients with respect to a pool of candidate excitation operators. We then select and add only the operator with the highest gradient contribution to the ansatz. This choice was made to keep the parameter space as manageable as possible, focusing our resources on the excitations that yield the greatest energy reductions. By gradually expanding the ansatz in this manner, we prevent an explosion in complexity and retain a more controlled optimization path.
+    \item \textbf{Electronic Update via Operator Gradients:}
+    Compute the energy gradient with respect to a pool of candidate excitation operators. Select the operator yielding the largest energy decrease and add it to the ansatz. This strategy expands the variational parameter space only in directions that significantly lower the energy.
+    \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+        title=Electronic Update, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+        listing options={language=Python, basicstyle=\ttfamily\small,
+        showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+        stepnumber=1, numbersep=8pt, breaklines=true}}
+# Same loop in run_optimization_uccsd:
+gradients = compute_operator_gradients(
+    operator_pool_copy,
+    selected_excitations,
+    params,
+    hamiltonian,
+    hf_state,
+    dev,
+    spin_orbitals,
+    ansatz_type="uccsd"
+)
 
-    \item \textbf{Nuclear Gradient Computation and Coordinate Updates:}
-    To update the nuclear coordinates \(\mathbf{X}\), we decided to compute the nuclear gradients numerically using finite differences. Concretely, for each coordinate direction, we slightly perturb \(\mathbf{X}\) and measure the resulting change in energy:
-    \begin{equation}
-    \nabla_{\mathbf{X}} E(\theta, \mathbf{X}) \approx \frac{E(\theta, \mathbf{X} + \delta \mathbf{u}) - E(\theta, \mathbf{X} - \delta \mathbf{u})}{2\delta}.
-    \end{equation}
-    We adopted this finite-difference method to maintain flexibility and simplicity, and because it integrates seamlessly with our adaptive approach. After obtaining the gradients, we update the coordinates as:
-    \begin{equation}
-    \mathbf{X}_{\text{new}} = \mathbf{X}_{\text{old}} - \alpha \nabla_{\mathbf{X}}E(\theta, \mathbf{X}),
-    \end{equation}
-    where \(\alpha\) is a learning rate we chose based on preliminary tests to balance stability and speed of convergence. This direct control allowed us to refine the geometry efficiently without overshooting or requiring overly complex gradient estimations.
+selected_gate, max_grad_value = select_operator(gradients, operator_pool_copy, CONV)
+if selected_gate is None:
+    print("No operators selected. Stopping optimization for uccsd.")
+    break
 
-    \item \textbf{Geometric Convergence Validation:}
-    We established convergence criteria tailored to our desired precision and computational budget. For energy convergence, we require that differences between subsequent iterations fall below a small threshold (e.g., \(10^{-8}\) Ha). For geometric convergence, we set clear tolerances on changes in atomic positions and interatomic distances. Meeting both criteria ensures the geometry is near equilibrium and that no further improvements are necessary. This choice reflects our priority for a stable and physically meaningful final configuration rather than just a numerically optimized one.
+selected_excitations.append(selected_gate)
+params = np.append(params, 0.0)  # Add a new variational parameter
+params = np.array(params, requires_grad=True)
+print(f"Added operator {selected_gate} with gradient {max_grad_value:.5e}")
+    \end{tcblisting}
+
+    \item \textbf{Geometric Update via Finite Differences:}
+    Numerically approximate \(\nabla_{\mathbf{X}}E(\theta, \mathbf{X})\) by slightly perturbing each coordinate. The geometry is then updated by
+    \[
+    \mathbf{X} \leftarrow \mathbf{X} \;-\; \alpha\, \nabla_{\mathbf{X}} E(\theta, \mathbf{X}),
+    \]
+    where \(\alpha\) is a suitably chosen learning rate. This technique avoids overly complex gradient calculations while remaining flexible and straightforward to implement.
+    \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+        title=Geometric Update, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+        listing options={language=Python, basicstyle=\ttfamily\small,
+        showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+        stepnumber=1, numbersep=8pt, breaklines=true}}
+# In update_parameters_and_coordinates (lines near 59+):
+grad_x = compute_nuclear_gradients(
+    params, x, symbols, selected_excitations, dev,
+    hf_state, spin_orbitals, interface, charge, mult, basis_name
+)
+
+# Apply the update:
+x = x - learning_rate_x * grad_x
+    \end{tcblisting}
+
+    \item \textbf{Convergence Checks:}
+    Impose strict thresholds on both the change in total energy (e.g., below \(10^{-8}\) Ha) and on geometric displacements. Once these criteria are met, the geometry is considered optimized and stable, and further refinement is terminated.
+    \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+        title=Convergence Checks, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+        listing options={language=Python, basicstyle=\ttfamily\small,
+        showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+        stepnumber=1, numbersep=8pt, breaklines=true}}
+# In update_parameters_and_coordinates (lines near 52+):
+energy = np.real(energy)
+if check_convergence(energy, prev_energy, recent_diffs):
+    print(f"Convergence reached updating parameters and coordinates: Energy difference < {CONV}")
+    converged = True
+    prev_energy = energy
+    # Code returns early, finalizing this substep
+
+    \end{tcblisting}
 
     \item \textbf{Visualization and Termination:}
-    Throughout the process, we record the evolving energy, coordinates, and other metrics. We decided to include immediate visual feedback (such as energy vs. iteration plots and 3D molecular views) to quickly assess the effectiveness of our approach. This real-time monitoring helps us recognize potential issues early, adjust our strategies, and confirm when we have reached the desired convergence criteria. Once these conditions are met, we terminate the process, confident that the final geometry and electronic state are both well-optimized.
+    Track the evolution of energy and geometry at every iteration, providing immediate graphical feedback (e.g., energy vs.\ iteration plots). This step helps identify convergence, reveals unexpected behaviors early, and confirms when additional optimization no longer benefits the system.
+    \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+        title=Visualization and Termination, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+        listing options={language=Python, basicstyle=\ttfamily\small,
+        showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+        stepnumber=1, numbersep=8pt, breaklines=true}}
+# Example of final printout and logging in run_optimization_uccsd:
+print(f"Iteration {iteration + 1}, Energy = {current_energy:.8f} Ha, Max Gradient = {max_grad_value:.5e}")
+
+# After all iterations or once convergence is reached:
+print(f"Total optimization time (uccsd): {total_time:.2f} seconds")
+print(f"Final energy with {optimizer_name} (autograd) = {final_energy:.8f} Ha")
+print(f"Difference from exact (FCI) energy: {diff:.8e} Ha")
+
+# Geometry and circuit details are saved or printed:
+for i, atom in enumerate(symbols):
+    atoms_coords.append([atom, final_x_np[3*i], final_x_np[3*i+1], final_x_np[3*i+2]])
+print(tabulate(atoms_coords, headers=["Symbol", "x (A)", "y (A)", "z (A)"], floatfmt=".6f"))
+    \end{tcblisting}
 \end{enumerate}
 
-\paragraph{Why Our Iterative Coupling Is More Efficient}
-By integrating electronic and geometric optimizations, we reduce the redundant recalculations and needless complexity that can arise in standard sequential methods. In our approach, each update to the electronic parameters leverages a geometry that is already moving towards equilibrium, and each geometric refinement uses an increasingly accurate electronic state. This synergy not only shortens the pathway to convergence but also helps us avoid getting stuck in suboptimal configurations. In our experience, this mixed strategy has proven more efficient and more closely aligned with the underlying physics of the system, delivering faster, more stable, and more accurate results than what we would expect from a traditional, decoupled optimization approach.
+\paragraph{Efficiency of the Coupled Strategy}
+By refining \(\theta\) and \(\mathbf{X}\) concurrently, each electronic update leverages a geometry already progressing toward equilibrium. Likewise, every geometric move reflects the latest improvements to the electronic wavefunction. This synergy minimizes redundant calculations and avoids suboptimal solutions, typically leading to faster, more stable convergence compared to the conventional, decoupled approach.
+
 
 \section{Limitations and Mitigation Measures}
 
@@ -259,3 +372,8 @@ Among the limitations of this approach are:
 \end{itemize}
 
 To mitigate these issues, we opted for reduced basis sets, strategies such as re-initializing the optimizer when increasing the parameter space, and verifying convergence through multiple criteria (energetic and geometric).
+
+\section{Version Control}
+Git was employed for version control, enabling detailed tracking of code changes and ongoing collaboration with project supervisors. Initially, a single branch was used for development and exploration. Once a stable version was established, branches were created for testing and adding new features. The first branches were dedicated to different interface versions, each refined to ensure consistent performance across all interfaces. Ultimately, only the most suitable interface adjustments were merged back into the main branch.
+
+%Centrarse en los apartado, modificaciones efectuadas para poder llebar a cabo la ejecución de las simulaciones de manera sencilla. 
