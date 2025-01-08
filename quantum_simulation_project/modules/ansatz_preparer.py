@@ -13,7 +13,7 @@ def prepare_ansatz_uccsd(params, hf_state, selected_excitations, spin_orbitals):
         elif len(exc) == 4:
             qml.DoubleExcitation(params[i], wires=exc)
 
-def prepare_ansatz_vqe_classic(params, hf_state, selected_excitations, spin_orbitals):
+def prepare_ansatz_vqe_classic(num_layers, params, hf_state, selected_excitations, spin_orbitals):
     """
     Ansatzt tipo hardware-efficient con 10 capas.
     Cada capa:
@@ -28,7 +28,7 @@ def prepare_ansatz_vqe_classic(params, hf_state, selected_excitations, spin_orbi
 
     Se asume que 'params' es un array 1D con dimensión >= 20 * spin_orbitals.
     """
-    num_layers = 10
+    num_layers = num_layers
     param_idx = 0
     for _ in range(num_layers):
         # RX y RY en cada qubit
@@ -52,7 +52,7 @@ ANSATZ_MAP = {
 
 
 
-def prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals, ansatz_type="uccsd"):
+def prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals, ansatz_type="uccsd", num_layers = 10):
     """
     Prepares the quantum ansatz using the selected ansatz type.
     
@@ -71,7 +71,7 @@ def prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals, ansatz
     if ansatz_type == "uccsd":
         ansatz_fn(params, hf_state, selected_excitations, spin_orbitals)
     else:
-        ansatz_fn(params, hf_state, [], spin_orbitals)
+        ansatz_fn(num_layers,params, hf_state, [], spin_orbitals)
 def compute_operator_gradients(operator_pool, selected_excitations, params, hamiltonian, hf_state, dev, spin_orbitals, ansatz_type="uccsd"):
     """
     Calcula los gradientes de energía con respecto a cada operador en el pool.

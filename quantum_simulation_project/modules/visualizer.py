@@ -35,11 +35,11 @@ def _get_all_energies(results):
 def _compute_offset_for_log(results):
     energies = _get_all_energies(results)
     if not energies:
-        return 1e-6
+        return 1e-9
     min_energy = min(energies)
-    offset = 1e-6
+    offset = 1e-9
     if min_energy <= 0:
-        offset = abs(min_energy) + 1e-6
+        offset = abs(min_energy) + 1e-9
     return offset
 
 def visualize_results(results, symbols, results_dir):
@@ -88,27 +88,67 @@ def visualize_results(results, symbols, results_dir):
     visualize_final_geometries(results, symbols, results_dir)
     visualize_energy_vs_time(results, results_dir, offset)
 
-def visualize_energy_vs_time(results, results_dir, offset=1e-6):
+
+def visualize_energy_vs_time(results, results_dir, offset=1e-9):
+    """
+    Genera dos gráficas:
+      1) Energy vs Time (Linear)
+      2) Energy vs Time (Log Scale, con offset)
+    tomando la información de subpasos que se haya registrado en execution_times
+    con claves del tipo "Iteration i - Substep j".
+    """
+
+    # ============= GRÁFICA LINEAL =============
     plt.figure(figsize=(10, 6))
     plt.title('Energy vs Time (Linear)', fontsize=16)
+
     for interface, interface_results in results.items():
         for optimizer_name, data in interface_results.items():
             energy_history = data.get("energy_history", [])
             execution_times = data.get("execution_times", {})
-            iteration_keys = [k for k in execution_times.keys() if k.startswith("Iteration")]
-            iteration_keys.sort(key=lambda x: int(x.split()[1]))
-            if energy_history and iteration_keys:
-                cumulative_times = []
-                current_time = 0.0
-                for i_key in iteration_keys:
-                    current_time += execution_times[i_key]
-                    cumulative_times.append(current_time)
-                min_length = min(len(energy_history), len(cumulative_times))
-                time_slice = cumulative_times[:min_length]
-                energy_slice = energy_history[:min_length]
+
+            # Filtrar todas las claves del estilo "Iteration X - Substep Y"
+            substep_keys = [k for k in execution_times.keys() if 'Substep' in k]
+
+            # Función auxiliar para parsear la clave "Iteration i - Substep j"
+            def parse_substep_key(k):
+                # Separamos en "Iteration i" y "Substep j"
+                part_iter, part_sub = k.split(" - ")
+                i = int(part_iter.split()[1])   # p.ej. 'Iteration 2' -> 2
+                j = int(part_sub.split()[1])    # p.ej. 'Substep 5'  -> 5
+                return (i, j)
+
+            # Ordenamos las claves primero por i (Iteration), luego por j (Substep)
+            substep_keys.sort(key=lambda x: parse_substep_key(x))
+
+            # Reconstruimos el eje de tiempos acumulados
+            cumulative_times = []
+            current_time = 0.0
+            for key in substep_keys:
+                duration = execution_times[key]
+                current_time += duration
+                cumulative_times.append(current_time)
+
+            # Tomamos la parte de energy_history correspondiente
+            min_length = min(len(energy_history), len(cumulative_times))
+            time_slice = cumulative_times[:min_length]
+            energy_slice = energy_history[:min_length]
+
+            if len(energy_slice) > 0:
                 label = f"{optimizer_name} ({interface})"
-                plt.plot(time_slice, energy_slice, marker='o', linestyle='-', linewidth=1.0, markersize=4, label=label)
-                plt.plot(time_slice[-1], energy_slice[-1], marker='*', markersize=10, color='red')
+                plt.plot(time_slice,
+                         energy_slice,
+                         marker='o',
+                         linestyle='-',
+                         linewidth=1.0,
+                         markersize=4,
+                         label=label)
+                # Marcamos el último punto
+                plt.plot(time_slice[-1], energy_slice[-1],
+                         marker='*',
+                         markersize=10,
+                         color='red')
+
     plt.xlabel('Time (s)', fontsize=14)
     plt.ylabel('Energy (Ha)', fontsize=14)
     plt.grid(True, which='both', linestyle='--', alpha=0.7)
@@ -118,32 +158,52 @@ def visualize_energy_vs_time(results, results_dir, offset=1e-6):
     plt.savefig(os.path.join(results_dir, "energy_vs_time_linear.png"))
     plt.close()
 
-    plt.figure(figsize=(10,6))
+    # ============= GRÁFICA LOGARÍTMICA (con offset) =============
+    plt.figure(figsize=(10, 6))
     plt.title('Energy vs Time (Log Scale with Offset)', fontsize=16)
+
     for interface, interface_results in results.items():
         for optimizer_name, data in interface_results.items():
             energy_history = data.get("energy_history", [])
             execution_times = data.get("execution_times", {})
-            iteration_keys = [k for k in execution_times.keys() if k.startswith("Iteration")]
-            iteration_keys.sort(key=lambda x: int(x.split()[1]))
-            if energy_history and iteration_keys:
-                cumulative_times = []
-                current_time = 0.0
-                for i_key in iteration_keys:
-                    current_time += execution_times[i_key]
-                    cumulative_times.append(current_time)
-                min_length = min(len(energy_history), len(cumulative_times))
-                time_slice = cumulative_times[:min_length]
-                energy_offset = [e + offset for e in energy_history[:min_length]]
-                # Asegurar que todos los valores sean positivos
-                if min(energy_offset) <= 0:
-                    add_val = 1e-6 - min(energy_offset) if min(energy_offset) <= 0 else 0
-                    energy_offset = [val + add_val for val in energy_offset]
+
+            substep_keys = [k for k in execution_times.keys() if 'Substep' in k]
+            substep_keys.sort(key=lambda x: parse_substep_key(x))
+
+            cumulative_times = []
+            current_time = 0.0
+            for key in substep_keys:
+                duration = execution_times[key]
+                current_time += duration
+                cumulative_times.append(current_time)
+
+            min_length = min(len(energy_history), len(cumulative_times))
+            time_slice = cumulative_times[:min_length]
+            energy_slice = energy_history[:min_length]
+
+            energy_offset = [e + offset for e in energy_slice]
+
+            min_val = min(energy_offset) if energy_offset else 1
+            if min_val <= 0:
+                shift = 1e-9 - min_val
+                energy_offset = [val + shift for val in energy_offset]
+
+            if len(energy_offset) > 0:
                 label = f"{optimizer_name} ({interface})"
-                plt.plot(time_slice, energy_offset, marker='o', linestyle='-', linewidth=1.0, markersize=4, label=label)
-                plt.plot(time_slice[-1], energy_offset[-1], marker='*', markersize=10, color='red')
+                plt.plot(time_slice,
+                         energy_offset,
+                         marker='o',
+                         linestyle='-',
+                         linewidth=1.0,
+                         markersize=4,
+                         label=label)
+                plt.plot(time_slice[-1], energy_offset[-1],
+                         marker='*',
+                         markersize=10,
+                         color='red')
+
     plt.xlabel('Time (s)', fontsize=14)
-    ylabel = 'Energy (Ha)' + (f' + {offset:.2e}' if offset > 0 else '')
+    ylabel = f'Energy (Ha) + {offset:.2e}' if offset != 0 else 'Energy (Ha)'
     plt.ylabel(ylabel, fontsize=14)
     plt.yscale('log')
     plt.grid(True, which='both', linestyle='--', alpha=0.7)

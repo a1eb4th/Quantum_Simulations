@@ -29,7 +29,7 @@ def mol_optimizer(selected_molecules, optimizers, results_dir, ansatz_list):
 
         electrons, spin_orbitals = initialize_molecule(symbols, x_init, charge, mult, basis_name)
 
-        results = optimize_molecule(symbols, x_init, electrons, spin_orbitals,  optimizers, charge, mult, basis_name, ansatz_list)
+        results = optimize_molecule(symbols, x_init, electrons, spin_orbitals,  optimizers, charge, mult, basis_name, ansatz_list, results_dir)
         
         visualize_results(results, symbols, results_dir)
         visualize_energy_vs_time(results, results_dir)

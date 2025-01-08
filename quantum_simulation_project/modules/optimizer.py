@@ -16,7 +16,7 @@ from tabulate import tabulate
 import scipy.sparse.linalg
 
 MAX_ITER = 10
-CONV = 1e-9
+CONV = 1e-8
 CONSECUTIVE_CONV = 3
 
 def compute_exact_energy(symbols, coordinates, charge, mult, basis_name='sto-3g'):
@@ -66,29 +66,50 @@ def check_convergence(energy, prev_energy, recent_diffs):
             return True
     return False
 
-def update_parameters_and_coordinates(opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, learning_rate_x, interface, charge, mult, basis_name, prev_energy, recent_diffs):
+def update_parameters_and_coordinates(iteration, execution_times, opt, nsteps, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, learning_rate_x, interface, charge, mult, basis_name, prev_energy, recent_diffs):
     energy_history = []
     x_history = []
     converged = False
-    for opt_step in range(10):
+    start_substep_time = time.time()
+    for substep_idx in range(nsteps):
         params, energy = opt.step_and_cost(cost_fn, params)
         energy = np.real(energy)
         energy_history.append(energy)
         x_history.append(np.array(x))
 
-        grad_x = compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, interface, charge, mult, basis_name)
+        grad_x = compute_nuclear_gradients(
+            params, x, symbols, selected_excitations, dev,
+            hf_state, spin_orbitals, interface, charge, mult, basis_name
+        )
         x = x - learning_rate_x * grad_x
 
+        # Chequeo de convergencia
         if check_convergence(energy, prev_energy, recent_diffs):
-            print(f"Convergence reached: Energy difference < {CONV}")
+            print(f"Convergence reached updating parameters and coordinates: Energy difference < {CONV}")
             converged = True
             prev_energy = energy
-            break
+            # Guardar tiempo de este subpaso antes de salir
+            end_substep_time = time.time()
+            substep_duration = end_substep_time - start_substep_time
+            execution_times[f"Iteration {iteration+1} - Substep {substep_idx+1}"] = substep_duration
+            return params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs
+
+        # Actualizamos prev_energy
         prev_energy = energy
+
+        # Guardar tiempo de este subpaso
+        end_substep_time = time.time()
+        substep_duration = end_substep_time - start_substep_time
+
+        # Ej: clave "Iteration 1 - Substep 3"
+        execution_times[f"Iteration {iteration+1} - Substep {substep_idx+1}"] = substep_duration
+
+        # Reiniciamos para el siguiente subpaso
+        start_substep_time = time.time()
 
     return params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs
 
-def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, operator_pool_copy, selected_excitations, opt, opt_state, max_iterations, learning_rate_x):
+def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, operator_pool_copy, selected_excitations, opt, nsteps, opt_state, max_iterations, learning_rate_x):
     from .hamiltonian_builder import build_hamiltonian
     from .ansatz_preparer import prepare_ansatz, compute_operator_gradients, select_operator
 
@@ -98,6 +119,9 @@ def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, 
     params_history = []
     recent_diffs = []
     prev_energy = None
+
+    recent_diffs_top = []
+    top_prev_energy = None
 
     optimizer_start_time = time.time()
 
@@ -133,7 +157,7 @@ def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, 
 
         start_time = time.time()
         params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs = update_parameters_and_coordinates(
-            opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
+            iteration, execution_times, opt, nsteps, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
             learning_rate_x, interface='autograd', charge=charge, mult=mult, basis_name=basis_name,
             prev_energy=prev_energy, recent_diffs=recent_diffs
         )
@@ -147,9 +171,18 @@ def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, 
 
         print(f"Iteration {iteration + 1}, Energy = {current_energy:.8f} Ha, Max Gradient = {max_grad_value:.5e}")
 
-        if converged:
-            break
+        if top_prev_energy is not None:
+            diff_top = abs(current_energy - top_prev_energy)
+            recent_diffs_top.append(diff_top)
 
+            if len(recent_diffs_top) > 3:
+                recent_diffs_top.pop(0)
+
+            if len(recent_diffs_top) == 3 and all(d < CONV for d in recent_diffs_top):
+                print(f"Top-level convergence reached: consecutive diffs < {CONV}")
+                break
+        top_prev_energy = current_energy
+        
         iter_end_time = time.time()
         iteration_time = iter_end_time - iter_start_time
         execution_times[f"Iteration {iteration + 1}"] = iteration_time
@@ -160,38 +193,48 @@ def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, 
     print(f"Total optimization time (uccsd): {total_time:.2f} seconds")
     return params, x, energy_history_total, x_history_total, params_history, execution_times
 
-def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, selected_excitations, opt, opt_state, max_iterations, learning_rate_x):
+def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, selected_excitations, opt, nsteps, opt_state, max_iterations, learning_rate_x, num_layers = 10):
     from .hamiltonian_builder import build_hamiltonian
     from .ansatz_preparer import prepare_ansatz
 
-    execution_times = {'build_hamiltonian':0.0,'compute_operator_gradients':0.0,'update_parameters_and_coordinates':0.0,'Total Time':0.0}
+    execution_times = {
+        'build_hamiltonian': 0.0,
+        'compute_operator_gradients': 0.0,
+        'update_parameters_and_coordinates': 0.0,
+        'Total Time': 0.0
+    }
+
     energy_history_total = []
     x_history_total = []
     params_history = []
     recent_diffs = []
     prev_energy = None
 
+    # Top-level convergence tracking
+    recent_diffs_top = []
+    top_prev_energy = None
+
     optimizer_start_time = time.time()
 
     def cost_fn_factory(hamiltonian):
         @qml.qnode(dev, interface=interface)
         def cost_fn(p):
-            prepare_ansatz(p, hf_state, selected_excitations, spin_orbitals, ansatz_type="vqe_classic")
+            prepare_ansatz(p,hf_state, selected_excitations, spin_orbitals, ansatz_type="vqe_classic", num_layers = num_layers)
             return qml.expval(hamiltonian)
         return cost_fn
 
     for iteration in range(max_iterations):
         iter_start_time = time.time()
+
         start_time = time.time()
         hamiltonian = build_hamiltonian(x, symbols, charge, mult, basis_name)
         end_time = time.time()
-        execution_times['build_hamiltonian'] += end_time - start_time
+        execution_times['build_hamiltonian'] += (end_time - start_time)
 
         cost_fn = cost_fn_factory(hamiltonian)
-        params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs = update_parameters_and_coordinates(
-            opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
-            learning_rate_x, interface='autograd', charge=charge, mult=mult, basis_name=basis_name,
-            prev_energy=prev_energy, recent_diffs=recent_diffs
+
+        # Update parameters and coordinates
+        params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs = update_parameters_and_coordinates( iteration, execution_times, opt, nsteps, opt_state, cost_fn, params,x, symbols, selected_excitations, dev, hf_state, spin_orbitals, learning_rate_x, interface='autograd', charge=charge, mult=mult, basis_name=basis_name, prev_energy=prev_energy,recent_diffs=recent_diffs
         )
 
         energy_history_total.extend(energy_history)
@@ -200,8 +243,18 @@ def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, ch
         current_energy = energy_history[-1]
         print(f"Iteration {iteration + 1}, Energy = {current_energy:.8f} Ha")
 
-        if converged:
-            break
+        if top_prev_energy is not None:
+            diff_top = abs(current_energy - top_prev_energy)
+            recent_diffs_top.append(diff_top)
+
+            if len(recent_diffs_top) > 3:
+                recent_diffs_top.pop(0)
+
+            if len(recent_diffs_top) == 3 and all(d < CONV for d in recent_diffs_top):
+                print(f"Top-level convergence reached: consecutive diffs < {CONV}")
+                break
+
+        top_prev_energy = current_energy
 
         iter_end_time = time.time()
         iteration_time = iter_end_time - iter_start_time
@@ -211,11 +264,13 @@ def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, ch
     total_time = optimizer_end_time - optimizer_start_time
     execution_times['Total Time'] = total_time
     print(f"Total optimization time (vqe_classic): {total_time:.2f} seconds")
+
     return params, x, energy_history_total, x_history_total, params_history, execution_times
 
-def run_single_optimizer(optimizer_name, opt, ansatz_type_opt, symbols, x_init, electrons, spin_orbitals, charge, mult, basis_name, hf_state, dev, operator_pool, exact_energy, results_dir):
-    from .hamiltonian_builder import build_hamiltonian, generate_hf_state, get_operator_pool
-    from .ansatz_preparer import prepare_ansatz, compute_operator_gradients, select_operator
+
+def run_single_optimizer(optimizer_name, opt, ansatz_type_opt, layers, nsteps, symbols, x_init, electrons, spin_orbitals, charge, mult, basis_name, hf_state, dev, operator_pool, exact_energy, results_dir):
+    #from .hamiltonian_builder import build_hamiltonian, generate_hf_state, get_operator_pool
+    #from .ansatz_preparer import prepare_ansatz, compute_operator_gradients, select_operator
 
     output_file = os.path.join(results_dir, f"output_{optimizer_name}.txt")
     orig_stdout = os.sys.stdout
@@ -231,7 +286,7 @@ def run_single_optimizer(optimizer_name, opt, ansatz_type_opt, symbols, x_init, 
         print(f"\n--- Optimizing with {optimizer_name} ---\n")
 
         if ansatz_type_opt == "vqe_classic":
-            num_layers = 30
+            num_layers = layers if layers > 0 else 1
             params_per_layer = 2 * spin_orbitals
             total_params = num_layers * params_per_layer
             params = 0.01 * np.random.randn(total_params)
@@ -239,14 +294,13 @@ def run_single_optimizer(optimizer_name, opt, ansatz_type_opt, symbols, x_init, 
             (params, x, energy_history_total, x_history_total, params_history, execution_times
                 ) = run_optimization_vqe_classic(
                     symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name,
-                    dev, interface, selected_excitations, opt, None, MAX_ITER, learning_rate_x
-                )
+                    dev, interface, selected_excitations, opt, nsteps, None, MAX_ITER, learning_rate_x, layers)
         else:
             params = np.array([], requires_grad=True)
             (params, x, energy_history_total, x_history_total, params_history, execution_times
                 ) = run_optimization_uccsd(
                     symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name,
-                    dev, interface, operator_pool_copy, selected_excitations, opt, None, MAX_ITER, learning_rate_x
+                    dev, interface, operator_pool_copy, selected_excitations, opt, nsteps, None, MAX_ITER, learning_rate_x
                 )
 
         final_energy = energy_history_total[-1] if energy_history_total else None
@@ -262,14 +316,26 @@ def run_single_optimizer(optimizer_name, opt, ansatz_type_opt, symbols, x_init, 
         "interface": 'autograd',
         "exact_energy_reference": exact_energy,
         "execution_times": execution_times,
-        "selected_excitations": selected_excitations
+        "selected_excitations": selected_excitations,
+        "ans_type": ansatz_type_opt,
+        "layers": layers 
     }
     return optimizer_name, result
-def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, charge=0, mult=1, basis_name='sto-3g', ansatz_type=["uccsd"]):
+def optimize_molecule(
+    symbols,
+    x_init,
+    electrons,
+    spin_orbitals,
+    optimizers,
+    charge=0,
+    mult=1,
+    basis_name='sto-3g',
+    ansatz_list=[("uccsd", 0, 10)],  # e.g. (ans_type, layers, nsteps)
+    results_dir="temp_results_autograd"
+):
     from .hamiltonian_builder import build_hamiltonian, generate_hf_state, get_operator_pool
     from .ansatz_preparer import prepare_ansatz
 
-    results_dir = "temp_results_autograd"
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
 
@@ -279,16 +345,20 @@ def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, cha
     operator_pool = get_operator_pool(electrons, spin_orbitals, excitation_level='both')
     interface_results = {}
 
+    # Instead of using cont, we iterate over each optimizer
     with concurrent.futures.ProcessPoolExecutor() as executor:
         futures = []
         cont = 0
         for optimizer_name, opt in optimizers.items():
-            ansatz_type_opt = ansatz_type[cont] if cont < len(ansatz_type) else "uccsd"
+            if cont < len(ansatz_list):
+                ans_type, layers, nsteps = ansatz_list[cont]
+            else:
+                ans_type, layers, nsteps = ("uccsd", 0, 10)
             cont += 1
             futures.append(
                 executor.submit(
                     run_single_optimizer,
-                    optimizer_name, opt, ansatz_type_opt, symbols, x_init, electrons, spin_orbitals, charge, mult, basis_name,
+                    optimizer_name, opt, ans_type, layers, nsteps, symbols, x_init, electrons, spin_orbitals, charge, mult, basis_name,
                     hf_state, dev, operator_pool, exact_energy, results_dir
                 )
             )
@@ -297,7 +367,7 @@ def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, cha
             optimizer_name, data = future.result()
             interface_results[optimizer_name] = data
 
-    # Leer archivos tras la finalización de todos los procesos
+    # Reading results
     for optimizer_name in optimizers.keys():
         output_file = os.path.join(results_dir, f"output_{optimizer_name}.txt")
         if os.path.exists(output_file):
@@ -324,9 +394,11 @@ def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, cha
 
         hamiltonian = build_hamiltonian(final_x, symbols, charge, mult, basis_name)
         selected_excitations = interface_results[optimizer_name]["selected_excitations"]
+        layers_used = interface_results[optimizer_name]["layers"]
+        ans_type_used = interface_results[optimizer_name]["ans_type"]
         @qml.qnode(dev, interface='autograd')
         def final_cost_fn(p):
-            prepare_ansatz(p, hf_state, selected_excitations, spin_orbitals, ansatz_type="uccsd")
+            prepare_ansatz(p, hf_state, selected_excitations, spin_orbitals, ansatz_type=ans_type_used, num_layers=layers_used)
             return qml.expval(hamiltonian)
 
         params = interface_results[optimizer_name]["final_params"]

@@ -6,7 +6,7 @@ import pstats
 from io import StringIO
 import time
 
-TEMP_RESULTS_DIR = "temp_results_autograd"
+TEMP_RESULTS_DIR = "step_size/results_H2_QNG"
 
 def main():
     from config.config_functions import from_user_input
@@ -16,19 +16,16 @@ def main():
     mol_optimizer(molecules, optimizers, TEMP_RESULTS_DIR, ansatz_list)
 
 if __name__ == "__main__":
-    # Este bloque se ejecuta sólo en el proceso principal
-    # Limpiar y recrear el directorio TEMP_RESULTS_DIR
+    
     if os.path.exists(TEMP_RESULTS_DIR):
         shutil.rmtree(TEMP_RESULTS_DIR)
     os.makedirs(TEMP_RESULTS_DIR)
 
     output_file_path = os.path.join(TEMP_RESULTS_DIR, "output.txt")
 
-    # Crear un archivo vacío al inicio
     with open(output_file_path, "w", encoding="utf-8") as f:
         pass
 
-    # Abrir el archivo en modo append para redirigir la salida
     output_file = open(output_file_path, "a", buffering=1, encoding='utf-8')
     original_stdout = sys.stdout
     sys.stdout = output_file
