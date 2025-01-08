@@ -1,4 +1,3 @@
-params, x, energy_history, x_history, opt_state = update_parameters_and_coordinates(
-    opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
-    learning_rate_x, convergence, interface, charge, mult, basis_name
-)
+symbols = ['H', 'H']
+x_init = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.74])
+params = np.array([], requires_grad=True)

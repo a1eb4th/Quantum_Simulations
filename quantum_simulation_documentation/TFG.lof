@@ -2,11 +2,13 @@
 \acswitchoff 
 \babel@toc {english}{}\relax 
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {1.1}{\ignorespaces Project's Gantt diagram{\footnotesize {Gantt diagram of the project. For more information read the manual \blx@tocontentsinit {0}\cite {skalagantt} of Skala.}.}}}{14}{figure.caption.7}%
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Gantt diagram showing the project timeline and the distribution of tasks over the development period.}}{15}{figure.caption.7}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Comparison of computation time for molecular simulations: classical vs quantum.}}{17}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Comparison of computation time for molecular simulations: classical vs quantum.}}{18}{figure.caption.8}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Tiempo de ejecución de las distintas moleculas segun su iteración en la simulación.}}{40}{figure.caption.13}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Tiempo de ejecución en distintas partes del codigo.}}{41}{figure.caption.14}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

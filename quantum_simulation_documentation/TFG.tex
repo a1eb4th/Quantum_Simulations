@@ -55,7 +55,7 @@
 %%% Document's date (\TFGdate by default)
 \setDate{\TFGdate}
 
-
+\addbibresource{TFG.bib}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%% PREAMBLE ENDS - DOCUMENT BEGINS %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -160,7 +160,7 @@
 \nocite{*}               % Forces all entries to be printed, even if not cited
 % Bibliography intro
 % Supress this macro (or modify its contents to suit your needs).
-\defbibnote{bib-intro}{%
+\defbibnote{bib-intro}{
 \ifcase\doclanguage\or
   El sistema \textit{biblatex} simplifica la gestió de la bibliografia en treballs científics, proporcionant automatització i personalització en el format de les citacions. Això permet a l'autor del document enfocar-se en el contingut sense haver de preocupar-se per l'estil de les referències, estalviant temps i reduint errors.
   
@@ -181,8 +181,7 @@
   You can modify (or delete) this note by editing the \texttt{\textbackslash defbibnote} macro in the file “TFG.tex”.
   \par\hfil\rule[3pt]{.5\textwidth}{0.4pt}\hfil\par\fi%
 }
-\printbibliography[heading=bibintoc,prenote={bib-intro}]
-
+\printbibliography
 
 %%%% ANNEXES %%%%
 % All chapters AFTER the \appendix command wil be considered appendices and numbered by letter

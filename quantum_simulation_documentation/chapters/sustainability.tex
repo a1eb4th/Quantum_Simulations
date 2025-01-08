@@ -1,27 +1,108 @@
-%%%% PLEASE REPLACE ENTIRELY WITH YOUR OWN CONTENT %%%%
-
-\ifcase\doclanguage\or
-\chapter{Anàlisi de sostenibilitat i implicacions ètiques}
-Des del curs 2023-24, la normativa de TFG de l'ETSETB demana la inclusió d'un informe de sostenibilitat a la memòria del treball. Aquesta anàlisi consisteix en una valoració dels impactes ambientals, socials i econòmics, i les possibles implicacions ètiques que ha comportat la realització del TFG. En el cas que el TFG plantegi un producte/servei/sistema/edifici/etc., que podria arribar a implementar-se, l’anàlisi també ha de realitzar-se sobre els impactes que tindria la proposta en la seva execució durant les diferents etapes del seu cicle de vida.
-
-A la plataforma ATENEA trobareu un document separat amb les instruccions detallades de què ha de contenir i com cal confeccionar l'informe de sostenibilitat.
-
-{\bigskip\bfseries {\large IMPORTANT:} Noteu que l'antic capítol de «Pressupost del projecte» ara queda integrat en l'anàlisi de sostenibilitat, concretament en les cel·les «Econòmic/Desenvolupament del TFG» i «Econòmic/Execució del projecte».}
-
-\or
-\chapter{Análisis de sostenibilidad e implicaciones éticas}
-A partir del curso 2023-24, la normativa de TFG de la ETSETB solicita la inclusión de un informe de sostenibilidad en la memoria del trabajo. Este análisis consiste en una evaluación de los impactos ambientales, sociales y económicos, así como las posibles implicaciones éticas derivadas de la realización del TFG. En el caso de que el TFG plantee un producto/servicio/sistema/edificio, etc., que pudiera llegar a implementarse, el análisis también debe abordar los impactos que la propuesta tendría durante las diferentes etapas de su ciclo de vida.
-
-En la plataforma ATENEA encontrarán un documento aparte con instrucciones detalladas sobre lo que debe contener y cómo elaborar el informe de sostenibilidad.
-
-{\bigskip\bfseries {\large IMPORTANTE:} Tener en cuenta que el antiguo capítulo de «Presupuesto del proyecto» ahora se integra en el análisis de sostenibilidad, específicamente en las celdas «Económico/Desarrollo del TFG» y «Económico/Ejecución del proyecto».}
-
-\else
 \chapter{Sustainability Analysis and Ethical Implications}
-Starting from the academic year 2023-24, the TFG regulations of ETSETB require the inclusion of a sustainability report in the project's documentation. This analysis involves an assessment of environmental, social, and economic impacts, as well as potential ethical implications resulting from the completion of the TFG. In the case where the TFG involves a product/service/system/building, etc., that could be implemented, the analysis should also address the impacts that the proposal would have during the various stages of its lifecycle.
 
-Detailed instructions on what the sustainability report should contain and how to prepare it can be found on the ATENEA platform.
+\section{Sustainability Matrix}
+This document presents an overview of the project’s sustainability by examining three key perspectives—environmental, economic, and social—across the distinct phases of development, execution, and potential risks or limitations.
 
-{\bigskip\bfseries {\large IMPORTANT:} Please note that the previous chapter on "Project Budget" is now integrated into the sustainability analysis, specifically in the cells "Economic Cell/Development of BT" and "Economic Cell/Project Execution".}
+\subsection{Environmental Perspective}
 
-\fi
+\subsubsection{Development}
+
+The development phase of the project required approximately 540 hours of work. To carry out this work, I used a Mac laptop with an average power consumption of 30\,W and a high-performance computing (HPC) server provided by a Viennese research center. This server, equipped with 16 CPU threads, operates at around 200\,W under heavy workloads. Combining these resources allowed me to optimize performance while avoiding additional hardware acquisition or excessive energy consumption.
+
+Quantum simulations were managed using the open-source \emph{PennyLane} framework, which, in this case, did not require GPU acceleration, thus keeping power demands moderate. Additionally, I minimized environmental impact during commuting by traveling approximately 3.5\,km per day via metro over 120 days. Factoring in all these contributions, the total emissions for the project are estimated to be 32.73\,kg of CO\(_2\). While I did not explicitly follow a circular economy model, I prioritized reusing existing infrastructure and avoided purchasing new devices, which further reduced potential waste.
+
+About de materials and resources origins, no fresh hardware purchases were made. I relied on the Viennese HPC center’s existing infrastructure, which follows European directives on responsible energy usage and publishes annual reports discussing sustainability practices. \emph{PennyLane} itself is developed by a community that strives for ethical and transparent technology, so both the HPC resources and the software align with these principles.
+
+The emissions calculations are detailed below:
+\begin{ProjectStructure}
+    \textbf{Laptop emissions:}
+    \[
+    E_{\text{l}} = P_{\text{laptop}} \cdot t_{\text{laptop}} \cdot \text{EF}_{\text{electricity}} = 0.03 \, \text{kW} \cdot 540 \, \text{h} \cdot 0.25 \, \text{kg CO}_2/\text{kWh} = 4.05 \, \text{kg CO}_2 
+    \]
+    \textbf{Server emissions:}
+    \[
+    E_{\text{s}} = P_{\text{server}} \cdot t_{\text{server}} \cdot \text{EF}_{\text{electricity}} = 0.2 \, \text{kW} \cdot 540 \, \text{h} \cdot 0.25 \, \text{kg CO}_2/\text{kWh} = 27.0 \, \text{kg CO}_2
+    \]
+    \textbf{Transport emissions:}
+    \[
+    E_{\text{t}} = d_{\text{metro}} \cdot n_{\text{days}} \cdot \text{EF}_{\text{metro}} = 3.5 \, \text{km} \cdot 120 \, \text{days} \cdot 0.014 \, \text{kg CO}_2/\text{km} = 1.68 \, \text{kg CO}_2
+    \]
+    \textbf{Total emissions:}
+    \[
+    E_{\text{total}} = E_{\text{l}} + E_{\text{s}} + E_{\text{t}} = 4.05 \, \text{kg CO}_2 + 27.0 \, \text{kg CO}_2 + 1.68 \, \text{kg CO}_2 = 32.73 \, \text{kg CO}_2
+    \]
+\end{ProjectStructure}
+
+\subsubsection{Execution}
+Once the project moves beyond its initial development and into practical use, the primary ongoing resource becomes CPU time, both on the laptop and at the Viennese HPC center. I anticipate an annual energy consumption in the range of 500\,kWh for active simulations, leading to approximately 75\,kg of CO\(_2\) if the current power mix remains the same. However, because the HPC center integrates some lower-carbon energy sources, there is hope that the carbon intensity of these computations could decrease over time.
+
+One of the key advantages of leveraging quantum approaches is the possibility of reducing the energy used in large-scale calculations. Compared to purely classical methods, certain quantum-inspired algorithms—especially when optimized through \emph{PennyLane}—can cut CPU time, which in turn saves up to an estimated 300\,kWh per year. This reduction lowers both energy costs and carbon emissions.
+
+At the conclusion of the project, as it is primarily a digital endeavor, no physical waste is generated. Upon completion, the data can be either archived or securely deleted, requiring minimal energy consumption and resulting in an almost negligible environmental footprint. Relying on renewable energy within the HPC center, continuing to refine algorithms, and scaling down usage when computational tasks are not urgent could all reduce the overall footprint further.
+
+Emissions calculations:
+\begin{ProjectStructure}
+    \textbf{Annual energy consumption emissions:}
+    \[
+    E_{\text{annual}} = E_{\text{cpu}} \cdot \text{EF}_{\text{electricity}} = 500 \, \text{kWh} \cdot 0.15 \, \text{kg CO}_2/\text{kWh} = 75 \, \text{kg CO}_2
+    \]
+    \textbf{Potential savings from quantum optimization:}
+    \[
+    E_{\text{saved}} = \Delta E_{\text{cpu}} \cdot \text{EF}_{\text{electricity}} = 300 \, \text{kWh} \cdot 0.15 \, \text{kg CO}_2/\text{kWh} = 45 \, \text{kg CO}_2
+    \]
+    \textbf{Net emissions with optimization:}
+    \[
+    E_{\text{net}} = E_{\text{annual}} - E_{\text{saved}} = 75 \, \text{kg CO}_2 - 45 \, \text{kg CO}_2 = 30 \, \text{kg CO}_2
+    \]
+\end{ProjectStructure} 
+\subsubsection{Risks and Limitations}
+Unplanned expansions in testing or running extended, unoptimized simulations on the HPC server could quickly increase energy consumption. Without proper scheduling or oversight, the footprint could grow significantly.
+If I repeated this work, I would consider other cloud-based quantum services that have carbon-neutral certifications or advanced versions of \emph{PennyLane} with improved efficiency. Tight scheduling of simulations to off-peak energy hours could also help.
+Key figures rely on average emission factors, and the power mix of the HPC center can change. Precise measurements for every hour of server usage are challenging, which introduces uncertainty into the calculations.
+
+
+\subsection{Economic Perspective}
+
+\subsubsection{Development}
+The majority of expenses during the development phase came from labor. I devoted around 540 hours to the project, valued at 25\,\euro/h, for a total of 13{,}500\,\euro. Electricity costs for the workstation added approximately 20\,\euro, assuming an average price of 0.18\,\euro/kWh for the roughly 108\,kWh consumed. Because I relied on the Viennese HPC center under a research arrangement, access to high-performance infrastructure incurred no direct additional fees. The open-source nature of \emph{PennyLane} likewise avoided software licensing costs and minimized overall expenses.
+
+\subsubsection{Execution}
+If the project remains active and consumes around 500\,kWh annually, it would cost an additional 90\,\euro\ per year (at 0.18\,\euro/kWh). Improved energy prices or algorithmic refinements could further lower this expense.
+
+Most maintenance revolves around software updates, bug fixes, and code improvements, which involve minimal monetary outlays. The Viennese HPC center supports open-source frameworks, and \emph{PennyLane} receives community-backed updates at no extra cost.
+
+Since the project is entirely digital, shutting it down incurs negligible expense. Data can be archived or securely deleted, and no physical equipment needs special handling.
+
+Any quantum simulation tools or modules developed here could assist future research, decreasing start-up costs and encouraging interdisciplinary collaboration. The open approach ensures that others can build on these methods freely.
+
+
+\subsubsection{Risks and Limitations}
+If energy prices were to soar or the HPC center discontinued free access, the project’s costs could skyrocket, potentially hindering further progress.
+
+Estimates rely on current prices and the stable availability of HPC resources. Rapid market changes, especially in energy, might invalidate long-term cost projections.
+
+\subsection{Social Perspective}
+
+\subsubsection{Development}
+Throughout the development stage, I emphasized ethically and socially responsible practices. This included using clear, inclusive language in all documentation and making the core results openly accessible. Given that quantum computing is a pioneering area with potential global impact, I aimed to set a collaborative tone and steer clear of any design choices that might discriminate against particular user groups.
+
+The Viennese HPC center publishes regular reports outlining its commitment to responsible energy use and fair resource distribution. Meanwhile, the open-source community around \emph{PennyLane} encourages knowledge sharing and keeps barriers to entry low, which helps cultivate a more equitable research environment.
+
+\subsubsection{Execution}
+As the project transitions into continuous operation, a diverse audience of researchers in fields such as computational chemistry, quantum physics, and beyond may benefit from these optimized simulations. Users anywhere in the world can deploy the code, provided they have sufficient HPC access, and the open documentation helps ensure they understand and can modify the methodology. However, disparities in HPC availability could widen the gap between institutions that can leverage quantum resources effectively and those that cannot.
+
+In addressing the original challenge of achieving faster, more efficient simulations, the solution outlined here has proven successful. By tapping into HPC resources under carefully designed algorithms, the project shows how quantum-inspired frameworks, like \emph{PennyLane}, can reduce computational overhead without requiring proprietary software.
+
+\subsubsection{Risks and Limitations}
+A key concern relates to uneven access. If HPC centers are concentrated in a few regions, researchers in other parts of the world may struggle to replicate results or remain competitive. Another vulnerability surfaces if \emph{PennyLane} or HPC usage policies become more restrictive, potentially locking in users who have shaped their workflows around these platforms. Finally, it is worth noting that this social analysis assumes relatively stable conditions that may not always apply to low-income or remote communities, where internet connectivity and funding are limited.
+
+\section{Ethical Implications}
+The project aligns with the university’s Code of Ethics by promoting open research and striving to use energy responsibly. Quantum computing carries the potential to transform a wide range of scientific activities, so I made sure to prioritize transparency, collaboration, and accessibility. Each phase of the work underscores an intention to minimize harmful applications, support inclusive participation, and encourage responsible innovation that extends benefits to the broader community.
+
+\section{Relation to the Sustainable Development Goals (SDGs)}
+\begin{itemize}
+    \item \textbf{Goal 9 (Industry, Innovation, and Infrastructure):}  
+    By taking advantage of high-performance computing and refining quantum simulation techniques, the project fosters advances in scientific research and knowledge dissemination.
+    \item \textbf{Goal 13 (Climate Action):}  
+    Through careful algorithmic design and reduced computational overhead, the project mitigates carbon emissions and emphasizes strategies to leverage clean energy sources, aligning with global climate objectives.
+\end{itemize}

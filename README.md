@@ -1,162 +1,88 @@
+# Quantum Molecular Simulation Project
 
-# Simulación Cuántica de Moléculas Usando PennyLane
+## Overview
+This project provides a framework for simulating quantum molecular systems using the Variational Quantum Eigensolver (VQE). It allows for molecule initialization, quantum ansatz preparation, optimization of molecular geometries, and visualization of results.
 
-Este proyecto implementa un flujo de trabajo para simular y optimizar moléculas mediante métodos de computación cuántica, utilizando técnicas como la Variational Quantum Eigensolver (VQE) y otras herramientas de la biblioteca PennyLane. Es ideal para experimentar con optimización molecular y simulación de reacciones químicas.
+## Environment Setup
+This project is developed and tested with Python 3.12. Follow the steps below to set up your environment:
 
----
+### Prerequisites
+Ensure you have the following installed:
+- **Python 3.12**
+- **Git**
 
-## Tabla de Contenidos
+### Installation Steps
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/a1eb4th/Quantum_Simulations
+   cd Quantum_Simulations
+   ```
+2. Create a virtual environment using Python 3.12:
+   ```bash
+   python -m venv env
+   ```
+3. Activate the virtual environment:
+   - **Windows:**
+     ```bash
+     env\Scripts\activate
+     ```
+   - **macOS/Linux:**
+     ```bash
+     source env/bin/activate
+     ```
+4. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+5. Verify the installation:
+   ```bash
+   python --version
+   ```
 
-1. [Descripción General](#descripción-general)
-2. [Estructura del Proyecto](#estructura-del-proyecto)
-3. [Dependencias](#dependencias)
-4. [Uso](#uso)
-5. [Ejemplo de Flujo de Trabajo](#ejemplo-de-flujo-de-trabajo)
-6. [Archivos Relevantes](#archivos-relevantes)
-7. [Visualización de Resultados](#visualización-de-resultados)
-8. [Referencias](#referencias)
+### Running the Project
+To execute a simulation:
+1. Define your molecule in `molecules.json` or pass it via command-line arguments.
+2. Run the main script with desired parameters:
+   ```bash
+   python main.py --molecule H2 --optimizer Adam --stepsize 0.1
+   ```
+3. Results will be saved in the `temp_results_autograd/` directory.
 
----
-
-## Descripción General
-
-El propósito principal de este proyecto es simular y optimizar geometrías moleculares mediante técnicas cuánticas, integrando herramientas clásicas y cuánticas para resolver problemas en química computacional.
-
-El proyecto utiliza el Hamiltoniano molecular generado mediante **PennyLane Quantum Chemistry Module**, junto con optimizadores cuánticos y algoritmos adaptativos para explorar geometrías y calcular energías moleculares exactas.
-
----
-
-## Estructura del Proyecto
-
-La estructura del proyecto está dividida en directorios y módulos, cada uno con una función específica:
-
-### Directorios
-
-- **`modules/`**: Contiene los módulos principales para simulación y optimización.
-  - `hamiltonian_builder.py`: Construcción del Hamiltoniano molecular y estado de referencia Hartree-Fock.
-  - `ansatz_preparer.py`: Preparación del circuito cuántico (ansatz) y cálculo de gradientes.
-  - `optimizer.py`: Lógica de optimización para circuitos cuánticos y geometrías moleculares.
-  - `visualizer.py`: Herramientas de visualización para resultados y evolución de geometrías.
-  - `molecule_manager.py`: Gestión e inicialización de moléculas.
-- **`config/`**: Configuración y utilidades.
-  - `config_functions.py`: Configuración de parámetros, carga de moléculas y opciones del usuario.
-- **`results/`**: Carpeta donde se almacenan resultados y visualizaciones generadas.
-- **`temp_results_autograd/`**: Carpeta temporal para resultados intermedios.
-
-### Archivos Clave
-
-1. **`main.py`**:
-   - Punto de entrada principal para ejecutar simulaciones o optimizaciones moleculares.
-   - Invoca funciones de módulos específicos según la configuración.
-
-2. **`molecules.json`**:
-   - Contiene moléculas predefinidas con propiedades como símbolos atómicos, coordenadas iniciales, carga, y multiplicidad.
-
----
-
-## Dependencias
-
-Este proyecto requiere las siguientes bibliotecas:
-
-- **Python 3.8 o superior**
-- PennyLane (para simulación cuántica)
-- NumPy
-- Matplotlib (para visualización)
-- Tabulate (para representación de tablas)
-
-Para instalar las dependencias, ejecuta:
-```bash
-pip install pennylane numpy matplotlib tabulate
+## Project Structure
+```plaintext
+quantum_simulation_project/
+├── config/                     # Configuration files
+├── modules/                    # Core functionalities
+│   ├── ansatz_preparer.py      # Quantum ansatz preparation
+│   ├── hamiltonian_builder.py  # Molecular Hamiltonian construction
+│   ├── molecule_manager.py     # Molecule initialization
+│   ├── opt_mol.py              # Main optimization workflow
+│   ├── optimizer.py            # Optimization logic
+│   ├── visualizer.py           # Visualization utilities
+├── temp_results_autograd/      # Temporary results
+├── main.py                     # Entry point for simulations
+├── requirements.txt            # Dependencies
 ```
 
----
+## Features
+- **Molecule Initialization**: Define molecules with symbols, coordinates, charge, and spin multiplicity.
+- **Hamiltonian Construction**: Build molecular Hamiltonians based on quantum chemistry methods.
+- **Quantum Ansatz**: Supports `uccsd` and hardware-efficient ansatz types.
+- **Optimization**: Uses various optimizers like Adam, RMSProp, and Gradient Descent.
+- **Visualization**: Generate energy evolution plots and final geometries.
 
-## Uso
+## Inputs
+Supported command-line arguments:
+- `--molecule`: Name of the molecule(s) to simulate (e.g., H2O, NH3, H2, LiH).
+- `--optimizer`: Optimization algorithm (e.g., Adam, RMSProp).
+- `--stepsize`: Step size for the optimizer.
+- `--basis_set`: Currently fixed to `sto-3g`.
 
-### 1. Ejecución Básica
+## Outputs
+Generated files include:
+- **Energy Plots**: `energy_evolution_linear.png`, `energy_evolution_log_offset.png`
+- **Optimization Reports**: `profile_output_autograd.txt`, `filtered_report_autograd.txt`
+- **Final Geometry Visualization**: `final_geometries_3D.png`
 
-Para optimizar una molécula, utiliza:
-```bash
-python main.py --molecule H2O --opt
-```
-
-Esto optimiza la geometría de la molécula `H2O` según los parámetros y configuraciones definidos.
-
-### 2. Argumentos Principales
-
-| Argumento          | Descripción                                           | Ejemplo                          |
-|---------------------|-------------------------------------------------------|----------------------------------|
-| `--molecule`        | Nombre de la molécula a simular.                      | `--molecule H2O`                |
-| `--opt`             | Ejecuta optimización de geometría molecular.          | `--opt`                         |
-| `--basis_set`       | Conjunto de bases para la simulación.                 | `--basis_set sto-3g`            |
-| `--stepsize`        | Tamaño de paso para el optimizador.                   | `--stepsize 0.01`               |
-| `--add_molecule`    | Permite añadir una nueva molécula a `molecules.json`. | `--add_molecule`                |
-| `--plot`            | Genera gráficos de energía y coordenadas.            | `--plot`                        |
-
----
-
-## Ejemplo de Flujo de Trabajo
-
-1. **Simulación de una molécula existente**:
-   ```bash
-   python main.py --molecule H2 --opt
-   ```
-
-2. **Añadir una nueva molécula**:
-   ```bash
-   python main.py --add_molecule
-   ```
-   Sigue las instrucciones interactivas para definir símbolos, coordenadas, carga y multiplicidad.
-
-3. **Optimización con diferentes configuraciones**:
-   ```bash
-   python main.py --molecule H2O --basis_set cc-pVDZ --stepsize 0.02
-   ```
-
----
-
-## Archivos Relevantes
-
-### `hamiltonian_builder.py`
-
-- Construcción del Hamiltoniano molecular usando:
-  - Coordenadas atómicas.
-  - Conjuntos de bases definidos (`sto-3g`, `cc-pVDZ`, etc.).
-- Generación de estados de referencia Hartree-Fock.
-
-### `ansatz_preparer.py`
-
-- Configuración del circuito cuántico (ansatz) adaptativo.
-- Cálculo de gradientes para seleccionar operadores relevantes.
-
-### `optimizer.py`
-
-- Implementación de optimizadores como:
-  - **Gradient Descent**
-  - **Quantum Natural Gradient**
-- Optimización conjunta de parámetros de circuitos y coordenadas moleculares.
-
----
-
-## Visualización de Resultados
-
-### 1. Energía Durante la Optimización
-
-Se genera un gráfico que muestra cómo evoluciona la energía a lo largo de las iteraciones.
-
-### 2. Geometrías Finales
-
-Las geometrías finales se visualizan en 3D, mostrando la posición de los átomos en el espacio.
-
-Los resultados se guardan automáticamente en `temp_results_autograd/`.
-
----
-
-## Referencias
-
-- **PennyLane Documentation**: [https://pennylane.ai](https://pennylane.ai)
-- **Quantum Chemistry Tutorials**: [https://pennylane.ai/qml/demos/tutorial_quantum_chemistry.html](https://pennylane.ai/qml/demos/tutorial_quantum_chemistry.html)
-
-## Contacto
-
-Para preguntas o mejoras, contactar a **Albert López Escudero**.
+## License
+This project is licensed under the MIT License.

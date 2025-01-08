@@ -1,11 +1,5 @@
 \chapter[State of the Art]{State of the Art of the Technology Used or Applied in this Thesis}
 
-In recent years, computing has undergone significant evolution, reaching a point where improving the hardware of traditional devices presents considerable challenges. This has driven research in quantum computing, a technology that promises to revolutionize the field by enabling much more efficient calculations and superior processing capabilities. In applications such as molecular simulation, quantum computing has proven to be remarkably more efficient than classical computing, justifying investment in its development.
-
-However, one of the main obstacles of quantum computing is the high cost associated with its devices. To run programs on a quantum computer, it must operate at extremely low temperatures, close to 0.1 Kelvin, which significantly increases the cost and technical complexity. Therefore, methods are being investigated to improve and optimize these devices, making them more accessible and viable for broader use.
-
-Currently, one of the most practical ways to harness quantum computing's potential is through \textbf{quantum simulation}. Quantum simulation allows us to study complex quantum systems using either quantum simulators or classical computers. By emulating the behavior of quantum systems, we can explore quantum algorithms and applications effectively without necessarily requiring a fully functional quantum computer.
-
 In this project, we focus on the operation of quantum simulators applied to molecular simulation, an area where quantum computing offers significant advantages. The main objective is to develop a program capable of simulating different molecules in a simple and efficient manner.
 
 To this end, we will review the basic concepts of quantum mechanics that are essential to understand the fundamentals and potential of quantum computing, and explore the techniques of quantum simulation that allow us to harness quantum computing capabilities even with current technological limitations.
@@ -152,77 +146,225 @@ In quantum simulations, especially in algorithms like the Variational Quantum Ei
 
 Understanding the structure and properties of the Hamiltonian is essential for modeling and simulating quantum systems, as it determines the possible energies and dynamics of the system under study.
 
-\section{Algorithms}
+\section{VQE: Variational Quantum Eigensolver}
+\label{sec:vqe}
 
-Once we have understood the basic concepts, we focus on the quantum algorithms used in particle simulation. These algorithms make use of quantum logic gates, which are detailed in Appendix~\ref{appendices:LogicGates}.
+Among the hybrid quantum-classical algorithms developed to address quantum simulation challenges, the \emph{Variational Quantum Eigensolver (VQE)} has gained particular relevance. This method seeks to approximate the ground-state energy of a target Hamiltonian, such as the electronic Hamiltonian of a molecule, by efficiently combining quantum state preparation with classical optimization techniques.
 
-\subsection{VQE: Variational Quantum Eigensolver}
+\subsection{Fundamental Principles and Stages of the Algorithm}
+\label{subsec:vqe_principles_stages}
 
-The VQE is a hybrid quantum-classical algorithm designed to find the minimum energy of a quantum system, such as a molecule. This algorithm combines quantum state preparation with classical optimization. It leverages the quantum properties of qubits to find the ground state of the molecule more rapidly, followed by classical optimization to refine the solution.
-
-\subsubsection*{Stages of the Algorithm}
-El VQE  is based on the variational principle, which states that the expected energy of any approximate state \( |\psi(\theta)\rangle \) is always greater than or equal to the energy of the true ground state \( E_0 \):
-
+VQE is founded on the \textbf{variational principle} of quantum mechanics, which states that the expectation value of the energy 
+\(\,E(\vec{\theta})\)
+for any normalized trial state \(\,\ket{\psi(\vec{\theta})}\) is always an upper bound to the true ground-state energy \(E_0\):
 \[
-E(\theta) = \langle \psi(\theta) | H | \psi(\theta) \rangle \geq E_0
+E(\vec{\theta}) 
+= \bra{\psi(\vec{\theta})} \hat{H} \ket{\psi(\vec{\theta})}
+\;\;\geq\; E_0.
 \]
+Because \(E(\vec{\theta})\) depends on a set of parameters \(\vec{\theta}\), the VQE algorithm iteratively updates these parameters to minimize \(E(\vec{\theta})\). Once no further reduction in \(E(\vec{\theta})\) is possible, the algorithm identifies the lowest value reached as an approximation of \(E_0\).
 
-\paragraph{1. Quantum State Preparation}
+In practice, VQE proceeds in a loop that integrates quantum and classical resources:
 
-A parameterized quantum circuit known as an \textit{ansatz} is used, defined by a set of adjustable parameters \(\vec{\theta}\). This circuit applies a sequence of quantum gates, such as rotations and entangling gates, to generate a quantum state:
+\begin{enumerate}
+    \item \textbf{Quantum State Preparation:} 
+    A parameterized quantum circuit, commonly termed an \emph{ansatz}, is constructed with a set of adjustable parameters \(\vec{\theta}\). This circuit leverages unitary gates (e.g., single-qubit rotations, entangling gates) to create a trial wavefunction:
+    \[
+    \ket{\psi(\vec{\theta})}.
+    \]
 
-\[
-|\psi(\vec{\theta})\rangle
-\]
+    \item \textbf{Measurement of the Expected Energy:}
+    The Hamiltonian \(\hat{H}\) is decomposed into a sum of Pauli operators acting on the qubits. The expectation value 
+    \(\langle \psi(\vec{\theta}) \mid \hat{H} \mid \psi(\vec{\theta}) \rangle\)
+    is obtained by measuring the appropriate Pauli operators on the quantum device, typically requiring multiple circuit executions due to non-commuting terms.
 
-\paragraph{2. Measurement of the Expected Energy}
+    \item \textbf{Classical Optimization:}
+    The measured energy serves as a cost function, \(E(\vec{\theta})\). A classical optimizer---such as \emph{Gradient Descent} or \emph{Adam}---then updates the parameters \(\vec{\theta}\) to minimize this cost.
 
-For a given quantum state \(|\psi(\vec{\theta})\rangle\), the expected energy of the system under a Hamiltonian \(H\) is measured:
+    \item \textbf{Iteration and Convergence:}
+    Steps 1--3 repeat until a convergence criterion is satisfied, for instance,
+    \[
+    \left|\,E\bigl(\vec{\theta}_{k+1}\bigr) - E\bigl(\vec{\theta}_{k}\bigr)\right|
+    \;<\;\delta,
+    \]
+    where \(\delta\) is a small threshold for energy differences. The final set \(\vec{\theta}^{*}\) yields an approximate ground-state wavefunction and energy.
+\end{enumerate}
 
-\[
-E(\vec{\theta}) = \langle \psi(\vec{\theta}) | H | \psi(\vec{\theta}) \rangle
-\]
+\subsection{Advantages and Challenges}
+\label{subsec:vqe_challenges}
 
-The Hamiltonian \(H\) is decomposed into terms of Pauli operators representing the electronic and nuclear interactions in the system.
+VQE has garnered extensive interest in fields like \textbf{quantum chemistry}, \textbf{materials science}, and even combinatorial optimization problems mapped to Hamiltonians. Its hybrid structure allows leveraging near-term quantum devices (with limited qubits and gate depths) while offloading resource-intensive tasks---such as parameter updates---to classical computers. 
 
-\paragraph{3. Classical Optimization}
-
-The parameters \(\vec{\theta}\) are iteratively adjusted using a classical optimizer to minimize \(E(\vec{\theta})\).
-
-\paragraph{4. Iteration of the Process}
-
-The steps of state preparation, measurement, and optimization are repeated until \(E(\vec{\theta})\) converges to a minimum value. This value corresponds to the ground state energy of the system.
-
-\subsection{Adaptive Circuits}
-
-\textbf{Adaptive circuits} are designed to optimize quantum circuits dynamically by selecting components that most effectively reduce the system's energy. In this project, we implemented an adaptive strategy where the ansatz is built iteratively by selecting excitations (operators) from a predefined pool based on their gradient contribution to lowering the energy. This approach enhances efficiency by focusing computational resources on the most impactful degrees of freedom, ensuring faster convergence and reduced circuit complexity.
-
-An example is found in \textit{Variational Quantum Algorithms} (VQA), which use classical optimization techniques to adjust the parameters of a quantum circuit and minimize a cost function. These algorithms are especially useful in current quantum devices, which are noisy and of limited size (NISQ).
-
-For more information and practical examples on adaptive circuits:
-
-\url{https://pennylane.ai/qml/demos/tutorial_adaptive_circuits/}
-
-\section{Optimizers}
-
-In the realm of quantum simulation algorithms like the \textbf{Variational Quantum Eigensolver} (VQE), optimizers are essential components that facilitate the minimization of the expected energy of a quantum system. Following the preparation of quantum states and the measurement processes described earlier, optimizers are employed in the classical computation stage to adjust the parameters of the quantum circuit, known as the \textit{ansatz}.
-
-The theoretical purpose of optimizers in this project is to solve a continuous optimization problem. They aim to find the optimal set of parameters \(\vec{\theta}\) that minimize the cost function \(E(\vec{\theta})\), which represents the expectation value of the Hamiltonian \(H\) with respect to the quantum state \(| \psi(\vec{\theta}) \rangle\):
-
-\[
-E(\vec{\theta}) = \langle \psi(\vec{\theta}) | H | \psi(\vec{\theta}) \rangle
-\]
-
-Optimizers utilize mathematical techniques to navigate the high-dimensional parameter space effectively. Depending on the specific characteristics of the problem, different optimization methods can be employed:
+Despite its promise, VQE faces several practical hurdles:
 
 \begin{itemize}
-    \item \textbf{Gradient-based methods}: These methods compute the gradient of the cost function with respect to the parameters and use this information to guide the search towards the minimum energy. Examples include gradient descent and its variants.
-    \item \textbf{Gradient-free methods}: In cases where calculating the gradient is impractical or the cost function is noisy, gradient-free methods like Nelder-Mead or COBYLA can be used.
-    \item \textbf{Second-order methods}: These methods, such as the BFGS algorithm, approximate the second derivatives (Hessian) of the cost function to achieve faster convergence.
+    \item \textbf{Noise and Decoherence:} 
+    Real quantum devices suffer from errors that deteriorate the fidelity of prepared states and measurements, requiring error-mitigation strategies and noise-aware ansatz designs.
+
+    \item \textbf{Barren Plateaus:}
+    High-dimensional parameter spaces can contain large regions where gradients vanish, complicating the search for global minima.
+
+    \item \textbf{Measurement Overhead:}
+    Decomposing a Hamiltonian into many Pauli terms demands running multiple circuits, increasing sampling time and exposure to hardware noise.
+
+    \item \textbf{Circuit Depth:}
+    Accurate ans\"atze for complex systems may require deep circuits that quickly exceed the coherence times of current quantum processors.
 \end{itemize}
 
-Within the iterative loop of the VQE algorithm, the optimizer updates the parameters \(\vec{\theta}\) after each quantum measurement based on the chosen optimization strategy. This process continues until convergence is achieved, meaning the expected energy \(E(\vec{\theta})\) reaches a minimum value that approximates the ground state energy of the system.
+\subsection{Outlook in Quantum Simulation}
+\label{subsec:vqe_outlook}
 
-Integrating optimizers into the quantum-classical workflow is crucial because they connect quantum computations with classical numerical methods. They enable effective exploration of the parameter space, addressing challenges such as multiple local minima and flat regions in the energy landscape that are inherent in quantum systems.
+Continuous improvements in both hardware (qubit quality, gate fidelity, and error-correction schemes) and software (advanced ans\"atze, better optimizers, error mitigation) keep driving VQE toward practical applications. Recent strategies such as \emph{ADAPT-VQE}, which adaptively builds up an excitation operator set, and domain-specific ans\"atze integrated with error mitigation methods, further enhance VQE’s accuracy for molecular systems. 
 
-By employing appropriate optimization techniques, this project aims to enhance the efficiency and accuracy of molecular simulations. Optimizers play a pivotal role in leveraging the capabilities of quantum computing to achieve results that are difficult to obtain with classical computational methods alone, thus contributing to the advancement of quantum simulation despite current technological limitations.
+As the number of qubits grows and quantum hardware matures, VQE is likely to become a central approach for tackling classically intractable problems in quantum chemistry, materials science, and beyond. Its flexible hybrid nature will continue to serve as a testbed for new optimization algorithms, ansatz designs, and measurement strategies, bridging current \emph{Noisy Intermediate-Scale Quantum (NISQ)} devices with the longer-term ambition of fault-tolerant quantum computing.
+
+\section{Different Ans\"{a}tze in Quantum Chemistry and Quantum Computing}
+In the context of variational quantum algorithms and quantum chemistry, an \textbf{ansatz} is a carefully chosen, often physically motivated, parametric form of the quantum state used to approximate the ground (or excited) state of a system described by a given Hamiltonian. The term \textit{ansatz} originates from the German word \textquotedblleft approach\textquotedblright\ or \textquotedblleft initial guess,\textquotedblright\ and it reflects the central idea that we propose a functional form (or circuit structure) for the wavefunction and then optimize the parameters in search of the lowest possible energy. 
+
+Within the framework of the Variational Quantum Eigensolver (VQE), the ansatz is implemented as a parameterized quantum circuit whose gates depend on a set of continuous variables $\vec{\theta}$. By measuring the expectation value of the Hamiltonian with respect to this trial state, one obtains an energy estimate $E(\vec{\theta})$ which is then iteratively minimized by a classical optimizer. The success of a VQE calculation hinges critically on the expressiveness and resource requirements (number of gates, circuit depth, etc.) of the chosen ansatz.
+
+Several ans\"{a}tze have been proposed to achieve a balance between accuracy and computational cost. Below, we summarize the most relevant approaches, highlighting their theoretical underpinnings and current usage in quantum simulation.
+
+\subsection{Hartree--Fock-based Ans\"{a}tze (Classical Reference)}
+A historically important \textquotedblleft classical\textquotedblright\ ansatz in quantum chemistry arises from the \textbf{Hartree--Fock (HF)} approximation. In this method, the total wavefunction is assumed to be a single Slater determinant constructed from one-particle orbitals. Although it captures the fundamental antisymmetry required by the Pauli exclusion principle (i.e., fermionic exchange), it neglects most of the electron correlation. Post-HF methods, such as Configuration Interaction (CI), Many-Body Perturbation Theory (MPn), and Coupled Cluster (CC), then build on this reference state by introducing additional terms that account for electron correlation.  
+
+\begin{itemize}
+    \item \textbf{Configuration Interaction (CI):} Expands the wavefunction in a basis of Slater determinants (excitations) beyond the HF reference. The Full CI approach is exact within the chosen basis but scales exponentially with system size. Truncated CI methods (CIS, CID, CISD, etc.) reduce the computational cost but still grow quickly with system size.
+
+    \item \textbf{Coupled Cluster (CC):} Expresses the wavefunction via an exponential of excitation operators acting on the HF reference. Formally written as 
+    \[
+       |\Psi_{\mathrm{CC}}\rangle = e^{\hat{T}}|\Phi_{\mathrm{HF}}\rangle,
+    \]
+    where $\hat{T}$ is the sum of cluster excitation operators (singles, doubles, triples, etc.). Although Coupled Cluster with Singles and Doubles (CCSD) is often accurate, further inclusion of triples and higher excitations can be required for strongly correlated systems.
+\end{itemize}
+
+In the context of classical methods, these \textbf{ans\"{a}tze} serve as trial wavefunctions whose coefficients are optimized using high-performance classical algorithms. Their conceptual basis---constructing physically motivated trial states that capture crucial features of the system---carries over into quantum computing.
+
+\subsection{Unitary Coupled Cluster (UCC)}
+A key adaptation of the Coupled Cluster theory to quantum computing is the \textbf{Unitary Coupled Cluster (UCC)} ansatz. It modifies the standard CC exponential by making it explicitly unitary:
+
+\[
+|\Psi_{\mathrm{UCC}}\rangle 
+= e^{\hat{T}(\vec{\theta}) - \hat{T}^\dagger(\vec{\theta})} \,|\Phi_{\mathrm{HF}}\rangle,
+\]
+
+where $\hat{T}(\vec{\theta})$ is typically truncated to include only single and double excitations (UCCSD). This approach guarantees that the resulting operator is unitary, which is crucial for hardware implementations in quantum computing since all gates must be unitary transformations. 
+
+\begin{itemize}
+    \item \textbf{UCCSD (Singles and Doubles):} The most widespread version of UCC is truncated at single and double excitations:
+    \[
+        \hat{T}(\vec{\theta}) = \sum_{i,a} \theta_{i}^{a} \hat{a}_a^\dagger \hat{a}_i 
+          \,\,+\,\, 
+          \sum_{i,j,a,b} \theta_{i,j}^{a,b} \hat{a}_a^\dagger \hat{a}_b^\dagger \hat{a}_j \hat{a}_i
+          \,\,+\, \cdots
+    \]
+    Here, $i, j$ denote occupied orbitals and $a, b$ virtual (unoccupied) orbitals. By exponentiating both $\hat{T}$ and $\hat{T}^\dagger$, the wavefunction stays normalized. However, the circuit depth can become large since implementing the exponential of a sum of non-commuting operators requires a trotterization or related approximation.
+
+    \item \textbf{ADAPT-VQE and Variants:} To mitigate the high circuit cost, variants like \textit{ADAPT-VQE} build up a UCC-type ansatz incrementally, selecting only those excitation operators that most significantly lower the energy at each step. This adaptive approach reduces the number of gates needed and often converges faster.
+\end{itemize}
+
+\subsection{Problem-Inspired or Custom Ans\"{a}tze}
+In some cases, \textbf{custom ans\"{a}tze} are tailored to the specific physical or chemical system under investigation. For example, if certain symmetries (like particle number or spin) are known to be crucial for describing the ground state, one can design an ansatz that explicitly respects those symmetries. Such approaches can drastically reduce the parameter space and improve convergence, albeit with some additional effort in circuit design.
+
+\section{Optimizers}
+\label{sec:optimizers}
+
+In quantum simulation algorithms such as the Variational Quantum Eigensolver (VQE), optimizers constitute a key element of the hybrid quantum-classical workflow. Their primary objective is to minimize the cost function
+\[
+E(\vec{\theta}) = \langle \psi(\vec{\theta}) \mid \hat{H} \mid \psi(\vec{\theta}) \rangle,
+\]
+where \(\hat{H}\) represents the Hamiltonian of the system under study and \(\ket{\psi(\vec{\theta})}\) is a parameterized quantum state, often referred to as the \emph{ansatz}. After each quantum measurement, the optimizer updates the parameter vector \(\vec{\theta}\) to guide the system toward the ground-state energy. This process is iterated until convergence, balancing the capabilities of quantum hardware with classical numerical techniques.
+
+In the following subsections, we discuss the theoretical underpinnings and key features of several optimizers commonly employed in variational algorithms. While all these optimizers share the goal of efficiently navigating the parameter space, they differ in how they incorporate gradients, memory of past iterations, and adjustments of the learning rate.
+
+\subsection{Gradient Descent (GD)}
+\label{subsec:gd}
+\emph{Gradient Descent} is one of the most fundamental methods for continuous optimization. At each iteration, it updates parameters by moving them in the direction opposite to the gradient of the cost function:
+\[
+\vec{\theta}_{k+1} = \vec{\theta}_{k} 
+- \eta \nabla_{\vec{\theta}} E(\vec{\theta}_{k}),
+\]
+where \(\eta\) is the learning rate and \(\nabla_{\vec{\theta}} E(\vec{\theta})\) denotes the gradient of the cost function with respect to the parameters. Despite its simplicity, Gradient Descent can converge slowly or get trapped in local minima when dealing with complex or high-dimensional landscapes, making it less efficient if used alone in large-scale molecular simulations.
+
+\subsection{Momentum Optimizer}
+\label{subsec:momentum}
+The \emph{Momentum} method extends standard Gradient Descent by incorporating a velocity term that accumulates a fraction of previous updates. This approach can mitigate oscillations and speed up convergence in regions with shallow gradients. The update rule is given by:
+\[
+\begin{aligned}
+\vec{v}_{k+1} &= \gamma \vec{v}_{k} 
+- \eta \nabla_{\vec{\theta}} E(\vec{\theta}_{k}),\\
+\vec{\theta}_{k+1} &= \vec{\theta}_{k} + \vec{v}_{k+1},
+\end{aligned}
+\]
+where \(\gamma\) (typically between 0.9 and 0.99) is the momentum coefficient that controls how much past gradients influence the current update. This optimizer often accelerates learning in practice by effectively smoothing noisy or rapidly changing gradients.
+
+\subsection{Nesterov Momentum Optimizer (NMomentum)}
+\label{subsec:nmomentum}
+\emph{Nesterov Momentum}, sometimes referred to as \emph{Nesterov’s Accelerated Gradient (NAG)}, refines the idea of Momentum by anticipating the next position of the parameters before computing the gradient. Concretely, one computes the gradient at \(\vec{\theta} + \gamma \vec{v}\) rather than at \(\vec{\theta}\) only. The updates become:
+\[
+\begin{aligned}
+\vec{v}_{k+1} &= \gamma \vec{v}_{k} 
+- \eta \nabla_{\vec{\theta}}
+E\!\big(\vec{\theta}_{k} + \gamma \vec{v}_{k}\big),\\
+\vec{\theta}_{k+1} &= \vec{\theta}_{k} + \vec{v}_{k+1}.
+\end{aligned}
+\]
+By \textquoteleft looking ahead\textquoteright\ in the direction of the velocity term, Nesterov Momentum tends to achieve smoother convergence and better performance on problems with numerous local minima or saddle points, which are common in complex quantum simulations.
+
+\subsection{RMSProp}
+\label{subsec:rmsprop}
+\emph{RMSProp} is a gradient-based optimizer that adaptively tunes the learning rate for each parameter by normalizing the gradient through a moving average of its recent magnitudes. This helps address issues of vanishing or exploding gradients, which can be particularly troublesome in variational circuits of moderate or large depth. Its core update equations are:
+\[
+\begin{aligned}
+E[\nabla^2_{\vec{\theta}}]_{k} &= \beta \, E[\nabla^2_{\vec{\theta}}]_{k-1}
++ (1-\beta)\,\nabla_{\vec{\theta}} E(\vec{\theta}_{k})^2,\\
+\vec{\theta}_{k+1} &= \vec{\theta}_{k} 
+- \eta \, \frac{\nabla_{\vec{\theta}} E(\vec{\theta}_{k})}
+{\sqrt{E[\nabla^2_{\vec{\theta}}]_{k}} + \epsilon},
+\end{aligned}
+\]
+where \(0 < \beta < 1\) is a decay factor controlling the smoothing effect, and \(\epsilon\) is a small constant ensuring numerical stability.
+
+\subsection{Adagrad}
+\label{subsec:adagrad}
+\emph{Adagrad} is an early approach to adaptive learning rates, designed to handle sparse or highly non-uniform gradients. It individually scales the updates by the inverse square root of the cumulative sum of gradients:
+\[
+\vec{\theta}_{k+1} 
+= \vec{\theta}_{k} 
+- \frac{\eta}{\sqrt{\sum_{i=1}^{k} 
+  \nabla_{\vec{\theta}} E(\vec{\theta}_{i})^2} + \epsilon}
+  \,\nabla_{\vec{\theta}} E(\vec{\theta}_{k}).
+\]
+This mechanism allows parameters with small but consistent gradients to receive larger updates, which can be helpful in certain quantum chemistry models where specific Hamiltonian terms dominate.
+
+\subsection{Adam}
+\label{subsec:adam}
+\emph{Adam (Adaptive Moment Estimation)} has emerged as one of the most widely used optimizers in machine learning and, increasingly, in quantum algorithms. It combines Momentum-like accumulations of the first moment of gradients (i.e., the mean) with an RMSProp-like treatment of the second moment (i.e., the uncentered variance). The update rules are:
+\[
+\begin{aligned}
+\vec{m}_{k+1} &= \beta_1 \vec{m}_{k} 
++ (1-\beta_1) \nabla_{\vec{\theta}} E(\vec{\theta}_{k}), \\
+\vec{v}_{k+1} &= \beta_2 \vec{v}_{k} 
++ (1-\beta_2) \nabla_{\vec{\theta}} E(\vec{\theta}_{k})^2, \\
+\hat{\vec{m}}_{k+1} &= \frac{\vec{m}_{k+1}}{1-\beta_1^{k+1}}, \quad
+\hat{\vec{v}}_{k+1} = \frac{\vec{v}_{k+1}}{1-\beta_2^{k+1}}, \\
+\vec{\theta}_{k+1} &= \vec{\theta}_{k} 
+- \eta \,\frac{\hat{\vec{m}}_{k+1}}
+{\sqrt{\hat{\vec{v}}_{k+1}} + \epsilon},
+\end{aligned}
+\]
+where \(0 < \beta_1, \beta_2 < 1\) are decay hyperparameters controlling how quickly the estimates of the first and second moments adjust. Adam’s blend of adaptive step sizes and momentum often yields robust performance, even when the cost landscape is noisy or irregular, as is typical in quantum simulations.
+
+\subsection{Quantum Natural Gradient (QNG)}
+\label{subsec:qng}
+Unlike classical optimizers that rely on Euclidean metrics in parameter space, \emph{Quantum Natural Gradient (QNG)} specifically incorporates the \emph{Fubini--Study} metric, capturing how small changes in the parameters affect the underlying quantum state. By working with a geometry adapted to the quantum manifold, QNG can achieve faster and more reliable convergence in variational circuits. Conceptually, the update rule can be written as:
+\[
+\vec{\theta}_{k+1}
+= \vec{\theta}_{k}
+- \eta \, \mathcal{F}^{-1} \nabla_{\vec{\theta}} E(\vec{\theta}_{k}),
+\]
+where \(\mathcal{F}\) represents the \emph{quantum Fisher information matrix}, a matrix encoding the local geometry of the parameterized state. Computing \(\mathcal{F}\) can be more demanding than classical gradients, but for many quantum chemistry or condensed-matter applications, the improved efficiency justifies this added cost.
+
+\subsection{Importance of Optimizers in Quantum Simulation}
+\label{subsec:importance_optimizers}
+Optimizers bridge the gap between quantum hardware and classical processing by iteratively refining the variational parameters to minimize the expectation value of the Hamiltonian. They must contend with challenges specific to quantum simulation, such as measurement noise, limited qubit counts, and complex cost landscapes characterized by local minima and barren plateaus. Properly choosing and tuning the optimizer is paramount to achieving accurate, resource-efficient simulations. By harnessing the distinctive advantages of adaptive and momentum-based methods---as well as more specialized quantum-aware techniques like QNG---one can significantly improve the speed and reliability of variational algorithms, thereby pushing the capabilities of quantum simulation closer to practical applications in molecular modeling.

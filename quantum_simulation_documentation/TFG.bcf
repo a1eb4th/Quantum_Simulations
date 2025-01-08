@@ -2359,11 +2359,10 @@
   <!-- SECTION 0 -->
   <bcf:bibdata section="0">
     <bcf:datasource type="file" datatype="bibtex" glob="false">TFG.bib</bcf:datasource>
+    <bcf:datasource type="file" datatype="bibtex" glob="false">TFG.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="2" intorder="1">skalagantt</bcf:citekey>
-    <bcf:citekey order="3" intorder="1">skalagantt</bcf:citekey>
-    <bcf:citekey order="4" intorder="1" nocite="1">*</bcf:citekey>
+    <bcf:citekey order="1" intorder="1" nocite="1">*</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

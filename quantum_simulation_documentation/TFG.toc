@@ -5,64 +5,94 @@
 \contentsline {section}{Acknowledgements}{4}{chapter*.1}%
 \contentsline {section}{Revision history and approval record}{5}{chapter*.2}%
 \contentsline {section}{Contents}{6}{chapter*.2}%
-\contentsline {section}{List of figures}{8}{chapter*.4}%
-\contentsline {section}{List of tables}{9}{chapter*.5}%
-\contentsline {section}{Abbreviations}{10}{chapter*.5}%
-\contentsline {chapter}{\numberline {1}Introduction}{11}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Work goals}{11}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Requirements and specifications}{12}{section.1.2}%
-\contentsline {section}{\numberline {1.3}Methods and procedures}{12}{section.1.3}%
-\contentsline {section}{\numberline {1.4}Work plan}{14}{section.1.4}%
-\contentsline {chapter}{\numberline {2}State of the Art}{15}{chapter.2}%
+\contentsline {section}{List of figures}{9}{chapter*.4}%
+\contentsline {section}{List of tables}{10}{chapter*.5}%
+\contentsline {section}{Abbreviations}{11}{chapter*.5}%
+\contentsline {chapter}{\numberline {1}Introduction}{12}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Work goals}{13}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Requirements and specifications}{13}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Methods and procedures}{14}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Work plan}{15}{section.1.4}%
+\contentsline {chapter}{\numberline {2}State of the Art}{16}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Quantum Simulation}{16}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Key Concepts in Quantum Mechanics}{17}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Qubit}{17}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Quantum Superposition}{18}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Quantum Decoherence}{18}{subsection.2.2.3}%
-\contentsline {section}{\numberline {2.3}The Hamiltonian in Quantum Mechanics}{19}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Mathematical Definition}{19}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Role in the Schrödinger Equation}{20}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Hamiltonian in Multi-Particle Systems}{20}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.2.1}Qubit}{18}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Quantum Superposition}{19}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Quantum Decoherence}{19}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}The Hamiltonian in Quantum Mechanics}{20}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Mathematical Definition}{20}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Role in the Schrödinger Equation}{21}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Hamiltonian in Multi-Particle Systems}{21}{subsection.2.3.3}%
 \contentsline {subsection}{\numberline {2.3.4}Importance in Quantum Simulations}{21}{subsection.2.3.4}%
-\contentsline {section}{\numberline {2.4}Algorithms}{21}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}VQE: Variational Quantum Eigensolver}{21}{subsection.2.4.1}%
-\contentsline {paragraph}{1. Quantum State Preparation}{21}{paragraph*.9}%
-\contentsline {paragraph}{2. Measurement of the Expected Energy}{22}{paragraph*.10}%
-\contentsline {paragraph}{3. Classical Optimization}{22}{paragraph*.11}%
-\contentsline {paragraph}{4. Iteration of the Process}{22}{paragraph*.12}%
-\contentsline {subsection}{\numberline {2.4.2}Adaptive Circuits}{22}{subsection.2.4.2}%
-\contentsline {section}{\numberline {2.5}Optimizers}{22}{section.2.5}%
-\contentsline {chapter}{\numberline {3}Methodology / project development}{24}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Tools and Frameworks Selection}{24}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Framework Selection}{24}{subsection.3.1.1}%
-\contentsline {section}{\numberline {3.2}Project Structuring}{25}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Code Organization}{25}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Version Control}{26}{subsection.3.2.2}%
-\contentsline {section}{\numberline {3.3}Development and Implementation}{26}{section.3.3}%
-\contentsline {paragraph}{Principle of VQE:}{27}{paragraph*.13}%
-\contentsline {subsection}{\numberline {3.3.1}Hamiltonian Construction Process}{27}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Adaptive Ansatz Construction}{28}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}Cost Function Definition}{29}{subsection.3.3.3}%
-\contentsline {subsection}{\numberline {3.3.4}Optimization Process}{30}{subsection.3.3.4}%
-\contentsline {paragraph}{Steps in the Optimization Loop:}{30}{paragraph*.14}%
-\contentsline {paragraph}{Justification for the Combined Optimization Approach:}{31}{paragraph*.15}%
-\contentsline {subsection}{\numberline {3.3.5}Visualization Tools}{31}{subsection.3.3.5}%
-\contentsline {section}{\numberline {3.4}Limitations and Mitigation Measures}{32}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Results}{33}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Experiments and Tests}{33}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Data Visualization}{33}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Limitations}{33}{section.4.3}%
-\contentsline {chapter}{\numberline {5}Sustainability Analysis and Ethical Implications}{34}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Conclusions and Future Work}{35}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Conclusions}{35}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Future Directions}{35}{section.6.2}%
-\contentsline {chapter}{\numberline {A}Logic Gates}{36}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Simple Logic Gates}{36}{section.A.1}%
-\contentsline {paragraph}{X Gate (Pauli-X)}{36}{paragraph*.16}%
-\contentsline {paragraph}{Y Gate (Pauli-Y)}{36}{paragraph*.17}%
-\contentsline {paragraph}{Z Gate (Pauli-Z)}{36}{paragraph*.18}%
-\contentsline {paragraph}{Hadamard Gate (H)}{37}{paragraph*.19}%
-\contentsline {section}{\numberline {A.2}Multi-Qubit Logic Gates}{37}{section.A.2}%
-\contentsline {paragraph}{Controlled-NOT Gate (CNOT)}{37}{paragraph*.20}%
-\contentsline {paragraph}{Single Excitation Gate (\textit {SingleExcitation})}{37}{paragraph*.21}%
-\contentsline {paragraph}{Double Excitation Gate (\textit {DoubleExcitation})}{38}{paragraph*.22}%
+\contentsline {section}{\numberline {2.4}VQE: Variational Quantum Eigensolver}{22}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Fundamental Principles and Stages of the Algorithm}{22}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Advantages and Challenges}{23}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Outlook in Quantum Simulation}{23}{subsection.2.4.3}%
+\contentsline {section}{\numberline {2.5}Different Ans\"{a}tze in Quantum Chemistry and Quantum Computing}{23}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Hartree--Fock-based Ans\"{a}tze (Classical Reference)}{24}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Unitary Coupled Cluster (UCC)}{25}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}Problem-Inspired or Custom Ans\"{a}tze}{25}{subsection.2.5.3}%
+\contentsline {section}{\numberline {2.6}Optimizers}{25}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Gradient Descent (GD)}{26}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Momentum Optimizer}{26}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}Nesterov Momentum Optimizer (NMomentum)}{26}{subsection.2.6.3}%
+\contentsline {subsection}{\numberline {2.6.4}RMSProp}{27}{subsection.2.6.4}%
+\contentsline {subsection}{\numberline {2.6.5}Adagrad}{27}{subsection.2.6.5}%
+\contentsline {subsection}{\numberline {2.6.6}Adam}{27}{subsection.2.6.6}%
+\contentsline {subsection}{\numberline {2.6.7}Quantum Natural Gradient (QNG)}{28}{subsection.2.6.7}%
+\contentsline {subsection}{\numberline {2.6.8}Importance of Optimizers in Quantum Simulation}{28}{subsection.2.6.8}%
+\contentsline {chapter}{\numberline {3}Methodology / project development}{29}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Tools and Frameworks Selection}{29}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Framework Selection}{29}{subsection.3.1.1}%
+\contentsline {section}{\numberline {3.2}Project Structuring}{30}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Code Organization}{30}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Version Control}{31}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Development and Implementation}{31}{section.3.3}%
+\contentsline {paragraph}{Principle of VQE:}{32}{paragraph*.9}%
+\contentsline {subsection}{\numberline {3.3.1}Hamiltonian Construction Process}{32}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Adaptive Ansatz Construction and Operator Selection}{33}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Cost Function Definition}{35}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Mixed Electronic and Geometric Optimization Strategy}{35}{subsection.3.3.4}%
+\contentsline {paragraph}{Rationale for Our Mixed Approach}{35}{paragraph*.10}%
+\contentsline {paragraph}{Our Iterative Optimization Steps}{36}{paragraph*.11}%
+\contentsline {paragraph}{Why Our Iterative Coupling Is More Efficient}{37}{paragraph*.12}%
+\contentsline {section}{\numberline {3.4}Limitations and Mitigation Measures}{37}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Results}{39}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Experiments and Tests}{39}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Data Visualization}{39}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Limitations}{39}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Experiments and Tests}{39}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Ansatz}{42}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Optimizador}{42}{subsection.4.4.2}%
+\contentsline {paragraph}{Selección del Optimizador}{42}{paragraph*.15}%
+\contentsline {paragraph}{Selección del Step Size}{42}{paragraph*.16}%
+\contentsline {subsection}{\numberline {4.4.3}Numero de Iteraciones}{43}{subsection.4.4.3}%
+\contentsline {chapter}{\numberline {5}Sustainability Analysis and Ethical Implications}{44}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Sustainability Matrix}{44}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Environmental Perspective}{44}{subsection.5.1.1}%
+\contentsline {subsubsection}{Development}{44}{subsubsection*.17}%
+\contentsline {subsubsection}{Execution}{45}{subsubsection*.18}%
+\contentsline {subsubsection}{Risks and Limitations}{46}{subsubsection*.19}%
+\contentsline {subsection}{\numberline {5.1.2}Economic Perspective}{46}{subsection.5.1.2}%
+\contentsline {subsubsection}{Development}{46}{subsubsection*.20}%
+\contentsline {subsubsection}{Execution}{46}{subsubsection*.21}%
+\contentsline {subsubsection}{Risks and Limitations}{47}{subsubsection*.22}%
+\contentsline {subsection}{\numberline {5.1.3}Social Perspective}{47}{subsection.5.1.3}%
+\contentsline {subsubsection}{Development}{47}{subsubsection*.23}%
+\contentsline {subsubsection}{Execution}{47}{subsubsection*.24}%
+\contentsline {subsubsection}{Risks and Limitations}{48}{subsubsection*.25}%
+\contentsline {section}{\numberline {5.2}Ethical Implications}{48}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Relation to the Sustainable Development Goals (SDGs)}{48}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Conclusions and Future Work}{49}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Conclusions}{49}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Future Directions}{49}{section.6.2}%
+\contentsline {chapter}{\numberline {A}Logic Gates}{52}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Simple Logic Gates}{52}{section.A.1}%
+\contentsline {paragraph}{X Gate (Pauli-X)}{52}{paragraph*.27}%
+\contentsline {paragraph}{Y Gate (Pauli-Y)}{52}{paragraph*.28}%
+\contentsline {paragraph}{Z Gate (Pauli-Z)}{52}{paragraph*.29}%
+\contentsline {paragraph}{Hadamard Gate (H)}{53}{paragraph*.30}%
+\contentsline {section}{\numberline {A.2}Multi-Qubit Logic Gates}{53}{section.A.2}%
+\contentsline {paragraph}{Controlled-NOT Gate (CNOT)}{53}{paragraph*.31}%
+\contentsline {paragraph}{Single Excitation Gate (\textit {SingleExcitation})}{53}{paragraph*.32}%
+\contentsline {paragraph}{Double Excitation Gate (\textit {DoubleExcitation})}{54}{paragraph*.33}%

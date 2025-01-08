@@ -102,7 +102,7 @@ We have already discussed this concept, but it is necessary to emphasize it as i
 
 \bigskip
 
-Next, we will detail how the VQE is implemented in our project, explaining how each component has been developed.
+Next, we will detail how the VQE is implemented in our project, explaining how each component has been developed for trying to achieve the best performance and results.
 \subsection{Hamiltonian Construction Process}
 
 \begin{enumerate}
@@ -126,7 +126,7 @@ x_init = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.74])
     \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
       title=Hamiltonian Build, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
       listing options={language=Python, basicstyle=\ttfamily\small,
-      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt, breaklines=true}}
 def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
     x = np.array(x)
     coordinates = x.reshape(-1, 3)
@@ -147,28 +147,44 @@ def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
     
 \end{enumerate}
 
-\subsection{Adaptive Ansatz Construction}
-The preparation of the quantum state is a critical step in implementing the Variational Quantum Eigensolver (VQE) algorithm. This is accomplished through an \textbf{ansatz}, a parameterized quantum circuit designed to approximate the ground state of the system. In our simulator, we have developed an adaptive ansatz that dynamically selects the most relevant excitations based on their contribution to reducing the system's energy. This approach enhances both the efficiency and accuracy of the ground state representation by constructing the circuit iteratively, focusing only on the most impactful excitations. 
+\subsection{Adaptive Ansatz Construction and Operator Selection}
 
-Additionally, we have implemented a non-adaptive ansatz for comparison purposes. This fixed ansatz applies a predefined set of excitations and serves as a reference to highlight the advantages of the adaptive approach (UCSSD), particularly in improving the efficiency and precision of the simulation.
+As we said before, the adaptive ansatz construction builds upon the conventional variational approach by strategically selecting only those excitations that offer the most significant energy reductions. Instead of starting from a large, fixed set of parameters, the algorithm begins with the Hartree-Fock state and incrementally introduces new excitations based on their calculated impact on lowering the system’s energy. This methodology provides both theoretical and practical advantages in handling the complexity of the solution space.
 
-A continuación se muestra el código que permite la construcción del ansatz adaptativo:
+The selection process begins with a predefined \textit{operator pool}, typically composed of single and double excitation operators relevant to the molecular system. At the start of the procedure, no variational parameters are assigned, and the system is initialized in the reference Hartree-Fock state. At each iteration, the algorithm evaluates the energy gradients associated with adding each operator from the pool:
+
+\begin{enumerate}
+    \item \textbf{Gradient Calculation:} For every candidate operator $\hat{O}_i$ in the pool, the partial derivative of the energy with respect to the parameter controlling $\hat{O}_i$ is computed. This step identifies how sensitive the energy is to introducing that particular excitation.
+    \item \textbf{Operator Ranking and Filtering:} All candidate excitations are ranked according to the absolute value of their gradients. Operators that produce negligible energy changes are discarded, while those offering substantial decreases are selected for inclusion.
+    \item \textbf{Incremental Ansatz Growth:} The selected operator(s) is then added to the ansatz. A new parameter is introduced and optimized, increasing the dimensionality of the parameter space \emph{only where it matters}. This targeted expansion ensures that each additional parameter contributes meaningfully to lowering the energy.
+    \item \textbf{Pool Update and Iteration:} After adding the chosen operators, the process repeats. The operator pool is re-examined at subsequent steps, but it now excludes previously chosen operators unless they are included as parameterized parts of the ansatz. Over multiple iterations, the ansatz evolves adaptively, honing in on the most relevant subset of excitations.
+\end{enumerate}
+
+A simplified code snippet, consistent with the project’s structure, may appear as follows:
+
 \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
-    title= UCSSD ansatz, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
-    listing options={language=Python, basicstyle=\ttfamily\small,
-    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
-def prepare_ansatz_uccsd(params, hf_state, selected_excitations, spin_orbitals):
-qml.BasisState(hf_state, wires=range(spin_orbitals))
-for i, exc in enumerate(selected_excitations):
-    if len(exc) == 2:
-        qml.SingleExcitation(params[i], wires=exc)
-    elif len(exc) == 4:
-        qml.DoubleExcitation(params[i], wires=exc)
+  title=Adaptive Operator Selection, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+  listing options={language=Python, basicstyle=\ttfamily\small,
+  showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt, breaklines=true}}
+gradients = compute_operator_gradients(operator_pool, selected_excitations, params, hamiltonian, hf_state, dev, spin_orbitals)
+selected_gate, max_grad_value = select_operator(gradients, operator_pool, convergence_threshold)
+if selected_gate:
+    selected_excitations.append(selected_gate)
+    params = np.append(params, 0.0)  # Add new parameter for the chosen operator
+    print(f"Added operator {selected_gate} with gradient {max_grad_value:.5e}")
+else:
+    print("No significant operators found. Convergence or local minimum reached.")
 \end{tcblisting}
 
-The adaptive ansatz iteratively builds the quantum circuit by selecting the most relevant excitations from the molecular system. It starts from the Hartree-Fock state, where parameterized excitations are applied to capture electronic correlations. At each iteration, the energy gradients of excitations from a predefined pool are calculated, and the excitation that most significantly reduces the energy is selected. This excitation is then incorporated into the circuit, expanding the set of variational parameters. The process is repeated until a convergence criterion is met, progressively refining the representation of the ground state.
+In this code, the \texttt{compute\_operator\_gradients} function evaluates each operator’s gradient, while the \texttt{select\_operator} function applies a filtering criterion based on a defined \texttt{convergence\_threshold}. Only the most promising excitation is incorporated into the ansatz at each step, ensuring a controlled and meaningful expansion of the parameter space.
 
-The adaptive method offers significant advantages over traditional approaches by dynamically constructing the ansatz and incorporating only the excitations that have the greatest impact on energy reduction. This avoids the inclusion of irrelevant operators, reducing the circuit complexity and the number of parameters to optimize. Furthermore, it improves computational efficiency by focusing on the most significant correlations within the system, accelerating convergence to the ground state. In contrast, traditional methods use a fixed ansatz that does not adapt to the molecular system’s characteristics, leading to larger, less efficient circuits with higher resource demands and no guarantee of improved accuracy.
+In numerical experiments, this targeted approach has demonstrated:
+\begin{itemize}
+    \item \textbf{Faster Convergence:} Fewer parameters are introduced at each stage, allowing the optimizer to quickly reduce the energy without wading through irrelevant configurations.
+    \item \textbf{Lower Resource Consumption:} By refining the search space, the quantum circuits remain relatively shallow, and classical optimization routines require fewer evaluations.
+    \item \textbf{Scalability:} As molecular systems grow in complexity, the adaptive approach helps mitigate the exponential growth in parameter number, making it more feasible to handle larger systems within similar computational budgets.
+\end{itemize}
+
 
 \subsection{Cost Function Definition}
 With the ansatz defined, the next step is to establish a cost function that evaluates the expected energy of the system given a set of parameters \(\theta\). In our implementation, this cost function is defined within \texttt{update\_parameters\_and\_coordinates} and calculates the expected value of the molecular Hamiltonian:
@@ -176,7 +192,7 @@ With the ansatz defined, the next step is to establish a cost function that eval
   \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
     title=Definition of the Cost Function, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
     listing options={language=Python, basicstyle=\ttfamily\small,
-    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt, breaklines=true}}
 @qml.qnode(dev, interface=interface)
 def cost_fn(params):
     prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals)
@@ -185,83 +201,53 @@ def cost_fn(params):
   
 This function is essential for evaluating \(E(\theta)\). By calculating the expected value of the Hamiltonian, we can quantify how close our approximate state is to the true ground state.
 
-\subsection{Optimization Process}
+\subsection{Mixed Electronic and Geometric Optimization Strategy}
 
-The optimization process in our simulator integrates the refinement of both variational parameters \(\theta\) and nuclear coordinates \(\mathbf{X}\), aiming to find the global minimum of the molecular system's total energy. This is achieved through an iterative cycle that combines electronic and nuclear optimization, ensuring that the molecule reaches its equilibrium geometry and ground state energy simultaneously.
+In our project, we made a deliberate decision to integrate the refinement of both variational parameters \(\theta\) and nuclear coordinates \(\mathbf{X}\) into a single iterative loop. Rather than treating these aspects separately, as is common in sequential optimization approaches, we chose to couple the electronic and geometric optimizations from the start. By doing so, we ensured that each electronic update immediately reflects the current molecular geometry, and each geometric adjustment leverages the most recent and accurate electronic wavefunction. This approach was guided by our goal of finding the global minimum of the molecular system’s total energy more efficiently, ultimately steering the molecule towards its equilibrium geometry and ground state energy in a more coherent and resource-effective manner.
 
-\paragraph{Steps in the Optimization Loop:}
+\paragraph{Rationale for Our Mixed Approach}
+In many standard methodologies, the electronic structure is optimized at a fixed geometry before the geometry itself is optimized under that electronic configuration. We felt this separation was inefficient for our objectives, as it often leads to unnecessary iterations and suboptimal intermediate solutions. Recognizing that the electronic configuration and nuclear arrangement are intrinsically linked, we decided to continually update both in tandem. This choice was grounded in our understanding that capturing the interplay between the electronic distribution and molecular geometry as it unfolds would reduce computational overhead and converge more rapidly to a stable, physically meaningful equilibrium.
+
+\paragraph{Our Iterative Optimization Steps}
 \begin{enumerate}
     \item \textbf{Initialization:}
-    
-    The process begins with the initialization of the molecular geometry, nuclear coordinates, and electronic parameters. These are defined as:
-    
+    We begin by defining the initial molecular geometry, nuclear coordinates \(\mathbf{X}_0\), and variational parameters \(\theta_0\). For instance:
     \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
       title=Initialization Example, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
       listing options={language=Python, basicstyle=\ttfamily\small,
-      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
+      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt, breaklines=true}}
 symbols = ['H', 'H']
 x_init = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.74])
 params = np.array([], requires_grad=True)
     \end{tcblisting}
+    We selected these initial values based on known molecular structures and our desire to start from a configuration that is simple yet representative.
 
-    \item \textbf{Molecular Hamiltonian Construction:}
-    
-    The molecular Hamiltonian is recalculated at each step using the \texttt{build\_hamiltonian} function, incorporating updated nuclear coordinates.
+    \item \textbf{Molecular Hamiltonian Update:}
+    At each iteration, we recalculate the molecular Hamiltonian \(\hat{H}(\mathbf{X})\) using the updated nuclear coordinates. This ensures that our cost function (the expected energy) accurately reflects the current geometry at every step, allowing us to maintain a closer link between the electronic solution and the evolving molecular shape.
 
-    \item \textbf{Gradient Calculation and Operator Selection:}
-    
-    Energy gradients are computed for all excitations in the operator pool. The operator with the highest gradient is selected for inclusion in the ansatz, ensuring effective energy reduction. This step uses:
-    \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
-      title=Operator Selection, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
-      listing options={language=Python, basicstyle=\ttfamily\small,
-      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
-selected_gate, max_grad_value = select_operator(gradients, operator_pool, convergence)
-if selected_gate:
-    selected_excitations.append(selected_gate)
-    params = np.append(params, 0.0)
-    \end{tcblisting}
-    
-    \item \textbf{Parameter and Nuclear Coordinate Update:}
-    
-    Both variational parameters and nuclear positions are updated iteratively. The optimization routine leverages numerical gradients to adjust the coordinates:
-    \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
-      title=Parameter and Coordinate Update, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
-      listing options={language=Python, basicstyle=\ttfamily\small,
-      showstringspaces=false, numbers=left, numberstyle=\footnotesize, stepnumber=1, numbersep=8pt}}
-params, x, energy_history, x_history, opt_state = update_parameters_and_coordinates(
-    opt, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals,
-    learning_rate_x, convergence, interface, charge, mult, basis_name
-)
-    \end{tcblisting}
+    \item \textbf{Operator Gradient Calculation and Selection:}
+    For the electronic part, we compute energy gradients with respect to a pool of candidate excitation operators. We then select and add only the operator with the highest gradient contribution to the ansatz. This choice was made to keep the parameter space as manageable as possible, focusing our resources on the excitations that yield the greatest energy reductions. By gradually expanding the ansatz in this manner, we prevent an explosion in complexity and retain a more controlled optimization path.
 
-    \item \textbf{Visualization and Convergence:}
-    
-    The optimization progress is visualized with plots of energy versus iteration and 3D representations of the molecular geometry. The process stops when the predefined convergence criteria, such as energy difference below \(10^{-8}\), are met.
+    \item \textbf{Nuclear Gradient Computation and Coordinate Updates:}
+    To update the nuclear coordinates \(\mathbf{X}\), we decided to compute the nuclear gradients numerically using finite differences. Concretely, for each coordinate direction, we slightly perturb \(\mathbf{X}\) and measure the resulting change in energy:
+    \begin{equation}
+    \nabla_{\mathbf{X}} E(\theta, \mathbf{X}) \approx \frac{E(\theta, \mathbf{X} + \delta \mathbf{u}) - E(\theta, \mathbf{X} - \delta \mathbf{u})}{2\delta}.
+    \end{equation}
+    We adopted this finite-difference method to maintain flexibility and simplicity, and because it integrates seamlessly with our adaptive approach. After obtaining the gradients, we update the coordinates as:
+    \begin{equation}
+    \mathbf{X}_{\text{new}} = \mathbf{X}_{\text{old}} - \alpha \nabla_{\mathbf{X}}E(\theta, \mathbf{X}),
+    \end{equation}
+    where \(\alpha\) is a learning rate we chose based on preliminary tests to balance stability and speed of convergence. This direct control allowed us to refine the geometry efficiently without overshooting or requiring overly complex gradient estimations.
+
+    \item \textbf{Geometric Convergence Validation:}
+    We established convergence criteria tailored to our desired precision and computational budget. For energy convergence, we require that differences between subsequent iterations fall below a small threshold (e.g., \(10^{-8}\) Ha). For geometric convergence, we set clear tolerances on changes in atomic positions and interatomic distances. Meeting both criteria ensures the geometry is near equilibrium and that no further improvements are necessary. This choice reflects our priority for a stable and physically meaningful final configuration rather than just a numerically optimized one.
+
+    \item \textbf{Visualization and Termination:}
+    Throughout the process, we record the evolving energy, coordinates, and other metrics. We decided to include immediate visual feedback (such as energy vs. iteration plots and 3D molecular views) to quickly assess the effectiveness of our approach. This real-time monitoring helps us recognize potential issues early, adjust our strategies, and confirm when we have reached the desired convergence criteria. Once these conditions are met, we terminate the process, confident that the final geometry and electronic state are both well-optimized.
 \end{enumerate}
 
-\paragraph{Justification for the Combined Optimization Approach:}
-Coupling the optimization of electronic parameters and nuclear geometry mirrors the interdependence between the electronic state and molecular structure. This method ensures simultaneous refinement of the molecular system, reducing computational overhead compared to sequential optimization methods. By selecting the most impactful excitations and dynamically adjusting both \(\theta\) and \(\mathbf{X}\), the algorithm achieves a high level of precision and efficiency in finding the ground state energy and equilibrium configuration.
-\subsection{Visualization Tools}
-
-Results visualization allows analyzing the progress and outcomes of quantum simulations through graphs that depict energy evolution, molecular geometries, and execution times. The tools utilized are described below:
-
-\begin{itemize}
-    \item \textbf{Energy Evolution:} Energy graphs are generated as a function of iterations. These include:
-    \begin{itemize}
-        \item \textit{Linear Scale:} Useful for observing large energy changes during the initial iterations.
-        \item \textit{Logarithmic Scale with Offset:} Highlights small variations in the final stages of the process.
-    \end{itemize}
-
-    \item \textbf{Interatomic Distances:} Changes in the distances between atomic pairs are represented across iterations, showing how the molecular structure evolves.
-
-    \item \textbf{3D Molecular Geometries:} Final molecular geometries are visualized using 3D plots, highlighting atomic positions and differences between configurations and optimizers.
-
-    \item \textbf{Energy vs Time:} Graphs show energy evolution as a function of cumulative time, allowing the evaluation of each optimizer's efficiency.
-
-    \item \textbf{Execution Times:} Execution times for each function and optimizer are stored in a CSV file for detailed efficiency analysis.
-\end{itemize}
-
-The visualization tools provide a clear understanding of the simulations' behavior, facilitating the analysis of results and the comparison of configurations.
+\paragraph{Why Our Iterative Coupling Is More Efficient}
+By integrating electronic and geometric optimizations, we reduce the redundant recalculations and needless complexity that can arise in standard sequential methods. In our approach, each update to the electronic parameters leverages a geometry that is already moving towards equilibrium, and each geometric refinement uses an increasingly accurate electronic state. This synergy not only shortens the pathway to convergence but also helps us avoid getting stuck in suboptimal configurations. In our experience, this mixed strategy has proven more efficient and more closely aligned with the underlying physics of the system, delivering faster, more stable, and more accurate results than what we would expect from a traditional, decoupled optimization approach.
 
 \section{Limitations and Mitigation Measures}
 
