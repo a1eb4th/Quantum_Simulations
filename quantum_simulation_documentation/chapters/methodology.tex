@@ -16,6 +16,9 @@ The first reason was the amount of documentation related to quantum simulation. 
 
 The second reason for our choice was the frequent major changes implemented by Qiskit. We realized that while Qiskit is a tool that promises to be very good, it has historically undergone significant structural changes. For these reasons, this project has been developed using the PennyLane framework.
 
+\subsection{Version Control}
+Git was employed for version control, enabling detailed tracking of code changes and ongoing collaboration with project supervisors. Initially, a single branch was used for development and exploration. Once a stable version was established, branches were created for testing and adding new features. The first branches were dedicated to different interface versions, each refined to ensure consistent performance across all interfaces. Ultimately, only the most suitable interface adjustments were merged back into the main branch.
+
 \section{Project Structuring}
 
 After selecting the interface and implementing the initial version of the code, we reorganized the project to achieve a more modular structure. This revised organization not only makes it easier to add new functionalities but also ensures that the project can handle higher levels of complexity.
@@ -51,9 +54,6 @@ After selecting the interface and implementing the initial version of the code, 
       \item \texttt{test/}: Directory for tests.
   \end{itemize}
 \end{ProjectStructure}
-
-\vspace{1em}
-\noindent\textbf{Summary of Core Files:}
 
 \subsection{Main Directory}
 \begin{itemize}
@@ -532,24 +532,9 @@ for optimizer_name in optimizers.keys():
 \end{tcblisting}
 
 In this way, the complete workflow allows:
-\begin{itemize}
+\begin{enumerate}
     \item Executing processes in parallel and collecting their results.
     \item Unifying the generated data into a single output file.
     \item Cleaning up temporary files to maintain an organized directory.
     \item Presenting the final results in a clear and detailed manner.
-\end{itemize}
-
-
-\section{Limitations and Mitigation Measures}
-
-Among the limitations of this approach are:
-\begin{itemize}
-    \item \textbf{Scalability:} As the system grows in the number of electrons and orbitals, the complexity of Hamiltonian construction and the excitation space increases exponentially.
-    \item \textbf{Quantum Noise and Errors:} On real devices, noise affects measurement fidelity. Our work, primarily simulation-oriented, plans to integrate mitigation techniques in future studies.
-    \item \textbf{Ansatz Choice:} Although the adaptive ansatz helps, there is no guarantee that the excitation selection is optimal. Future work might explore more complex heuristics.
-\end{itemize}
-
-To mitigate these issues, we opted for reduced basis sets, strategies such as re-initializing the optimizer when increasing the parameter space, and verifying convergence through multiple criteria (energetic and geometric).
-
-\section{Version Control}
-Git was employed for version control, enabling detailed tracking of code changes and ongoing collaboration with project supervisors. Initially, a single branch was used for development and exploration. Once a stable version was established, branches were created for testing and adding new features. The first branches were dedicated to different interface versions, each refined to ensure consistent performance across all interfaces. Ultimately, only the most suitable interface adjustments were merged back into the main branch.
+\end{enumerate}

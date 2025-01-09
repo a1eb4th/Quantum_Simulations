@@ -1,7 +1,5 @@
 \chapter{Results}
 This chapter should encompass your data analysis and findings. Additionally, include relevant tables, figures, and citations to support your results and interpretations. Here is a suggested list of topics to discuss:
-\section{Experimentos y Pruebas}
-
 \section{Interface Comparison}
 During the development of this project, various experiments were conducted to optimize the performance of a quantum molecular simulator. In this context, the choice of the interface for calculating cost functions is crucial, as these functions must be optimized to obtain the optimal state and geometry of each molecule. Typically, the \textit{JAX} interface is the most widely used due to its GPU acceleration capabilities, which generally provide greater efficiency and speed in searching for the minimum of the cost function.
 
@@ -326,4 +324,26 @@ Thus, it is concluded that the choice of \textit{step size} depends both on the 
 
 \section{Numero de Iteraciones}
 
-Finalmente, una de los procesos donde mas tiempo se consume en la simulación es en la actualización de parametros y de las coordenadas, en esta ultima prueba lo que queremos conseguir es poder optimizar el numero de iteraciones que se actualizan los parametros y las coordenadas antes de volver a calcular el Hamiltoniano. Para ello, hemos generado una serie de simulaciones con distintos numeros de iteraciones, y hemos observado la evolución de la energia en función de las iteraciones. La configuarción de los optimizadores, han sido con los valores optimos que hemos obtenido despues de haber hecho todas las pruebas, como se podra observar en las imagenes 
+Finalmente, una de los procesos donde mas tiempo se consume en la simulación es en la actualización de parametros y de las coordenadas, en esta ultima prueba lo que queremos conseguir es poder optimizar el numero de iteraciones que se actualizan los parametros y las coordenadas antes de volver a calcular el Hamiltoniano. Para ello, hemos generado una serie de simulaciones con distintos numeros de iteraciones, y hemos observado la evolución de la energia en función de las iteraciones. La configuarción de los optimizadores, han sido con los valores optimos que hemos obtenido despues de haber hecho todas las pruebas, como se podra observar en las imagenes
+
+
+\section{Limitaciones}
+En el desarrollo de este proyecto, se han identificado varias limitaciones que podrían haber influido en los resultados obtenidos. Es fundamental reconocer y comprender estas limitaciones para interpretar adecuadamente las conclusiones y orientar futuros trabajos de investigación.
+
+\subsection{Disponibilidad de un Ordenador Cuántico}
+Una de las limitaciones más evidentes ha sido la falta de acceso a un ordenador cuántico real para validar la implementación desarrollada. La simulación realizada se ha llevado a cabo en hardware clásico, lo que implica que no se ha podido verificar directamente cómo se comporta el simulador en una plataforma cuántica auténtica. Esta restricción limita la capacidad de evaluar el rendimiento y la eficiencia de la implementación en un entorno cuántico real, donde factores como la coherencia cuántica y el entrelazamiento podrían influir significativamente en los resultados.
+
+\subsection{No Implementación de Errores Cuánticos}
+Otra limitación importante ha sido la ausencia de modelado de errores cuánticos en la simulación. En los ordenadores cuánticos reales, los errores derivados de la decoherencia, las puertas cuánticas imperfectas y el ruido ambiental son inevitables y pueden afectar drásticamente la precisión de las simulaciones. Al no incorporar estos errores en el modelo, la simulación carece de la robustez necesaria para reflejar de manera fiel las condiciones operativas de un sistema cuántico real. La inclusión de errores podría haber aportado una mayor veracidad a los resultados, permitiendo evaluar la resiliencia del simulador frente a las imperfecciones inherentes a la computación cuántica.
+
+\subsection{Limitaciones Computacionales}
+Además de las limitaciones mencionadas, el uso de recursos computacionales clásicos para simular sistemas cuánticos complejos implica restricciones en cuanto al tamaño y la escala de los problemas que se pueden abordar. A medida que aumenta el número de qubits y la complejidad de las moléculas simuladas, el tiempo de cálculo y el consumo de memoria se incrementan de manera exponencial, lo que limita la capacidad para explorar configuraciones más grandes o más detalladas.
+
+\subsection{Optimización de Parámetros}
+La elección y configuración de los optimizadores utilizados también representan una limitación. Aunque se han realizado múltiples pruebas para identificar los parámetros óptimos, la selección de estos aún puede no ser la más adecuada para todos los casos, lo que podría afectar la eficiencia y la convergencia de las simulaciones. Además, la falta de un método sistemático para la selección de optimizadores específicos para diferentes tipos de moléculas podría limitar la generalización de los resultados obtenidos.
+
+\subsection{Falta de Validación Experimental}
+Finalmente, la ausencia de datos experimentales para validar los resultados obtenidos en la simulación constituye una limitación significativa. Sin comparaciones directas con resultados experimentales o con otras simulaciones validadas, es difícil asegurar la exactitud y la aplicabilidad de las conclusiones alcanzadas. La incorporación de datos experimentales futuros podría fortalecer la validez de las conclusiones y proporcionar una base más sólida para futuras investigaciones.
+
+En resumen, aunque el proyecto ha logrado avances significativos en la simulación molecular cuántica, estas limitaciones subrayan la necesidad de continuar desarrollando herramientas más robustas y de acceder a recursos computacionales cuánticos reales para validar y mejorar las implementaciones actuales.
+
