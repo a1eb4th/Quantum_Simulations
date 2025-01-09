@@ -10,6 +10,9 @@ def mol_optimizer(selected_molecules, optimizers, results_dir, ansatz_list):
 
     Args:
         selected_molecules (list): List of selected molecule objects.
+        optimizers (dict): A dictionary of optimizer instances configured based on user inputs.
+        results_dir :  The directory path where optimization results and visualizations will be saved.
+        ansatz_list (list of tuples): A list of tuples containing ansatz type, number of layers, and number of steps for each optimizer configuration.
 
     Returns:
         None

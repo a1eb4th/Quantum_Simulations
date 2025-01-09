@@ -7,6 +7,18 @@ from itertools import combinations
 import random
 
 def write_simulation_times(symbols, interface, optimizer_name, execution_times):
+    """
+    Records and appends the execution times of various functions during the simulation to a CSV file.
+
+    Args:
+        symbols (list of str): List of atomic symbols in the molecule (e.g., ['H', 'O']).
+        interface (str): The interface used for the simulation (e.g., 'autograd').
+        optimizer_name (str): Name of the optimizer used (e.g., 'Adam').
+        execution_times (dict): Dictionary containing execution times with function names as keys and time durations in seconds as values.
+
+    Returns:
+        None
+    """
     filename = "execution_times.csv"
     simulation_id = f"{symbols}_{interface}_{optimizer_name}"
     df_new = pd.DataFrame(list(execution_times.items()), columns=['Function', simulation_id])
@@ -25,6 +37,16 @@ def write_simulation_times(symbols, interface, optimizer_name, execution_times):
         df_combined.to_csv(fh)
 
 def _get_all_energies(results):
+    """
+    This helper function traverses the nested results dictionary to collect all energy history lists
+    from different interfaces and optimizers.
+
+    Args:
+        results (dict): Nested dictionary containing optimization results organized by interfaces and optimizers.
+
+    Returns:
+        list of float: A flattened list of all energy values across all optimizations.
+    """
     all_energies = []
     for interface_results in results.values():
         for data in interface_results.values():
@@ -33,6 +55,15 @@ def _get_all_energies(results):
     return all_energies
 
 def _compute_offset_for_log(results):
+    """
+    Computes an appropriate offset to ensure all energy values are positive for logarithmic plotting.
+    
+    Args:
+        results (dict): Nested dictionary containing optimization results organized by interfaces and optimizers.
+
+    Returns:
+        float: The computed offset to be added to energy values for log-scale plotting.
+    """
     energies = _get_all_energies(results)
     if not energies:
         return 1e-9
@@ -43,6 +74,17 @@ def _compute_offset_for_log(results):
     return offset
 
 def visualize_results(results, symbols, results_dir):
+    """
+    Generates and saves visualizations of the energy evolution, interatomic distances, and final geometries. Creates two plots for energy evolution (linear and logarithmic scales with offset), interatomic distance plots, and final geometry visualizations. All plots are saved in the specified results directory.
+
+    Args:
+        results (dict): Nested dictionary containing optimization results organized by interfaces and optimizers.
+        symbols (list of str): List of atomic symbols in the molecule (e.g., ['H', 'O']).
+        results_dir (str): Directory path where the generated plots will be saved.
+
+    Returns:
+        None
+    """
     offset = _compute_offset_for_log(results)
 
     plt.figure(figsize=(10, 6))
@@ -91,14 +133,28 @@ def visualize_results(results, symbols, results_dir):
 
 def visualize_energy_vs_time(results, results_dir, offset=1e-9):
     """
-    Genera dos gráficas:
-      1) Energy vs Time (Linear)
-      2) Energy vs Time (Log Scale, con offset)
-    tomando la información de subpasos que se haya registrado en execution_times
-    con claves del tipo "Iteration i - Substep j".
-    """
+    Generates and saves plots of energy versus time in both linear and logarithmic scales.
 
-    # ============= GRÁFICA LINEAL =============
+    This function creates two plots:
+        1. Energy vs Time (Linear Scale)
+        2. Energy vs Time (Logarithmic Scale with Offset)
+
+    It extracts execution times from the `execution_times` dictionary within the results and correlates them with the corresponding energy values to plot the energy evolution over time.
+
+    Args:
+        results (dict): Nested dictionary containing optimization results organized by interfaces and optimizers.
+        results_dir (str): Directory path where the generated plots will be saved.
+        offset (float, optional): Offset added to energy values to ensure positivity for log-scale plotting. Defaults to 1e-9.
+
+    Returns:
+        None
+    """
+    def parse_substep_key(k):
+                part_iter, part_sub = k.split(" - ")
+                i = int(part_iter.split()[1]) 
+                j = int(part_sub.split()[1])
+                return (i, j)
+    # ============= LINEAR PLOT =============
     plt.figure(figsize=(10, 6))
     plt.title('Energy vs Time (Linear)', fontsize=16)
 
@@ -107,21 +163,10 @@ def visualize_energy_vs_time(results, results_dir, offset=1e-9):
             energy_history = data.get("energy_history", [])
             execution_times = data.get("execution_times", {})
 
-            # Filtrar todas las claves del estilo "Iteration X - Substep Y"
             substep_keys = [k for k in execution_times.keys() if 'Substep' in k]
 
-            # Función auxiliar para parsear la clave "Iteration i - Substep j"
-            def parse_substep_key(k):
-                # Separamos en "Iteration i" y "Substep j"
-                part_iter, part_sub = k.split(" - ")
-                i = int(part_iter.split()[1])   # p.ej. 'Iteration 2' -> 2
-                j = int(part_sub.split()[1])    # p.ej. 'Substep 5'  -> 5
-                return (i, j)
-
-            # Ordenamos las claves primero por i (Iteration), luego por j (Substep)
             substep_keys.sort(key=lambda x: parse_substep_key(x))
 
-            # Reconstruimos el eje de tiempos acumulados
             cumulative_times = []
             current_time = 0.0
             for key in substep_keys:
@@ -129,25 +174,14 @@ def visualize_energy_vs_time(results, results_dir, offset=1e-9):
                 current_time += duration
                 cumulative_times.append(current_time)
 
-            # Tomamos la parte de energy_history correspondiente
             min_length = min(len(energy_history), len(cumulative_times))
             time_slice = cumulative_times[:min_length]
             energy_slice = energy_history[:min_length]
 
             if len(energy_slice) > 0:
                 label = f"{optimizer_name} ({interface})"
-                plt.plot(time_slice,
-                         energy_slice,
-                         marker='o',
-                         linestyle='-',
-                         linewidth=1.0,
-                         markersize=4,
-                         label=label)
-                # Marcamos el último punto
-                plt.plot(time_slice[-1], energy_slice[-1],
-                         marker='*',
-                         markersize=10,
-                         color='red')
+                plt.plot(time_slice, energy_slice, marker='o', linestyle='-', linewidth=1.0, markersize=4, label=label)
+                plt.plot(time_slice[-1], energy_slice[-1], marker='*', markersize=10, color='red')
 
     plt.xlabel('Time (s)', fontsize=14)
     plt.ylabel('Energy (Ha)', fontsize=14)
@@ -158,7 +192,7 @@ def visualize_energy_vs_time(results, results_dir, offset=1e-9):
     plt.savefig(os.path.join(results_dir, "energy_vs_time_linear.png"))
     plt.close()
 
-    # ============= GRÁFICA LOGARÍTMICA (con offset) =============
+    # ============= LOGARITHMIC PLOT (with offset) =============
     plt.figure(figsize=(10, 6))
     plt.title('Energy vs Time (Log Scale with Offset)', fontsize=16)
 
@@ -190,17 +224,8 @@ def visualize_energy_vs_time(results, results_dir, offset=1e-9):
 
             if len(energy_offset) > 0:
                 label = f"{optimizer_name} ({interface})"
-                plt.plot(time_slice,
-                         energy_offset,
-                         marker='o',
-                         linestyle='-',
-                         linewidth=1.0,
-                         markersize=4,
-                         label=label)
-                plt.plot(time_slice[-1], energy_offset[-1],
-                         marker='*',
-                         markersize=10,
-                         color='red')
+                plt.plot(time_slice, energy_offset, marker='o', linestyle='-', linewidth=1.0, markersize=4, label=label)
+                plt.plot(time_slice[-1], energy_offset[-1], marker='*', markersize=10, color='red')
 
     plt.xlabel('Time (s)', fontsize=14)
     ylabel = f'Energy (Ha) + {offset:.2e}' if offset != 0 else 'Energy (Ha)'
@@ -214,6 +239,17 @@ def visualize_energy_vs_time(results, results_dir, offset=1e-9):
     plt.close()
 
 def visualize_interatomic_distances(results, symbols, results_dir):
+    """
+    For each unique pair of atoms in the molecule, this function plots the distance between them as it evolves over the optimization steps. Each optimizer and interface combination is represented with distinct labels in the plots.
+
+    Args:
+        results (dict): Nested dictionary containing optimization results organized by interfaces and optimizers.
+        symbols (list of str): List of atomic symbols in the molecule (e.g., ['H', 'O']).
+        results_dir (str): Directory path where the generated plots will be saved.
+
+    Returns:
+        None
+    """
     num_atoms = len(symbols)
     atom_pairs = list(combinations(range(num_atoms), 2))
     if len(atom_pairs) == 0:
@@ -241,6 +277,17 @@ def visualize_interatomic_distances(results, symbols, results_dir):
         plt.close()
 
 def visualize_final_geometries(results, symbols, results_dir):
+    """
+    This function visualizes the final positions of atoms in 3D space, allowing for a comparison of optimized molecular geometries obtained from different optimizers and interfaces.
+
+    Args:
+        results (dict): Nested dictionary containing optimization results organized by interfaces and optimizers.
+        symbols (list of str): List of atomic symbols in the molecule (e.g., ['H', 'O']).
+        results_dir (str): Directory path where the generated plot will be saved.
+
+    Returns:
+        None
+    """
     fig = plt.figure(figsize=(10, 8))
     ax = fig.add_subplot(111, projection='3d')
     colors = ['r', 'g', 'b', 'm', 'c', 'y', 'k']
@@ -270,9 +317,7 @@ def visualize_final_geometries(results, symbols, results_dir):
             for i, atom in enumerate(symbols):
                 label = f"{atom} - {optimizer_name} ({interface})" if not label_shown else ""
                 label_shown = True
-                ax.scatter(final_coords[i, 0], final_coords[i, 1], final_coords[i, 2],
-                           color=color, marker=marker, s=sizes[i],
-                           label=label if label and label not in used_labels else "")
+                ax.scatter(final_coords[i, 0], final_coords[i, 1], final_coords[i, 2], color=color, marker=marker, s=sizes[i], label=label if label and label not in used_labels else "")
                 if label and label not in used_labels:
                     used_labels.add(label)
                 ax.text(final_coords[i, 0], final_coords[i, 1], final_coords[i, 2],

@@ -6,7 +6,7 @@ import pstats
 from io import StringIO
 import time
 
-TEMP_RESULTS_DIR = "step_size/results_H2_QNG"
+TEMP_RESULTS_DIR = "temp_results/results_H2"
 
 def main():
     from config.config_functions import from_user_input
@@ -60,7 +60,7 @@ if __name__ == "__main__":
         print(f"Report completely saved on: {profiler_output_path}")
         print(f"Filtered report saved on: {filtered_report_path}")
 
-    # Restaurar stdout
+    # Restart stdout
     sys.stdout = original_stdout
     output_file.close()
 

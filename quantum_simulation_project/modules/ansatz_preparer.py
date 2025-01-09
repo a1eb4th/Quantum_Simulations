@@ -3,8 +3,18 @@ from pennylane import numpy as np
 
 def prepare_ansatz_uccsd(params, hf_state, selected_excitations, spin_orbitals):
     """
-    Prepara el ansatz tipo UCCSD (basado en excitaciones simples y dobles).
-    Este es el ansatz original que tenías.
+    Prepares the Unitary Coupled Cluster Singles and Doubles (UCCSD) ansatz based on selected excitations.
+
+    This ansatz initializes the Hartree-Fock state and applies single or double excitation gates depending on the selected excitations.
+
+    Args:
+        params (array-like): Variational parameters for the excitation gates.
+        hf_state (array-like): Hartree-Fock state as a binary string indicating occupied orbitals.
+        selected_excitations (list of tuples): List of selected excitations, where each excitation is represented by a tuple of wire indices.
+        spin_orbitals (int): Number of spin orbitals in the system.
+
+    Returns:
+        None
     """
     qml.BasisState(hf_state, wires=range(spin_orbitals))
     for i, exc in enumerate(selected_excitations):
@@ -15,23 +25,25 @@ def prepare_ansatz_uccsd(params, hf_state, selected_excitations, spin_orbitals):
 
 def prepare_ansatz_vqe_classic(num_layers, params, hf_state, selected_excitations, spin_orbitals):
     """
-    Ansatzt tipo hardware-efficient con 10 capas.
-    Cada capa:
-    - Aplica Rx y Ry en cada qubit.
-    - Aplica una cadena de CNOT lineal entre los qubits.
+    Prepares a hardware-efficient VQE ansatz with a specified number of layers.
 
-    Número de parámetros:
-    Por capa:
-      - Para cada qubit: 2 parámetros (uno para RX y otro para RY)
-    Total por capa: 2 * spin_orbitals
-    Total para 10 capas: 10 * 2 * spin_orbitals
+    The total number of parameters per layer is 2 times the number of spin orbitals (one for RX and one for RY per qubit).
+    For `num_layers` layers, the total number of parameters is `num_layers * 2 * spin_orbitals`.
 
-    Se asume que 'params' es un array 1D con dimensión >= 20 * spin_orbitals.
+    Args:
+        num_layers (int): Number of ansatz layers to apply.
+        params (array-like): Variational parameters for the RX and RY gates.
+        hf_state (array-like): Hartree-Fock state as a binary string indicating occupied orbitals.
+        selected_excitations (list): Not used in this ansatz type but included for interface consistency.
+        spin_orbitals (int): Number of spin orbitals in the system.
+
+    Returns:
+        None
     """
     num_layers = num_layers
     param_idx = 0
     for _ in range(num_layers):
-        # RX y RY en cada qubit
+        # Apply RX and RY rotations on each qubit
         for q in range(spin_orbitals):
             qml.RX(params[param_idx], wires=q)
             param_idx += 1
@@ -39,7 +51,7 @@ def prepare_ansatz_vqe_classic(num_layers, params, hf_state, selected_excitation
             qml.RY(params[param_idx], wires=q)
             param_idx += 1
 
-        # CNOT en cadena
+        # Apply a linear chain of CNOT gates
         for i in range(spin_orbitals - 1):
             qml.CNOT(wires=[i, i+1])
 
@@ -54,14 +66,25 @@ ANSATZ_MAP = {
 
 def prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals, ansatz_type="uccsd", num_layers = 10):
     """
-    Prepares the quantum ansatz using the selected ansatz type.
-    
+    Prepares the quantum ansatz based on the specified ansatz type.
+
+    Depending on the `ansatz_type`, it calls the corresponding ansatz preparation function.
+    For UCCSD, it utilizes selected excitations, whereas for hardware-efficient ansatzes like VQE Classic,
+    it uses a layered approach with RX, RY, and CNOT gates.
+
     Args:
-        params (array): Variational parameters.
-        hf_state (array): Hartree-Fock state.
-        selected_excitations (list): List of selected excitations (only used for UCC-type ansatz).
-        spin_orbitals (int): Number of spin orbitals.
-        ansatz_type (str): Type of ansatz to use ("uccsd", "vqe_classic", etc.)
+        params (array-like): Variational parameters for the ansatz gates.
+        hf_state (array-like): Hartree-Fock state as a binary string indicating occupied orbitals.
+        selected_excitations (list of tuples): List of selected excitations (used only for UCCSD ansatz).
+        spin_orbitals (int): Number of spin orbitals in the system.
+        ansatz_type (str, optional): Type of ansatz to prepare ("uccsd", "vqe_classic", etc.). Defaults to "uccsd".
+        num_layers (int, optional): Number of layers for layered ansatz types like "vqe_classic". Defaults to 10.
+
+    Raises:
+        ValueError: If the specified `ansatz_type` is not recognized.
+
+    Returns:
+        None
     """
     if ansatz_type not in ANSATZ_MAP:
         raise ValueError(f"Ansatz type '{ansatz_type}' is not recognized. Available: {list(ANSATZ_MAP.keys())}")
@@ -72,22 +95,26 @@ def prepare_ansatz(params, hf_state, selected_excitations, spin_orbitals, ansatz
         ansatz_fn(params, hf_state, selected_excitations, spin_orbitals)
     else:
         ansatz_fn(num_layers,params, hf_state, [], spin_orbitals)
+
 def compute_operator_gradients(operator_pool, selected_excitations, params, hamiltonian, hf_state, dev, spin_orbitals, ansatz_type="uccsd"):
     """
-    Calcula los gradientes de energía con respecto a cada operador en el pool.
-    
+    Computes the energy gradients with respect to each operator in the operator pool.
+
+    For each operator in the `operator_pool`, this function calculates the absolute value of the gradient
+    of the expectation value of the Hamiltonian with respect to the operator's parameter.
+
     Args:
-        operator_pool (list): Lista de excitaciones disponibles.
-        selected_excitations (list): Lista de excitaciones seleccionadas.
-        params (np.ndarray o jnp.ndarray): Parámetros del ansatz.
-        hamiltonian (qml.Hamiltonian): Hamiltoniano molecular.
-        hf_state (np.ndarray): Estado de Hartree-Fock.
-        dev (qml.Device): Dispositivo cuántico.
-        spin_orbitals (int): Número de orbitales de spin.
-        interface (str, optional): 'jax' o 'autograd' para diferenciación.
-    
+        operator_pool (list of tuples): List of available excitations, where each excitation is represented by a tuple of wire indices.
+        selected_excitations (list of tuples): List of currently selected excitations (used for ansatz preparation).
+        params (np.ndarray): Variational parameters for the ansatz.
+        hamiltonian (qml.Hamiltonian): Molecular Hamiltonian.
+        hf_state (np.ndarray): Hartree-Fock state as a binary string indicating occupied orbitals.
+        dev (qml.Device): Quantum device to execute the circuits.
+        spin_orbitals (int): Number of spin orbitals in the system.
+        ansatz_type (str, optional): Type of ansatz to use ("uccsd", "vqe_classic", etc.). Defaults to "uccsd".
+
     Returns:
-        gradients (list o jnp.ndarray): Lista de gradientes absolutos para cada operador.
+        gradients (list of float): List of absolute gradient values for each operator in the pool.
     """
     gradients = []
     for gate_wires in operator_pool:
@@ -110,16 +137,20 @@ def compute_operator_gradients(operator_pool, selected_excitations, params, hami
 
 def select_operator(gradients, operator_pool, convergence):
     """
-    Selects the operator with the largest gradient from the pool.
+    Selects the operator with the largest gradient from the operator pool.
+
+    This function identifies the operator corresponding to the highest absolute gradient.
+    If the maximum gradient is below the specified convergence threshold, it indicates that convergence has been achieved.
 
     Args:
-        gradients (list or jnp.ndarray): List of absolute gradients.
-        operator_pool (list): List of available excitations.
-        convergence (float): Convergence criterion.
+        gradients (list of float): List of absolute gradient values for each operator.
+        operator_pool (list of tuples): List of available excitations, where each excitation is represented by a tuple of wire indices.
+        convergence (float): Convergence criterion threshold. If the maximum gradient is below this value, selection stops.
 
     Returns:
-        selected_gate (tuple or None): Selected excitation or None if convergence is reached.
-        max_grad_value (float or None): Maximum gradient value or None.
+        tuple:
+            selected_gate (tuple or None): The selected excitation with the highest gradient. Returns `None` if convergence is achieved or no operators are left.
+            max_grad_value (float or None): The value of the maximum gradient. Returns `None` if convergence is achieved or no operators are left.
     """
     if len(gradients) == 0 or np.all(np.isnan(gradients)):
         print("No more operators to add.")

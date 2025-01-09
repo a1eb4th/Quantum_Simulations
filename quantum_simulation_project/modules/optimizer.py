@@ -20,6 +20,22 @@ CONV = 1e-8
 CONSECUTIVE_CONV = 3
 
 def compute_exact_energy(symbols, coordinates, charge, mult, basis_name='sto-3g'):
+    """
+    Computes the exact ground-state energy of a molecule using Full Configuration Interaction (FCI).
+
+    This function constructs the molecular Hamiltonian for the given molecular geometry and computes
+    its lowest eigenvalue using sparse linear algebra methods.
+
+    Args:
+        symbols (list of str): List of atomic symbols in the molecule (e.g., ['H', 'H']).
+        coordinates (list or array-like): Atomic coordinates in Angstroms, flattened as [x1, y1, z1, x2, y2, z2, ...].
+        charge (int): Total charge of the molecule.
+        mult (int): Multiplicity of the molecule (e.g., 1 for singlet, 2 for doublet).
+        basis_name (str, optional): Basis set to use for the calculation. Defaults to 'sto-3g'.
+
+    Returns:
+        float: The exact ground-state energy of the molecule in Hartree (Ha).
+    """
     coordinates = np.array(coordinates)
     hamiltonian, qubits = qml.qchem.molecular_hamiltonian(
         symbols, coordinates.reshape(-1, 3), charge=charge, mult=mult, basis=basis_name
@@ -29,6 +45,28 @@ def compute_exact_energy(symbols, coordinates, charge, mult, basis_name='sto-3g'
     return float(eigenvalues[0])
 
 def compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, interface='autograd', charge=0, mult=1, basis_name='sto-3g'):
+    """
+    Computes the gradients of the energy with respect to nuclear coordinates using finite differences.
+
+    This function perturbs each nuclear coordinate slightly in the positive and negative directions,
+    computes the corresponding energies, and estimates the gradient as the central difference.
+
+    Args:
+        params (array-like): Variational parameters for the ansatz.
+        x (array-like): Current nuclear coordinates.
+        symbols (list of str): List of atomic symbols in the molecule.
+        selected_excitations (list of tuples): List of selected excitations for the ansatz.
+        dev (qml.Device): Quantum device to execute the circuits.
+        hf_state (array-like): Hartree-Fock state as a binary string indicating occupied orbitals.
+        spin_orbitals (int): Number of spin orbitals in the system.
+        interface (str, optional): Interface for PennyLane (e.g., 'autograd'). Defaults to 'autograd'.
+        charge (int, optional): Total charge of the molecule. Defaults to 0.
+        mult (int, optional): Multiplicity of the molecule. Defaults to 1.
+        basis_name (str, optional): Basis set to use for the calculation. Defaults to 'sto-3g'.
+
+    Returns:
+        np.ndarray: Gradient of the energy with respect to each nuclear coordinate.
+    """
     from .hamiltonian_builder import build_hamiltonian
     from .ansatz_preparer import prepare_ansatz
     delta = 1e-3
@@ -57,6 +95,19 @@ def compute_nuclear_gradients(params, x, symbols, selected_excitations, dev, hf_
     return grad_x
 
 def check_convergence(energy, prev_energy, recent_diffs):
+    """
+    This function monitors the recent differences between consecutive energy evaluations.
+    If a specified number of consecutive differences are below the convergence threshold,
+    the optimization is considered to have converged.
+
+    Args:
+        energy (float): Current energy value.
+        prev_energy (float or None): Previous energy value.
+        recent_diffs (list of float): List of recent energy differences.
+
+    Returns:
+        bool: True if convergence is achieved, False otherwise.
+    """
     if prev_energy is not None:
         diff = abs(energy - prev_energy)
         recent_diffs.append(diff)
@@ -67,6 +118,43 @@ def check_convergence(energy, prev_energy, recent_diffs):
     return False
 
 def update_parameters_and_coordinates(iteration, execution_times, opt, nsteps, opt_state, cost_fn, params, x, symbols, selected_excitations, dev, hf_state, spin_orbitals, learning_rate_x, interface, charge, mult, basis_name, prev_energy, recent_diffs):
+    """
+    This function performs a series of optimization steps, updating the parameters and coordinates
+    based on gradients. It also checks for convergence after each substep.
+
+    Args:
+        iteration (int): Current iteration number.
+        execution_times (dict): Dictionary tracking execution times of various components.
+        opt (Optimizer): Optimizer instance used for updating parameters.
+        nsteps (int): Number of optimization steps to perform in this call.
+        opt_state: Current state of the optimizer.
+        cost_fn (callable): Cost function to minimize.
+        params (np.ndarray): Current variational parameters.
+        x (np.ndarray): Current nuclear coordinates.
+        symbols (list of str): List of atomic symbols in the molecule.
+        selected_excitations (list of tuples): List of selected excitations for the ansatz.
+        dev (qml.Device): Quantum device to execute the circuits.
+        hf_state (array-like): Hartree-Fock state as a binary string indicating occupied orbitals.
+        spin_orbitals (int): Number of spin orbitals in the system.
+        learning_rate_x (float): Learning rate for updating nuclear coordinates.
+        interface (str): Interface for PennyLane (e.g., 'autograd').
+        charge (int): Total charge of the molecule.
+        mult (int): Multiplicity of the molecule.
+        basis_name (str): Basis set to use for the calculation.
+        prev_energy (float or None): Previous energy value.
+        recent_diffs (list of float): List of recent energy differences for convergence checking.
+
+    Returns:
+        tuple:
+            params (np.ndarray): Updated variational parameters.
+            x (np.ndarray): Updated nuclear coordinates.
+            energy_history (list of float): History of energy values.
+            x_history (list of np.ndarray): History of nuclear coordinates.
+            opt_state: Updated optimizer state.
+            converged (bool): Whether convergence was achieved.
+            prev_energy (float or None): Updated previous energy value.
+            recent_diffs (list of float): Updated list of recent energy differences.
+    """
     energy_history = []
     x_history = []
     converged = False
@@ -83,33 +171,60 @@ def update_parameters_and_coordinates(iteration, execution_times, opt, nsteps, o
         )
         x = x - learning_rate_x * grad_x
 
-        # Chequeo de convergencia
+        # Check for convergence
         if check_convergence(energy, prev_energy, recent_diffs):
             print(f"Convergence reached updating parameters and coordinates: Energy difference < {CONV}")
             converged = True
             prev_energy = energy
-            # Guardar tiempo de este subpaso antes de salir
             end_substep_time = time.time()
             substep_duration = end_substep_time - start_substep_time
             execution_times[f"Iteration {iteration+1} - Substep {substep_idx+1}"] = substep_duration
             return params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs
 
-        # Actualizamos prev_energy
         prev_energy = energy
 
-        # Guardar tiempo de este subpaso
         end_substep_time = time.time()
         substep_duration = end_substep_time - start_substep_time
 
-        # Ej: clave "Iteration 1 - Substep 3"
         execution_times[f"Iteration {iteration+1} - Substep {substep_idx+1}"] = substep_duration
 
-        # Reiniciamos para el siguiente subpaso
         start_substep_time = time.time()
 
     return params, x, energy_history, x_history, opt_state, converged, prev_energy, recent_diffs
 
 def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, operator_pool_copy, selected_excitations, opt, nsteps, opt_state, max_iterations, learning_rate_x):
+    """
+    Runs the optimization loop for the UCCSD ansatz to find the ground-state energy and optimized geometry. Iteratively builds the ansatz by selecting operators based on energy gradients,
+    updates variational parameters and nuclear coordinates, and checks for convergence.
+
+    Args:
+        symbols (list of str): List of atomic symbols in the molecule.
+        x (np.ndarray): Initial nuclear coordinates.
+        params (np.ndarray): Initial variational parameters.
+        hf_state (array-like): Hartree-Fock state as a binary string indicating occupied orbitals.
+        spin_orbitals (int): Number of spin orbitals in the system.
+        charge (int): Total charge of the molecule.
+        mult (int): Multiplicity of the molecule.
+        basis_name (str): Basis set to use for the calculation.
+        dev (qml.Device): Quantum device to execute the circuits.
+        interface (str): Interface for PennyLane (e.g., 'autograd').
+        operator_pool_copy (list of tuples): Copy of the operator pool containing available excitations.
+        selected_excitations (list of tuples): List of currently selected excitations.
+        opt (Optimizer): Optimizer instance used for updating parameters.
+        nsteps (int): Number of optimization steps per iteration.
+        opt_state: Current state of the optimizer.
+        max_iterations (int): Maximum number of optimization iterations.
+        learning_rate_x (float): Learning rate for updating nuclear coordinates.
+
+    Returns:
+        tuple:
+            params (np.ndarray): Optimized variational parameters.
+            x (np.ndarray): Optimized nuclear coordinates.
+            energy_history_total (list of float): History of energy values throughout optimization.
+            x_history_total (list of np.ndarray): History of nuclear coordinates throughout optimization.
+            params_history (list of np.ndarray): History of parameter sets throughout optimization.
+            execution_times (dict): Dictionary tracking execution times of various components.
+    """
     from .hamiltonian_builder import build_hamiltonian
     from .ansatz_preparer import prepare_ansatz, compute_operator_gradients, select_operator
 
@@ -194,6 +309,39 @@ def run_optimization_uccsd(symbols, x, params, hf_state, spin_orbitals, charge, 
     return params, x, energy_history_total, x_history_total, params_history, execution_times
 
 def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, charge, mult, basis_name, dev, interface, selected_excitations, opt, nsteps, opt_state, max_iterations, learning_rate_x, num_layers = 10):
+    """
+    Runs the optimization loop for the hardware-efficient VQE Classic ansatz to find the ground-state energy and optimized geometry.
+
+    This function iteratively updates variational parameters and nuclear coordinates using a layered ansatz, performing optimization steps and checking for convergence.
+
+    Args:
+        symbols (list of str): List of atomic symbols in the molecule.
+        x (np.ndarray): Initial nuclear coordinates.
+        params (np.ndarray): Initial variational parameters.
+        hf_state (array-like): Hartree-Fock state as a binary string indicating occupied orbitals.
+        spin_orbitals (int): Number of spin orbitals in the system.
+        charge (int): Total charge of the molecule.
+        mult (int): Multiplicity of the molecule.
+        basis_name (str): Basis set to use for the calculation.
+        dev (qml.Device): Quantum device to execute the circuits.
+        interface (str): Interface for PennyLane (e.g., 'autograd').
+        selected_excitations (list of tuples): List of currently selected excitations.
+        opt (Optimizer): Optimizer instance used for updating parameters.
+        nsteps (int): Number of optimization steps per iteration.
+        opt_state: Current state of the optimizer.
+        max_iterations (int): Maximum number of optimization iterations.
+        learning_rate_x (float): Learning rate for updating nuclear coordinates.
+        num_layers (int, optional): Number of layers in the VQE Classic ansatz. Defaults to 10.
+
+    Returns:
+        tuple:
+            params (np.ndarray): Optimized variational parameters.
+            x (np.ndarray): Optimized nuclear coordinates.
+            energy_history_total (list of float): History of energy values throughout optimization.
+            x_history_total (list of np.ndarray): History of nuclear coordinates throughout optimization.
+            params_history (list of np.ndarray): History of parameter sets throughout optimization.
+            execution_times (dict): Dictionary tracking execution times of various components.
+    """
     from .hamiltonian_builder import build_hamiltonian
     from .ansatz_preparer import prepare_ansatz
 
@@ -269,9 +417,36 @@ def run_optimization_vqe_classic(symbols, x, params, hf_state, spin_orbitals, ch
 
 
 def run_single_optimizer(optimizer_name, opt, ansatz_type_opt, layers, nsteps, symbols, x_init, electrons, spin_orbitals, charge, mult, basis_name, hf_state, dev, operator_pool, exact_energy, results_dir):
-    #from .hamiltonian_builder import build_hamiltonian, generate_hf_state, get_operator_pool
-    #from .ansatz_preparer import prepare_ansatz, compute_operator_gradients, select_operator
+    """
+    Executes the optimization process for a single optimizer and saves the output to a file.
 
+    This function sets up the optimization environment, runs the optimization loop using either
+    the UCCSD or VQE Classic ansatz, and records the results and execution times.
+
+    Args:
+        optimizer_name (str): Name of the optimizer being used.
+        opt (Optimizer): Optimizer instance used for updating parameters.
+        ansatz_type_opt (str): Type of ansatz to use ("uccsd" or "vqe_classic").
+        layers (int): Number of layers for the ansatz (applicable for layered ansatz types).
+        nsteps (int): Number of optimization steps per iteration.
+        symbols (list of str): List of atomic symbols in the molecule.
+        x_init (np.ndarray): Initial nuclear coordinates.
+        electrons (int): Number of electrons in the molecule.
+        spin_orbitals (int): Number of spin orbitals in the system.
+        charge (int): Total charge of the molecule.
+        mult (int): Multiplicity of the molecule.
+        basis_name (str): Basis set to use for the calculation.
+        hf_state (array-like): Hartree-Fock state as a binary string indicating occupied orbitals.
+        dev (qml.Device): Quantum device to execute the circuits.
+        operator_pool (list of tuples): Pool of available excitations.
+        exact_energy (float): Exact ground-state energy for reference.
+        results_dir (str): Directory to save the optimizer's output files.
+
+    Returns:
+        tuple:
+            optimizer_name (str): Name of the optimizer.
+            result (dict): Dictionary containing optimization results.
+    """
     output_file = os.path.join(results_dir, f"output_{optimizer_name}.txt")
     orig_stdout = os.sys.stdout
     with open(output_file, "w", buffering=1) as f:
@@ -321,18 +496,27 @@ def run_single_optimizer(optimizer_name, opt, ansatz_type_opt, layers, nsteps, s
         "layers": layers 
     }
     return optimizer_name, result
-def optimize_molecule(
-    symbols,
-    x_init,
-    electrons,
-    spin_orbitals,
-    optimizers,
-    charge=0,
-    mult=1,
-    basis_name='sto-3g',
-    ansatz_list=[("uccsd", 0, 10)],  # e.g. (ans_type, layers, nsteps)
-    results_dir="temp_results_autograd"
-):
+def optimize_molecule(symbols, x_init, electrons, spin_orbitals, optimizers, charge=0, mult=1, basis_name='sto-3g', ansatz_list=[("uccsd", 0, 10)], results_dir="temp_results_autograd"):
+    """
+    Orchestrates the optimization of a molecule's geometry and electronic structure using multiple optimizers. Computes the exact energy for reference, generates the Hartree-Fock state, and sets up the operator pool. It then runs optimizations in parallel for each optimizer, collects the results, and outputs the final energies, differences from exact energies, optimized geometries, and quantum circuits.
+
+    Args:
+        symbols (list of str): List of atomic symbols in the molecule.
+        x_init (np.ndarray): Initial nuclear coordinates.
+        electrons (int): Number of electrons in the molecule.
+        spin_orbitals (int): Number of spin orbitals in the system.
+        optimizers (dict): Dictionary mapping optimizer names to optimizer instances.
+        charge (int, optional): Total charge of the molecule. Defaults to 0.
+        mult (int, optional): Multiplicity of the molecule. Defaults to 1.
+        basis_name (str, optional): Basis set to use for the calculation. Defaults to 'sto-3g'.
+        ansatz_list (list of tuples, optional): List of tuples specifying ansatz types, number of layers, and number of steps (e.g., [("uccsd", 0, 10)]). Defaults to [("uccsd", 0, 10)].
+        results_dir (str, optional): Directory to save optimization results. Defaults to "temp_results_autograd".
+
+    Returns:
+        dict: Dictionary containing results for the 'autograd' interface, including energy histories,
+              coordinate histories, parameter histories, final energies, final parameters, final coordinates,
+              exact energy references, execution times, selected excitations, ansatz types, and layers.
+    """
     from .hamiltonian_builder import build_hamiltonian, generate_hf_state, get_operator_pool
     from .ansatz_preparer import prepare_ansatz
 

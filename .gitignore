@@ -12,5 +12,6 @@ temp_results/
 temp_results_jax/
 temp_results_autograd/
 step_size/
+num_iterations/
 *.csv
 .codegpt
