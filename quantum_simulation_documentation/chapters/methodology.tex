@@ -361,6 +361,184 @@ print(tabulate(atoms_coords, headers=["Symbol", "x (A)", "y (A)", "z (A)"], floa
 \paragraph{Efficiency of the Coupled Strategy}
 By refining \(\theta\) and \(\mathbf{X}\) concurrently, each electronic update leverages a geometry already progressing toward equilibrium. Likewise, every geometric move reflects the latest improvements to the electronic wavefunction. This synergy minimizes redundant calculations and avoids suboptimal solutions, typically leading to faster, more stable convergence compared to the conventional, decoupled approach.
 
+\section{Parallelization of Executions}
+One of the main improvements implemented in the project to accelerate execution and provide greater flexibility in our simulations has been parallelization. To achieve this, it was necessary to adapt the code so that simulations could be executed concurrently. Below, the process followed to enable this functionality is detailed.
+
+\subsection{User Input Management and System Configuration}
+To allow the user to configure the different types of simulations, a configuration file was incorporated in the \texttt{config/} directory, named \texttt{config\_functions.py}. This file defines variables that allow specifying, among other things, the type of molecule, the optimizer, and the \emph{ansatz}:
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=User Input Management, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+    stepnumber=1, numbersep=8pt, breaklines=true}}
+parser = argparse.ArgumentParser(description='Quantum simulation of molecules using VQE.')
+parser.add_argument('--molecule', type=str, nargs='+', help='Molecule(s) to simulate.')
+parser.add_argument('--optimizer', type=str, nargs='+', help='Optimizers to use (Adam, Adagrad, etc.).')
+parser.add_argument('--stepsize', type=float, nargs='+', default=[0.4], help='Optimizer step size(s).')
+parser.add_argument('--ansatz', type=str, nargs='+', help='Ansatz to use (e.g. uccsd, vqe_classic).')
+args = parser.parse_args()
+\end{tcblisting}
+
+Before starting each simulation, two key lists are constructed:
+\begin{itemize}
+    \item One with the optimizers to be used for each execution.
+    \item Another with the additional parameters (the type of \emph{ansatz}, the number of layers, the number of optimizations, etc.).
+\end{itemize}
+
+The \texttt{build\_optimizers} function automatically generates the optimizers and organizes these parameters:
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Generación de optimizadores, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+    stepnumber=1, numbersep=8pt, breaklines=true}}
+def build_optimizers(args, ansatz_list, optimizer_map, predefined_steps):
+    optimizers, new_ans = {}, []
+    if args.all_optimizers:
+        all_opts = list(optimizer_map.keys())
+        user_steps = (args.stepsize != [0.4] or len(args.stepsize) > 1)
+        for opt in all_opts:
+            steps_for_opt = args.stepsize if user_steps else [predefined_steps[opt]]
+            for step in steps_for_opt:
+                for n in args.opt_step:
+                    for ans_type, layer in ansatz_list:
+                        name = f"{opt}_{step}_{ans_type}_{layer}layers_{n}steps"
+                        optimizers[name] = optimizer_map[opt](stepsize=step)
+                        new_ans.append((ans_type, layer, n))
+    elif args.optimizer:
+        for opt in args.optimizer:
+            if opt not in optimizer_map:
+                print(f"Error: Optimizer '{opt}' not recognized.")
+                sys.exit(1)
+            for step in args.stepsize:
+                for n in args.opt_step:
+                    for ans_type, layer in ansatz_list:
+                        name = f"{opt}_{step}_{ans_type}_{layer}layers_{n}steps"
+                        optimizers[name] = optimizer_map[opt](stepsize=step)
+                        new_ans.append((ans_type, layer, n))
+    else:
+        # Default value if neither --optimizer nor --all_optimizers is specified
+        for step in args.stepsize:
+            for n in args.opt_step:
+                for ans_type, layer in ansatz_list:
+                    name = f"NMomentum_{step}_{ans_type}_{layer}layers_{n}steps"
+                    optimizers[name] = NesterovMomentumOptimizer(stepsize=step)
+                    new_ans.append((ans_type, layer, n))
+    return optimizers, new_ans
+\end{tcblisting}
+
+\subsection{Parallelization of Execution with Multiple Optimizers}
+After generating the optimizers and their corresponding configurations, the parallel execution process is invoked. This approach distributes each simulation across different processes using \texttt{ProcessPoolExecutor}, thereby leveraging multiple CPU cores to significantly accelerate computation time:
+
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Paralelización de procesos, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+    stepnumber=1, numbersep=8pt, breaklines=true}}
+with concurrent.futures.ProcessPoolExecutor() as executor:
+    futures = []
+    cont = 0
+    for optimizer_name, opt in optimizers.items():
+        if cont < len(ansatz_list):
+            ans_type, layers, nsteps = ansatz_list[cont]
+        else:
+            ans_type, layers, nsteps = ("uccsd", 0, 10)
+        cont += 1
+        futures.append(
+            executor.submit(
+                run_single_optimizer,
+                optimizer_name, opt, ans_type, layers, nsteps, symbols, x_init, electrons, spin_orbitals, charge,
+                mult, basis_name, hf_state, dev, operator_pool, exact_energy, results_dir
+            )
+        )
+\end{tcblisting}
+
+In this way, each optimizer is executed independently, allowing for the maximum utilization of available hardware resources. This accelerates the simulation process and provides greater flexibility in experimenting with different configurations.
+
+\subsection{Compilation of Results and Cleanup of Temporary Files}
+After completing the execution of parallel processes, several key steps are carried out to unify results, clean up temporary files, and generate the final results. Each step is detailed below along with the corresponding code.
+
+\subsubsection{Creation and Execution of Parallel Processes}
+Parallel processes are created using \texttt{ProcessPoolExecutor}. For each configured optimizer, simulations are submitted as tasks to the executor, and the corresponding \emph{futures} are stored. Once they complete, the results are collected in the \texttt{interface\_results} dictionary.
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Creation and Execution of Parallel Processes, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+    stepnumber=1, numbersep=8pt, breaklines=true}}
+
+# Collect results when processes finish
+for future in concurrent.futures.as_completed(futures):
+    optimizer_name, data = future.result()
+    interface_results[optimizer_name] = data
+\end{tcblisting}
+
+\subsubsection{Unification of Results into a Single File}
+To centralize the simulation information, the contents of individual output files (\texttt{output\_\{optimizer\_name\}.txt}) are combined into a single file named \texttt{combined\_output.txt}.
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Unification of Results into a Single File, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+    stepnumber=1, numbersep=8pt, breaklines=true}}
+combined_output_path = os.path.join(results_dir, "combined_output.txt")
+with open(combined_output_path, "w", encoding="utf-8") as combined_out:
+    for optimizer_name in optimizers.keys():
+        output_file = os.path.join(results_dir, f"output_{optimizer_name}.txt")
+        if os.path.exists(output_file):
+            with open(output_file, "r", encoding="utf-8") as f:
+                content = f.read()
+            combined_out.write(f"=== Optimizer: {optimizer_name} ===\n")
+            combined_out.write(content + "\n")
+\end{tcblisting}
+
+\subsubsection{Deletion of Temporary Files}
+Once the individual data has been centralized, the temporary output files are deleted to reduce disk space usage and clean the results directory.
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Deletion of Temporary Files, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+    stepnumber=1, numbersep=8pt, breaklines=true}}
+for optimizer_name in optimizers.keys():
+    output_file = os.path.join(results_dir, f"output_{optimizer_name}.txt")
+    if os.path.exists(output_file):
+        os.remove(output_file)
+\end{tcblisting}
+
+\subsubsection{Generation of Final Results}
+The final results, such as the optimized energy, differences from the exact energy, and final molecular geometries, are presented to the user. Additionally, execution times and corresponding quantum circuits are visualized.
+
+\begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
+    title=Generation of Final Results, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    listing options={language=Python, basicstyle=\ttfamily\small,
+    showstringspaces=false, numbers=left, numberstyle=\footnotesize,
+    stepnumber=1, numbersep=8pt, breaklines=true}}
+print("=== Total Optimization Times ===\n")
+for optimizer_name in optimizers.keys():
+    final_energy = interface_results[optimizer_name]["final_energy"]
+    exact_energy_ref = interface_results[optimizer_name]["exact_energy_reference"]
+    diff = final_energy - exact_energy_ref if final_energy is not None else None
+    if final_energy is not None:
+        print(f"Final energy with {optimizer_name} = {final_energy:.8f} Ha")
+        print(f"Difference from exact (FCI) energy: {diff:.8e} Ha\n")
+    else:
+        print(f"No final energy obtained with {optimizer_name}\n")
+
+    total_time = interface_results[optimizer_name]["execution_times"].get('Total Time', 0)
+    print(f"Optimizer: {optimizer_name}, Time: {total_time:.2f} seconds")
+\end{tcblisting}
+
+In this way, the complete workflow allows:
+\begin{itemize}
+    \item Executing processes in parallel and collecting their results.
+    \item Unifying the generated data into a single output file.
+    \item Cleaning up temporary files to maintain an organized directory.
+    \item Presenting the final results in a clear and detailed manner.
+\end{itemize}
+
 
 \section{Limitations and Mitigation Measures}
 
@@ -375,5 +553,3 @@ To mitigate these issues, we opted for reduced basis sets, strategies such as re
 
 \section{Version Control}
 Git was employed for version control, enabling detailed tracking of code changes and ongoing collaboration with project supervisors. Initially, a single branch was used for development and exploration. Once a stable version was established, branches were created for testing and adding new features. The first branches were dedicated to different interface versions, each refined to ensure consistent performance across all interfaces. Ultimately, only the most suitable interface adjustments were merged back into the main branch.
-
-%Centrarse en los apartado, modificaciones efectuadas para poder llebar a cabo la ejecución de las simulaciones de manera sencilla. 

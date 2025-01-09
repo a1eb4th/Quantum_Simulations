@@ -5,11 +5,14 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Tiempos de ejecución para distintas moléculas e interfaces, utilizando \textit {Gradient Descent}.}}{42}{table.caption.13}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Comparación de tiempos de ejecución entre las interfaces JAX y autograd para diferentes moléculas.}}{43}{table.caption.16}%
-\contentsline {table}{\numberline {4.3}{\ignorespaces Energía final y tiempo de optimización para \(\mathrm {H_2O}\) (sin usar FCI).}}{47}{table.caption.22}%
-\contentsline {table}{\numberline {4.4}{\ignorespaces Energía final y tiempo de optimización para \(\mathrm {H_2}\).}}{47}{table.caption.24}%
-\contentsline {table}{\numberline {4.5}{\ignorespaces Energía final y tiempo de optimización para \(\mathrm {LiH}\).}}{48}{table.caption.26}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Execution times for different molecules and interfaces using \textit {Gradient Descent}.}}{46}{table.caption.17}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Comparison of execution times between JAX and autograd interfaces for different molecules.}}{47}{table.caption.20}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Final energy and optimization time for \(\mathrm {H_2O}\) (without using FCI).}}{51}{table.caption.26}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Final energy and optimization time for \(\mathrm {H_2}\).}}{51}{table.caption.28}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Final energy and optimization time for \(\mathrm {LiH}\).}}{52}{table.caption.30}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Final energy and optimization time for \(\mathrm {H_2}\) varying the \textit {step size} (optimizer: Momentum).}}{53}{table.caption.33}%
+\contentsline {table}{\numberline {4.7}{\ignorespaces Final energy and optimization time for \(\mathrm {H_2O}\) varying the \textit {step size} (optimizer: Momentum).}}{54}{table.caption.35}%
+\contentsline {table}{\numberline {4.8}{\ignorespaces Final energy and optimization time for \(\mathrm {LiH}\) varying the \textit {step size} (optimizer: Momentum).}}{54}{table.caption.37}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

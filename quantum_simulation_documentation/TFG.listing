@@ -1,12 +1,13 @@
-# Example of final printout and logging in run_optimization_uccsd:
-print(f"Iteration {iteration + 1}, Energy = {current_energy:.8f} Ha, Max Gradient = {max_grad_value:.5e}")
+print("=== Total Optimization Times ===\n")
+for optimizer_name in optimizers.keys():
+    final_energy = interface_results[optimizer_name]["final_energy"]
+    exact_energy_ref = interface_results[optimizer_name]["exact_energy_reference"]
+    diff = final_energy - exact_energy_ref if final_energy is not None else None
+    if final_energy is not None:
+        print(f"Final energy with {optimizer_name} = {final_energy:.8f} Ha")
+        print(f"Difference from exact (FCI) energy: {diff:.8e} Ha\n")
+    else:
+        print(f"No final energy obtained with {optimizer_name}\n")
 
-# After all iterations or once convergence is reached:
-print(f"Total optimization time (uccsd): {total_time:.2f} seconds")
-print(f"Final energy with {optimizer_name} (autograd) = {final_energy:.8f} Ha")
-print(f"Difference from exact (FCI) energy: {diff:.8e} Ha")
-
-# Geometry and circuit details are saved or printed:
-for i, atom in enumerate(symbols):
-    atoms_coords.append([atom, final_x_np[3*i], final_x_np[3*i+1], final_x_np[3*i+2]])
-print(tabulate(atoms_coords, headers=["Symbol", "x (A)", "y (A)", "z (A)"], floatfmt=".6f"))
+    total_time = interface_results[optimizer_name]["execution_times"].get('Total Time', 0)
+    print(f"Optimizer: {optimizer_name}, Time: {total_time:.2f} seconds")
