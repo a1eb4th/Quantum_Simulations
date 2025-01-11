@@ -1,0 +1,10 @@
+Exact Energy (FCI): -7.81043753 Ha
+
+--- Molecule Information ---
+Symbols: Li, H
+Number of electrons: 4
+Number of orbitals: 6
+Number of spin orbitals: 12
+
+[1 1 1 1 0 0 0 0 0 0 0 0]
+Number of both excitations: 92
