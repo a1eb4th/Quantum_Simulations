@@ -1,51 +1,20 @@
-%%%% PLEASE REPLACE ENTIRELY WITH YOUR OWN CONTENT %%%%
-
-\ifcase\doclanguage\or
-\chapter{Conclusions i Línies Futures}
-  \section{Conclusions}
-    \begin{itemize}
-      \item Resumiu els resultats principals del vostre treball.
-      \item Discutiu el grau d'assoliment en relació amb els objectius marcats a l'inici del treball.
-      \item Destaqueu les contribucions del vostre treball al camp d'estudi.
-    \end{itemize}
-  
-  \section{Línies Futures}
-    \begin{itemize}
-      \item Identifiqueu àrees per a futures investigacions o desenvolupament basades en el vostre treball.
-      \item Discutiu possibles vies per ampliar o millorar el projecte.
-      \item Considereu les preguntes que han quedat sense resposta i les oportunitats per a futures exploracions.
-    \end{itemize}
-
-\or
-\chapter{Conclusiones y Líneas Futuras}
-  \section{Conclusiones}
-    \begin{itemize}
-      \item Resuman los resultados principales de su trabajo.
-      \item Discutan el grado de logro en relación con los objetivos establecidos al inicio del trabajo.
-      \item Destaquen las contribuciones de su trabajo al campo de estudio.
-    \end{itemize}
-  
-  \section{Líneas Futuras}
-    \begin{itemize}
-      \item Identifiquen áreas para futuras investigaciones o desarrollo basadas en su trabajo.
-      \item Discutan posibles formas de ampliar o mejorar el proyecto.
-      \item Consideren las preguntas que han quedado sin respuesta y las oportunidades para futuras exploraciones.
-    \end{itemize}
-
-\else
 \chapter{Conclusions and Future Work}
-  \section{Conclusions}
-    \begin{itemize}
-      \item Summarize the main results of your work.
-      \item Discuss the degree of achievement in relation to the objectives set at the beginning of the work.
-      \item Highlight the contributions of your work to the field of study.
-    \end{itemize}
-  
-  \section{Future Directions}
-    \begin{itemize}
-      \item Identify areas for future research or development based on your work.
-      \item Discuss possible ways to expand or improve the project.
-      \item Consider questions that remained unanswered and opportunities for future exploration.
-    \end{itemize}
 
-\fi
+\section{Conclusions}
+
+In this project, we have successfully implemented a quantum simulator focused on simulating various molecular systems using the VQE algorithm. The results demonstrate the ability to optimize the processes for H$_2$, LiH, and H$_2$O, molecules of different sizes and complexities. Additionally, the efficacy of the UCCSD ansatz has been validated, achieving superior results compared to other ansätze. An unexpected outcome, which adds significant value to our project, was the demonstration that, for our implementation, the \textit{autograd} interface is more effective than JAX.
+
+The contributions of this work to the field include the modular design of quantum simulation software, enabling extensibility and flexibility for future algorithms and optimization strategies. Furthermore, the introduction of an adaptive methodology for selecting different ansätze and optimizers has made the optimization process more efficient and faster.
+
+With all this, the objectives of our project have been successfully achieved. These objectives include the development of an adaptive ansatz capable of selecting the operators with the greatest impact on the system, the integration of a hybrid optimization approach that adjusts both the ansatz parameters and nuclear positions, and endows our simulations with greater robustness and precision. Finally, the design of a modular architecture facilitates the inclusion of new types of ansätze and optimizers, enabling the comparison of different optimization strategies for future research.
+
+\section{Future Directions}
+In this project, the initial questions posed have been successfully addressed. However, after the completion of the project, new frontiers and research lines have emerged, offering exciting opportunities for future work.
+
+During the development of the project, it became evident that the mixed optimization methodology could be improved by adding more complexity to the optimization process, thereby achieving greater efficiency in convergence. We realized that another viable option to enhance simulation convergence would be to implement an adaptive optimization system, which dynamically adjusts the number of optimizations of the ansatz parameters based on the simulation’s progress. This would result in greater efficiency in the simulation’s convergence. Additionally, it was observed that automating the configuration of optimizers would save considerable time during setup.
+
+As a final future endeavor, to improve the simulator's consistency, it would be valuable to investigate its performance on NISQ systems. This would allow for an analysis of whether the implementation of a noise model affects the simulation's convergence, thus validating the robustness of the simulator in real-world quantum systems.
+
+Another relevant research avenue would involve integrating error mitigation techniques, such as zero-noise extrapolation, to enhance the accuracy of simulations on noisy quantum devices. This would add greater realism to the simulations and make the simulator more practical for applications on current quantum hardware.
+
+Finally, due to the modular nature of the simulator, it could be adapted to other fields beyond chemistry, such as material science and condensed matter physics. Exploring these areas would broaden its impact and leverage its flexibility for a wide range of scientific applications.

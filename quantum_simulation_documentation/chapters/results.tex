@@ -350,14 +350,65 @@ Finalmente, una de los procesos donde mas tiempo se consume en la simulación es
   \label{fig:num_iterations_results}
 \end{figure}
 
+Igual que en los apartados anteriores, a continuación mostramos las tablas con los valores de energia final, tiempo total de optimización y el numero de iteraciones necesarias para converger para cada molécula, para poder asi analizar los resultados obtenidos.
 
-\section{Limitaciones}
-En el desarrollo de este proyecto, se han identificado varias limitaciones que podrían haber influido en los resultados obtenidos. Es fundamental reconocer y comprender estas limitaciones para interpretar adecuadamente las conclusiones y orientar futuros trabajos de investigación.
+\subsubsection{Molecule \(\mathrm{H_2}\)}
 
-\subsection{Disponibilidad de un Ordenador Cuántico}
-Una de las limitaciones más evidentes ha sido la falta de acceso a un ordenador cuántico real para validar la implementación desarrollada. La simulación realizada se ha llevado a cabo en hardware clásico, lo que implica que no se ha podido verificar directamente cómo se comporta el simulador en una plataforma cuántica auténtica. Esta restricción limita la capacidad de evaluar el rendimiento y la eficiencia de la implementación en un entorno cuántico real, donde factores como la coherencia cuántica y el entrelazamiento podrían influir significativamente en los resultados.
+\begin{table}[H]
+\centering
+\caption{Final energy and optimization time for \(\mathrm{H_2}\) using Momentum optimizer with varying steps.}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Steps} & \textbf{Final Energy (Ha)} & \textbf{Total Time (s)} & \textbf{Difference from FCI (Ha)} \\
+\midrule
+5 & \(\mathbf{-1.13730605}\) & 101.86 & -0.019800 \\ 
+10 & \(\mathbf{-1.13730605}\) & \(\mathbf{99.08}\) & -0.019800 \\ 
+15 & \(\mathbf{-1.13730605}\) & 163.25 & -0.019800 \\ 
+20 & \(\mathbf{-1.13730605}\) & 175.06 & -0.019800 \\ 
+25 & \(\mathbf{-1.13730605}\) & 124.58 & -0.019800 \\ 
+30 & \(\mathbf{-1.13730605}\) & 147.59 & -0.019800 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{No Implementación de Errores Cuánticos}
-Otra limitación importante ha sido la ausencia de modelado de errores cuánticos en la simulación. En los ordenadores cuánticos reales, los errores derivados de la decoherencia, las puertas cuánticas imperfectas y el ruido ambiental son inevitables y pueden afectar drásticamente la precisión de las simulaciones. Al no incorporar estos errores en el modelo, la simulación carece de la robustez necesaria para reflejar de manera fiel las condiciones operativas de un sistema cuántico real. La inclusión de errores podría haber aportado una mayor veracidad a los resultados, permitiendo evaluar la resiliencia del simulador frente a las imperfecciones inherentes a la computación cuántica.
+The most negative energy achieved for \(\mathrm{H_2}\) was \(-1.13730605\,\mathrm{Ha}\), with a difference from the exact FCI energy \(-1.117506\,\mathrm{Ha}\). Step counts of 10 provide an optimal trade-off between convergence speed and computational cost.
+
+\subsubsection{Molecule \(\mathrm{LiH}\)}
+
+\begin{table}[H]
+\centering
+\caption{Final energy and optimization time for \(\mathrm{LiH}\) using Momentum optimizer with varying steps.}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Steps} & \textbf{Final Energy (Ha)} & \textbf{Total Time (s)} & \textbf{Difference from FCI (Ha)} \\
+\midrule
+5 & \(-7.88079149\) & \(\mathbf{8328.30}\) & -0.017409 \\
+10 & \(-7.88118152\) & 13365.38 & \(\mathbf{-0.017799}\) \\
+15 & \(-7.88226478\) & 18384.78 & -0.018883 \\
+20 & \(-7.84260017\) & 23309.87 & 0.020782 \\
+25 & \(-7.88176386\) & 28433.90 & -0.018382 \\
+30 & \(-7.88222895\) & 33421.15 & -0.018847 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For \(\mathrm{LiH}\), the energy \(-7.88226478\,\mathrm{Ha}\) achieved in 15 steps shows the best accuracy compared to the FCI value \(-7.863382\,\mathrm{Ha}\), but the computation time is significantly lower for 5 steps (\(8328.30\,\mathrm{s}\)).
+
+\subsubsection{Conclusions}
+
+The results indicate that:
+- For \(\mathrm{H_2}\), 10 steps balance speed and energy convergence.
+- For \(\mathrm{LiH}\), 15 steps provide the most accurate energy, but fewer steps (5 or 10) can save substantial time with acceptable accuracy trade-offs.
+
+
+
+\section{Limitations}
+In the development of this project, several limitations have been identified that could have influenced the results obtained. It is essential to recognize and understand these limitations to properly interpret the conclusions and guide future research efforts.
+
+\subsection{Availability of a Quantum Computer}
+One of the most evident limitations has been the lack of access to a real quantum computer to validate the developed implementation. The simulation was conducted on classical hardware, which means it was not possible to directly verify how the simulator behaves on an actual quantum platform. This restriction limits the ability to evaluate the performance and efficiency of the implementation in a real quantum environment, where factors such as quantum coherence and entanglement could significantly influence the results.
+
+\subsection{No Implementation of Quantum Errors}
+Another significant limitation has been the absence of quantum error modeling in the simulation. In real quantum computers, errors arising from decoherence, imperfect quantum gates, and environmental noise are inevitable and can drastically affect the accuracy of simulations. By not incorporating these errors into the model, the simulation lacks the robustness required to faithfully reflect the operating conditions of a real quantum system. Including errors could have provided greater authenticity to the results, allowing for an evaluation of the simulator's resilience to the inherent imperfections of quantum computing.
 
 

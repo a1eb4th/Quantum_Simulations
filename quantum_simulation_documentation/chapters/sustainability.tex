@@ -63,8 +63,57 @@ Key figures rely on average emission factors, and the power mix of the HPC cente
 
 \subsection{Economic Perspective}
 
-\subsubsection{Development}
-The majority of expenses during the development phase came from labor. I devoted around 540 hours to the project, valued at 25\,\euro/h, for a total of 13{,}500\,\euro. Electricity costs for the workstation added approximately 20\,\euro, assuming an average price of 0.18\,\euro/kWh for the roughly 108\,kWh consumed. Because I relied on the Viennese HPC center under a research arrangement, access to high-performance infrastructure incurred no direct additional fees. The open-source nature of \emph{PennyLane} likewise avoided software licensing costs and minimized overall expenses.
+\subsubsection{Development Costs}
+
+The development phase of the project incurred various expenses related to labor, energy consumption, workspace operations, supervision, transportation, and travel. Labor was the primary cost, with 540 hours of work valued at 25\,\euro/hour, amounting to a significant portion of the budget. Energy consumption included the electricity required to power a Mac laptop with a 30\,W average consumption and the high-performance computing (HPC) server at the Viennese research center, which operates at approximately 200\,W during heavy workloads. Additionally, the workspace used for development consumed energy beyond computing devices, including lighting and heating.
+
+Supervision of the project involved bi-weekly one-hour meetings with two professors over the course of five months, which added to the overall cost due to their expertise and hourly rate. Transportation costs included daily commuting for 120 days, as well as mobility expenses estimated at 983\,\euro/month for five months. Furthermore, the project required two round-trip flights, each costing 120\,\euro, to attend important meetings and consultations.
+
+To reduce costs during the development phase, I utilized existing resources, including a Mac laptop and free access to the HPC server at the Viennese research center, avoiding the purchase of new hardware or renting commercial cloud computing services. Open-source software like \emph{PennyLane} was used to eliminate licensing fees, and simulations were carefully planned to minimize idle time on the HPC server and optimize energy consumption. Transportation costs were managed by relying on public transit for daily commuting and limiting flights to essential project phases. Supervision costs were optimized by holding concise, bi-weekly meetings with professors to ensure productive feedback.
+
+\begin{ProjectStructure}
+    \textbf{Labor costs:}   
+    \[
+    C_{\text{labor}} = t_{\text{hours}} \cdot \text{Rate}_{\text{labor}} = 540 \, \text{hours} \cdot 25 \, \text{\euro/hour} = 13,500 \, \text{\euro}
+    \]
+
+    \textbf{Energy consumption costs:}   
+    \[
+    C_{\text{energy}} = E_{\text{consumed}} \cdot \text{Rate}_{\text{electricity}} = 108 \, \text{kWh} \cdot 0.18 \, \text{\euro/kWh} = 19.44 \, \text{\euro}
+    \]
+
+    \textbf{HPC commercial equivalent:}  
+    \[
+    C_{\text{HPC}} = t_{\text{hours}} \cdot \text{Rate}_{\text{HPC}} = 540 \, \text{hours} \cdot 0.5 \, \text{\euro/hour} = 270 \, \text{\euro}
+    \]
+
+    \textbf{Workspace energy consumption:}  
+    \[
+    C_{\text{workspace}} = E_{\text{workspace}} \cdot \text{Rate}_{\text{electricity}} = 220.5 \, \text{kWh} \cdot 0.18 \, \text{\euro/kWh} = 39.69 \, \text{\euro}
+    \]
+
+    \textbf{Transport costs:}   
+    \[
+    C_{\text{transport}} = C_{\text{monthly}} \cdot n_{\text{months}} = 983 \, \text{\euro/month} \cdot 5 \, \text{months} = 4,915 \, \text{\euro}
+    \]
+
+    \textbf{Supervisor costs:}  
+    \[
+    C_{\text{supervisors}} = n_{\text{supervisors}} \cdot t_{\text{meetings}} \cdot \text{Rate}_{\text{supervisor}} = 2 \cdot 10 \, \text{hours} \cdot 50 \, \text{\euro/hour} = 1,000 \, \text{\euro}
+    \]
+
+    \textbf{Flight costs:}    
+    \[
+    C_{\text{flights}} = n_{\text{flights}} \cdot \text{Rate}_{\text{flight}} = 2 \cdot 120 \, \text{\euro} = 240 \, \text{\euro}
+    \]
+
+    \textbf{Total costs:}
+    \[
+    C_{\text{total}} =  19,984.13 \, \text{\euro}
+    \]
+\end{ProjectStructure}
+
+This detailed breakdown highlights the various expenses associated with the project, ensuring that all relevant components are accounted for. The final total cost for the development phase amounts to approximately 19,984.13\,\euro.
 
 \subsubsection{Execution}
 If the project remains active and consumes around 500\,kWh annually, it would cost an additional 90\,\euro\ per year (at 0.18\,\euro/kWh). Improved energy prices or algorithmic refinements could further lower this expense.
@@ -77,9 +126,11 @@ Any quantum simulation tools or modules developed here could assist future resea
 
 
 \subsubsection{Risks and Limitations}
-If energy prices were to soar or the HPC center discontinued free access, the project’s costs could skyrocket, potentially hindering further progress.
+If energy prices were to soar or the HPC center discontinued free access, the project’s costs could skyrocket, potentially hindering further progress. Additionally, if the project expands and requires more resources, the expenses could increase significantly.
 
-Estimates rely on current prices and the stable availability of HPC resources. Rapid market changes, especially in energy, might invalidate long-term cost projections.
+Estimates rely on current prices and the stable availability of HPC resources. Rapid market changes, especially in energy, might invalidate long-term cost projections. Furthermore, technological obsolescence poses a risk, as outdated hardware or software could necessitate costly upgrades or replacements. This issue is particularly relevant for cutting-edge quantum simulations that depend on advanced computational infrastructure.
+
+Another potential risk involves changes in funding or policy frameworks. If institutional or governmental support for quantum research diminishes, securing alternative resources could become challenging. This could introduce delays or even jeopardize the continuation of the project entirely. These risks highlight the importance of regular evaluations and contingency planning to ensure sustainability.
 
 \subsection{Social Perspective}
 

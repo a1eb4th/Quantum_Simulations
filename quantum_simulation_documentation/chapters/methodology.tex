@@ -462,7 +462,7 @@ Before starting each simulation, two key lists are constructed:
 The \texttt{build\_optimizers} function automatically generates the optimizers and organizes these parameters:
 
 \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
-    title=Generación de optimizadores, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    title=Generation of optimizers, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
     listing options={language=Python, basicstyle=\ttfamily\small,
     showstringspaces=false, numbers=left, numberstyle=\footnotesize,
     stepnumber=1, numbersep=8pt, breaklines=true}}
@@ -506,7 +506,7 @@ After generating the optimizers and their corresponding configurations, the para
 
 
 \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
-    title=Paralelización de procesos, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
+    title=Process parallelization, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
     listing options={language=Python, basicstyle=\ttfamily\small,
     showstringspaces=false, numbers=left, numberstyle=\footnotesize,
     stepnumber=1, numbersep=8pt, breaklines=true}}
@@ -541,7 +541,6 @@ Parallel processes are created using \texttt{ProcessPoolExecutor}. For each conf
     listing options={language=Python, basicstyle=\ttfamily\small,
     showstringspaces=false, numbers=left, numberstyle=\footnotesize,
     stepnumber=1, numbersep=8pt, breaklines=true}}
-
 # Collect results when processes finish
 for future in concurrent.futures.as_completed(futures):
     optimizer_name, data = future.result()
@@ -549,7 +548,7 @@ for future in concurrent.futures.as_completed(futures):
 \end{tcblisting}
 
 \subsubsection{Unification of Results into a Single File}
-To centralize the simulation information, the contents of individual output files (\texttt{output\_\{optimizer\_name\}.txt}) are combined into a single file named \texttt{combined\_output.txt}.
+To centralize the simulation information, the contents of individual output files are combined into a single file named \texttt{combined\_output.txt}.
 
 \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
     title=Unification of Results into a Single File, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
