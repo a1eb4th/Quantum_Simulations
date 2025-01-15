@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.10.4)  13 JAN 2025 10:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.10.4)  15 JAN 2025 01:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1229,14 +1229,10 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \float@box=\box94
 \@float@everytoks=\toks59
 \@floatcapt=\box95
-) (/usr/local/texlive/2024/texmf-dist/tex/latex/base/inputenc.sty
-Package: inputenc 2021/02/14 v1.3d Input encoding file
-\inpenc@prehook=\toks60
-\inpenc@posthook=\toks61
 ) (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/listings.sty
 \lst@mode=\count554
 \lst@gtempboxa=\box96
-\lst@token=\toks62
+\lst@token=\toks60
 \lst@length=\count555
 \lst@currlwidth=\dimen363
 \lst@column=\count556
@@ -1260,12 +1256,18 @@ Package: listings 2024/02/21 1.10 (Carsten Heinz)
  (/usr/local/texlive/2024/texmf-dist/tex/latex/eurosym/eurosym.sty
 Package: eurosym 1998/08/06 v1.1 European currency symbol ``Euro''
 \@eurobox=\box98
-)) (/usr/local/texlive/2024/texmf-dist/tex/latex/caption/subcaption.sty
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/caption/subcaption.sty
 Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
 Package caption Info: New subtype `subfigure' on input line 238.
 \c@subfigure=\count562
 Package caption Info: New subtype `subtable' on input line 238.
 \c@subtable=\count563
+)) (/usr/local/texlive/2024/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip95
+\multirow@cntb=\count564
+\multirow@dima=\skip96
+\bigstrutjot=\dimen367
 ) (./config/styles.tex
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: 
@@ -1370,28 +1372,28 @@ Library (tcolorbox): 'tcblistingscore.code.tex' version '6.2.0'
 (/usr/local/texlive/2024/texmf-dist/tex/latex/tcolorbox/tcbprocessing.code.tex
 Library (tcolorbox): 'tcbprocessing.code.tex' version '6.2.0'
 )
-\c@tcblisting=\count564
+\c@tcblisting=\count565
 )) (/usr/local/texlive/2024/texmf-dist/tex/latex/listingsutf8/listingsutf8.sty
 Package: listingsutf8 2019-12-10 v1.5 Allow UTF-8 in listings input (HO)
  (/usr/local/texlive/2024/texmf-dist/tex/generic/stringenc/stringenc.sty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
 ))) (/usr/local/texlive/2024/texmf-dist/tex/latex/tcolorbox/tcbfitting.code.tex
 Library (tcolorbox): 'tcbfitting.code.tex' version '6.2.0'
-\tcbfitdim=\dimen367
-\tcb@lowerfitdim=\dimen368
-\tcb@upperfitdim=\dimen369
-\tcb@cur@hbadness=\count565
+\tcbfitdim=\dimen368
+\tcb@lowerfitdim=\dimen369
+\tcb@upperfitdim=\dimen370
+\tcb@cur@hbadness=\count566
 )
 Package hyperref Info: Option `breaklinks' set `true' on input line 189.
 Package hyperref Info: Option `colorlinks' set `true' on input line 189.
 ) (./config/lang.tex (/usr/local/texlive/2024/texmf-dist/tex/generic/babel/babel.sty
 Package: babel 2024/02/07 v24.2 The Babel package
-\babel@savecnt=\count566
-\U@D=\dimen370
+\babel@savecnt=\count567
+\U@D=\dimen371
 \l@unhyphenated=\language90
  (/usr/local/texlive/2024/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@readstream=\read6
-\bbl@dirlevel=\count567
+\bbl@dirlevel=\count568
  (/usr/local/texlive/2024/texmf-dist/tex/generic/babel-english/english.ldf
 Language: english 2017/06/06 v3.3r English support from the babel system
 Package babel Info: Hyphen rules for 'canadian' set to \l@english
@@ -1404,76 +1406,70 @@ Package babel Info: Hyphen rules for 'newzealand' set to \l@ukenglish
 Package babel Info: Importing font and identification data for english
 (babel)             from babel-en.ini. Reported on input line 11.
 ))
-
-Package biblatex Warning: Load 'inputenc' before biblatex.
-
-
-Package csquotes Warning: Load 'inputenc' before 'csquotes' on input line 63.
-
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
-LaTeX Font Info:    Trying to load font information for T1+LibertinusSerif-TLF on input line 63.
-(/usr/local/texlive/2024/texmf-dist/tex/latex/libertinus-type1/T1LibertinusSerif-TLF.fd
+LaTeX Font Info:    Trying to load font information for T1+LibertinusSerif-TLF on input line 60.
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/libertinus-type1/T1LibertinusSerif-TLF.fd
 File: T1LibertinusSerif-TLF.fd 2022/11/07 (autoinst) Font definitions for T1/LibertinusSerif-TLF.
 )
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 63.
+(Font)              scaled to size 12.0pt on input line 60.
  (./TFG.aux)
 \openout1 = `TFG.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for LS1/libertinust1math/m/n on input line 63.
-LaTeX Font Info:    Trying to load font information for LS1+libertinust1math on input line 63.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for LS1/libertinust1math/m/n on input line 60.
+LaTeX Font Info:    Trying to load font information for LS1+libertinust1math on input line 60.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/libertinust1math/ls1libertinust1math.fd
 File: ls1libertinust1math.fd 2016/03/23 Fontinst v1.933 font definitions for LS1/libertinust1math.
 )
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for LS2/libertinust1mathsym/m/n on input line 63.
-LaTeX Font Info:    Trying to load font information for LS2+libertinust1mathsym on input line 63.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for LS2/libertinust1mathsym/m/n on input line 60.
+LaTeX Font Info:    Trying to load font information for LS2+libertinust1mathsym on input line 60.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/libertinust1math/ls2libertinust1mathsym.fd
 File: ls2libertinust1mathsym.fd 2015/04/17 v1.1.2-latex LibertinusT1Mathsym LS2 font definitions
 )
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Info: Command `\dddot' is already robust on input line 63.
-LaTeX Info: Command `\ddddot' is already robust on input line 63.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Info: Command `\dddot' is already robust on input line 60.
+LaTeX Info: Command `\ddddot' is already robust on input line 60.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/translations/translations-basic-dictionary-english.trsl
 File: translations-basic-dictionary-english.trsl (english translation file `translations-basic-dictionary')
 )
-Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 63.
-\c@mv@tabular=\count568
-\c@mv@boldtabular=\count569
-LaTeX Info: Redefining \microtypecontext on input line 63.
-Package microtype Info: Applying patch `item' on input line 63.
-Package microtype Info: Applying patch `toc' on input line 63.
-Package microtype Info: Applying patch `eqnum' on input line 63.
-Package microtype Info: Applying patch `footnote' on input line 63.
-Package microtype Info: Applying patch `verbatim' on input line 63.
+Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 60.
+\c@mv@tabular=\count569
+\c@mv@boldtabular=\count570
+LaTeX Info: Redefining \microtypecontext on input line 60.
+Package microtype Info: Applying patch `item' on input line 60.
+Package microtype Info: Applying patch `toc' on input line 60.
+Package microtype Info: Applying patch `eqnum' on input line 60.
+Package microtype Info: Applying patch `footnote' on input line 60.
+Package microtype Info: Applying patch `verbatim' on input line 60.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 63.
+LaTeX Info: Redefining \showhyphens on input line 60.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -1518,17 +1514,17 @@ Package microtype Info: Loading generic protrusion settings for font family
 
 (/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count570
-\scratchdimen=\dimen371
+\scratchcounter=\count571
+\scratchdimen=\dimen372
 \scratchbox=\box103
-\nofMPsegments=\count571
-\nofMParguments=\count572
-\everyMPshowfont=\toks63
-\MPscratchCnt=\count573
-\MPscratchDim=\dimen372
-\MPnumerator=\count574
-\makeMPintoPDFobject=\count575
-\everyMPtoPDFconversion=\toks64
+\nofMPsegments=\count572
+\nofMParguments=\count573
+\everyMPshowfont=\toks61
+\MPscratchCnt=\count574
+\MPscratchDim=\dimen373
+\MPnumerator=\count575
+\makeMPintoPDFobject=\count576
+\everyMPtoPDFconversion=\toks62
 ) (/usr/local/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
  (/usr/local/texlive/2024/texmf-dist/tex/latex/grfext/grfext.sty
@@ -1560,18 +1556,21 @@ Package biblatex Info: Automatic encoding selection.
 \openout4 = `TFG.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'TFG.bbl' not found.
-
-No file TFG.bbl.
-Package biblatex Info: Reference section=0 on input line 63.
-Package biblatex Info: Reference segment=0 on input line 63.
-Package hyperref Info: Link coloring ON on input line 63.
-(./TFG.out) (./TFG.out)
+Package biblatex Info: ... file 'TFG.bbl' found.
+ (./TFG.bbl)
+Package biblatex Info: Reference section=0 on input line 60.
+Package biblatex Info: Reference segment=0 on input line 60.
+Package hyperref Info: Link coloring ON on input line 60.
+ (./TFG.out) (./TFG.out)
 \@outlinefile=\write5
 \openout5 = `TFG.out'.
 
-\c@lstlisting=\count576
- (./chapters/cover.tex
+\c@lstlisting=\count577
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks63
+\inpenc@posthook=\toks64
+) (./chapters/cover.tex
 LaTeX Font Info:    Trying to load font information for T1+LibertinusSans-TLF on input line 6.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/libertinus-type1/T1LibertinusSans-TLF.fd
 File: T1LibertinusSans-TLF.fd 2022/11/07 (autoinst) Font definitions for T1/LibertinusSans-TLF.
@@ -1582,7 +1581,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LibertinusSans-TLF' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<img/Campillo.png, id=354, 40.15pt x 50.1875pt>
+<img/Campillo.png, id=350, 40.15pt x 50.1875pt>
 File: img/Campillo.png Graphic file (type png)
 <use img/Campillo.png>
 Package pdftex.def Info: img/Campillo.png  used on input line 10.
@@ -1601,12 +1600,12 @@ LaTeX Font Info:    Font shape `T1/LibertinusSans-TLF/b/n' will be
 (Font)              scaled to size 12.0pt on input line 37.
 LaTeX Font Info:    Font shape `T1/LibertinusSans-TLF/b/sc' will be
 (Font)              scaled to size 12.0pt on input line 37.
-<img/logos/Logo_UPC_ETSETB_tight.pdf, id=356, 606.70775pt x 117.92917pt>
+<img/logos/Logo_UPC_ETSETB_tight.pdf, id=352, 606.70775pt x 117.92917pt>
 File: img/logos/Logo_UPC_ETSETB_tight.pdf Graphic file (type pdf)
 <use img/logos/Logo_UPC_ETSETB_tight.pdf>
 Package pdftex.def Info: img/logos/Logo_UPC_ETSETB_tight.pdf  used on input line 53.
 (pdftex.def)             Requested size: 256.16713pt x 49.79231pt.
-<img/logos/logo_telecos.png, id=357, 2370.8575pt x 1321.93875pt>
+<img/logos/logo_telecos.png, id=353, 2370.8575pt x 1321.93875pt>
 File: img/logos/logo_telecos.png Graphic file (type png)
 <use img/logos/logo_telecos.png>
 Package pdftex.def Info: img/logos/logo_telecos.png  used on input line 53.
@@ -1694,7 +1693,7 @@ LaTeX Font Info:    Font shape `LS1/libertinust1math/b/it' will be
 
 
 ]))
-Underfull \hbox (badness 10000) in paragraph at lines 50--90
+Underfull \hbox (badness 10000) in paragraph at lines 50--87
 
  []
 
@@ -1737,31 +1736,397 @@ Package microtype Info: Loading generic protrusion settings for font family
 Chapter 1.
 LaTeX Font Info:    Font shape `T1/LibertinusSans-TLF/m/n' will be
 (Font)              scaled to size 60.0pt on input line 3.
+
+Overfull \hbox (40.50813pt too wide) in paragraph at lines 8--9
+[]\T1/LibertinusSerif-TLF/m/n/12 (-20) These two phe-nom-ena have led to ex-po-nen-tial growth in pro-cess-ing ca-pac-ity.Nevertheless,physical
+ []
+
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
-(Font)              scaled to size 17.28pt on input line 13.
+(Font)              scaled to size 17.28pt on input line 12.
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/b/n' will be
-(Font)              scaled to size 17.28pt on input line 13.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [12
-
-]
-LaTeX Font Info:    Trying to load font information for TS1+LibertinusSerif-TLF on input line 17.
- (/usr/local/texlive/2024/texmf-dist/tex/latex/libertinus-type1/TS1LibertinusSerif-TLF.fd
+(Font)              scaled to size 17.28pt on input line 12.
+LaTeX Font Info:    Trying to load font information for TS1+LibertinusSerif-TLF on input line 16.
+(/usr/local/texlive/2024/texmf-dist/tex/latex/libertinus-type1/TS1LibertinusSerif-TLF.fd
 File: TS1LibertinusSerif-TLF.fd 2022/11/07 (autoinst) Font definitions for TS1/LibertinusSerif-TLF.
 )
 LaTeX Font Info:    Font shape `TS1/LibertinusSerif-TLF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 17.
+(Font)              scaled to size 12.0pt on input line 16.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LibertinusSerif-TLF' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
+ [12
+
+{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_rlktsf.enc}]
 LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/sc' will be
-(Font)              scaled to size 12.0pt on input line 35.
- [13{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_rlktsf.enc}] [14]
-<img/Gantt_diagram.png, id=577, 1260.71pt x 505.89pt>
+(Font)              scaled to size 12.0pt on input line 40.
+ [13]
+<img/Gantt_diagram.png, id=566, 1260.71pt x 505.89pt>
 File: img/Gantt_diagram.png Graphic file (type png)
 <use img/Gantt_diagram.png>
-Package pdftex.def Info: img/Gantt_diagram.png  used on input line 57.
-(pdftex.def)             Requ
+Package pdftex.def Info: img/Gantt_diagram.png  used on input line 59.
+(pdftex.def)             Requested size: 426.79135pt x 171.25926pt.
+ [14]) (./chapters/state_of_art.tex [15 <./img/Gantt_diagram.png>]
+Chapter 2.
+<img/bit_vs_qbit.png, id=576, 1204.5pt x 822.57312pt>
+File: img/bit_vs_qbit.png Graphic file (type png)
+<use img/bit_vs_qbit.png>
+Package pdftex.def Info: img/bit_vs_qbit.png  used on input line 17.
+(pdftex.def)             Requested size: 341.43437pt x 233.16808pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [16
+
+]
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
+(Font)              scaled to size 14.4pt on input line 27.
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/b/n' will be
+(Font)              scaled to size 14.4pt on input line 27.
+ [17{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinust1math/libusEX.enc} <./img/bit_vs_qbit.png>] [18{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinust1math/libusMI.enc}] [19] [20]
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
+(Font)              scaled to size 8.0pt on input line 159.
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
+(Font)              scaled to size 6.0pt on input line 159.
+ [21{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinust1math/libusSYM.enc}] [22{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinust1math/libusBMR.enc}] [23]
+<img/VQE_flowchart.png, id=644, 974.64125pt x 538.01pt>
+File: img/VQE_flowchart.png Graphic file (type png)
+<use img/VQE_flowchart.png>
+Package pdftex.def Info: img/VQE_flowchart.png  used on input line 246.
+(pdftex.def)             Requested size: 341.43437pt x 188.4705pt.
+ [24 <./img/VQE_flowchart.png>] [25] [26] [27] [28] [29]) [30] (./chapters/methodology.tex [31]
+Chapter 3.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [33]
+LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/b/n' will be
+(Font)              scaled to size 11.52003pt on input line 65.
+ [34]
+Overfull \hbox (6.1831pt too wide) in paragraph at lines 105--106
+[]\T1/LibertinusSerif-TLF/b/n/12 (-20) Suitability for NISQ de-vices: \T1/LibertinusSerif-TLF/m/n/12 (-20) VQE is par-tic-u-larly well-suited for noisy intermediate-
+ []
+
+[35] [36]
+\g__tcobox_out_iow=\write9
+\openout9 = `TFG.listing'.
+
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/02/21 1.10 listings language file
+)
+LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/m/n' will be
+(Font)              scaled to size 8.76003pt on input line 152.
+ (./TFG.listing
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
+(Font)              scaled to size 10.95pt on input line 1.
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/n' will be
+(Font)              scaled to size 10.0pt on input line 1.
+LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/b/n' will be
+(Font)              scaled to size 8.76003pt on input line 1.
+) [37]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing) [38]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing) [39]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing
+LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/m/it' will be
+(Font)              scaled to size 8.76003pt on input line 5.
+)
+Underfull \vbox (badness 3815) has occurred while \output is active []
+
+ [40]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing) [41]
+Overfull \hbox (17.27333pt too wide) in paragraph at lines 299--301
+\T1/LibertinusSerif-TLF/m/n/12 (-20) The key steps of the cou-pled op-ti-miza-tion pro-cess, im-ple-mented in the \T1/LibertinusSerif-TLF/m/it/12 (-20) run_optimization_uccsd
+ []
+
+\openout9 = `TFG.listing'.
+
+(./TFG.listing)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+Underfull \vbox (badness 2644) has occurred while \output is active []
+
+ [42]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing) [43]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing) [44]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing) [45]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing) [46]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing) [47]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing) [48]
+\openout9 = `TFG.listing'.
+
+ (./TFG.listing)) (./chapters/results.tex [49]
+Chapter 4.
+LaTeX Font Info:    Font shape `LS1/libertinust1math/m/n' will be
+(Font)              scaled to size 5.0pt on input line 37.
+LaTeX Font Info:    Font shape `LS1/libertinust1math/m/it' will be
+(Font)              scaled to size 5.0pt on input line 37.
+LaTeX Font Info:    Font shape `LS2/libertinust1mathsym/m/n' will be
+(Font)              scaled to size 5.0pt on input line 37.
+LaTeX Font Info:    Font shape `LS2/libertinust1mathex/m/n' will be
+(Font)              scaled to size 5.0pt on input line 37.
+LaTeX Font Info:    Font shape `LS1/libertinust1mathbb/m/n' will be
+(Font)              scaled to size 5.0pt on input line 37.
+LaTeX Font Info:    Font shape `LS1/libertinust1math/b/n' will be
+(Font)              scaled to size 5.0pt on input line 37.
+LaTeX Font Info:    Font shape `LS1/libertinust1math/b/it' will be
+(Font)              scaled to size 5.0pt on input line 37.
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/b/n' will be
+(Font)              scaled to size 8.0pt on input line 37.
+LaTeX Font Info:    Font shape `T1/DejaVuSansMono-TLF/b/n' will be
+(Font)              scaled to size 6.40002pt on input line 37.
+
+Underfull \vbox (badness 3514) has occurred while \output is active []
+
+ [50
+
+]
+<img/time_iterations.png, id=1049, 859.65166pt x 498.663pt>
+File: img/time_iterations.png Graphic file (type png)
+<use img/time_iterations.png>
+Package pdftex.def Info: img/time_iterations.png  used on input line 46.
+(pdftex.def)             Requested size: 341.43437pt x 198.0616pt.
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/b/n' will be
+(Font)              scaled to size 6.0pt on input line 72.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [51 <./img/time_iterations.png>]
+<img/time_functions.png, id=1058, 1004.553pt x 570.933pt>
+File: img/time_functions.png Graphic file (type png)
+<use img/time_functions.png>
+Package pdftex.def Info: img/time_functions.png  used on input line 84.
+(pdftex.def)             Requested size: 341.43437pt x 194.05367pt.
+
+Overfull \hbox (50.97432pt too wide) in paragraph at lines 89--90
+\T1/LibertinusSerif-TLF/m/n/12 (-20) tion times than \T1/LibertinusSerif-TLF/m/it/12 (-20) au-to-grad\T1/LibertinusSerif-TLF/m/n/12 (-20) . In par-tic-u-lar, the gra-di-ent com-pu-ta-tion part \T1/DejaVuSansMono-TLF/m/n/12 com-pute_operator_gradients
+ []
+
+[52 <./img/time_functions.png>]
+<data/Anzatz/results_ansatz_lyers_dif_iterations/energy_vs_time_log_offset.png, id=1064, 722.7pt x 433.62pt>
+File: data/Anzatz/results_ansatz_lyers_dif_iterations/energy_vs_time_log_offset.png Graphic file (type png)
+<use data/Anzatz/results_ansatz_lyers_dif_iterations/energy_vs_time_log_offset.png>
+Package pdftex.def Info: data/Anzatz/results_ansatz_lyers_dif_iterations/energy_vs_time_log_offset.png  used on input line 103.
+(pdftex.def)             Requested size: 341.43437pt x 204.86006pt.
+
+Underfull \vbox (badness 4739) has occurred while \output is active []
+
+ [53]
+<data/Anzatz/results_ansatz_lyers/energy_vs_time_log_offset.png, id=1069, 722.7pt x 433.62pt>
+File: data/Anzatz/results_ansatz_lyers/energy_vs_time_log_offset.png Graphic file (type png)
+<use data/Anzatz/results_ansatz_lyers/energy_vs_time_log_offset.png>
+Package pdftex.def Info: data/Anzatz/results_ansatz_lyers/energy_vs_time_log_offset.png  used on input line 112.
+(pdftex.def)             Requested size: 341.43437pt x 204.86006pt.
+ [54 <./data/Anzatz/results_ansatz_lyers_dif_iterations/energy_vs_time_log_offset.png> <./data/Anzatz/results_ansatz_lyers/energy_vs_time_log_offset.png>]
+<data/Optimizadores/final_results_H2/energy_evolution_log_offset.png, id=1076, 722.7pt x 433.62pt>
+File: data/Optimizadores/final_results_H2/energy_evolution_log_offset.png Graphic file (type png)
+<use data/Optimizadores/final_results_H2/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/Optimizadores/final_results_H2/energy_evolution_log_offset.png  used on input line 134.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+LaTeX Font Info:    Font shape `T1/LibertinusSans-TLF/m/n' will be
+(Font)              scaled to size 10.95pt on input line 135.
+LaTeX Font Info:    Font shape `T1/LibertinusSans-TLF/b/n' will be
+(Font)              scaled to size 10.95pt on input line 135.
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/m/it' will be
+(Font)              scaled to size 10.95pt on input line 135.
+<data/Optimizadores/final_results_LiH/energy_evolution_log_offset.png, id=1077, 722.7pt x 433.62pt>
+File: data/Optimizadores/final_results_LiH/energy_evolution_log_offset.png Graphic file (type png)
+<use data/Optimizadores/final_results_LiH/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/Optimizadores/final_results_LiH/energy_evolution_log_offset.png  used on input line 140.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+<data/Optimizadores/final_results_H20/energy_evolution_log_offset.png, id=1078, 722.7pt x 433.62pt>
+File: data/Optimizadores/final_results_H20/energy_evolution_log_offset.png Graphic file (type png)
+<use data/Optimizadores/final_results_H20/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/Optimizadores/final_results_H20/energy_evolution_log_offset.png  used on input line 146.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+ [55 <./data/Optimizadores/final_results_H2/energy_evolution_log_offset.png> <./data/Optimizadores/final_results_LiH/energy_evolution_log_offset.png> <./data/Optimizadores/final_results_H20/energy_evolution_log_offset.png>] [56]
+<data/Stepsize/results_H2/energy_evolution_log_offset.png, id=1091, 722.7pt x 433.62pt>
+File: data/Stepsize/results_H2/energy_evolution_log_offset.png Graphic file (type png)
+<use data/Stepsize/results_H2/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/Stepsize/results_H2/energy_evolution_log_offset.png  used on input line 210.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+LaTeX Font Info:    Font shape `LS1/libertinust1math/m/n' will be
+(Font)              scaled to size 10.95pt on input line 211.
+LaTeX Font Info:    Font shape `LS1/libertinust1math/m/it' will be
+(Font)              scaled to size 10.95pt on input line 211.
+LaTeX Font Info:    Font shape `LS2/libertinust1mathsym/m/n' will be
+(Font)              scaled to size 10.95pt on input line 211.
+LaTeX Font Info:    Font shape `LS2/libertinust1mathex/m/n' will be
+(Font)              scaled to size 10.95pt on input line 211.
+LaTeX Font Info:    Font shape `LS1/libertinust1mathbb/m/n' will be
+(Font)              scaled to size 10.95pt on input line 211.
+LaTeX Font Info:    Font shape `LS1/libertinust1math/b/n' will be
+(Font)              scaled to size 10.95pt on input line 211.
+LaTeX Font Info:    Font shape `LS1/libertinust1math/b/it' will be
+(Font)              scaled to size 10.95pt on input line 211.
+<data/Stepsize/results_LiH/energy_evolution_log_offset.png, id=1092, 722.7pt x 433.62pt>
+File: data/Stepsize/results_LiH/energy_evolution_log_offset.png Graphic file (type png)
+<use data/Stepsize/results_LiH/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/Stepsize/results_LiH/energy_evolution_log_offset.png  used on input line 216.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+<data/Stepsize/results_H2O/energy_evolution_log_offset.png, id=1093, 722.7pt x 433.62pt>
+File: data/Stepsize/results_H2O/energy_evolution_log_offset.png Graphic file (type png)
+<use data/Stepsize/results_H2O/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/Stepsize/results_H2O/energy_evolution_log_offset.png  used on input line 222.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [57 <./data/Stepsize/results_H2/energy_evolution_log_offset.png> <./data/Stepsize/results_LiH/energy_evolution_log_offset.png> <./data/Stepsize/results_H2O/energy_evolution_log_offset.png>] [58]
+<data/NumIterations/results_H2/energy_evolution_log_offset.png, id=1106, 722.7pt x 433.62pt>
+File: data/NumIterations/results_H2/energy_evolution_log_offset.png Graphic file (type png)
+<use data/NumIterations/results_H2/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/NumIterations/results_H2/energy_evolution_log_offset.png  used on input line 294.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+<data/NumIterations/results_LiH/energy_evolution_log_offset.png, id=1107, 722.7pt x 433.62pt>
+File: data/NumIterations/results_LiH/energy_evolution_log_offset.png Graphic file (type png)
+<use data/NumIterations/results_LiH/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/NumIterations/results_LiH/energy_evolution_log_offset.png  used on input line 300.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+<data/NumIterations/results_H2O/energy_evolution_log_offset.png, id=1108, 722.7pt x 433.62pt>
+File: data/NumIterations/results_H2O/energy_evolution_log_offset.png Graphic file (type png)
+<use data/NumIterations/results_H2O/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/NumIterations/results_H2O/energy_evolution_log_offset.png  used on input line 306.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [59 <./data/NumIterations/results_H2/energy_evolution_log_offset.png> <./data/NumIterations/results_LiH/energy_evolution_log_offset.png> <./data/NumIterations/results_H2O/energy_evolution_log_offset.png>] [60]
+<data/NumIterations/final_results_H2/energy_evolution_log_offset.png, id=1122, 722.7pt x 433.62pt>
+File: data/NumIterations/final_results_H2/energy_evolution_log_offset.png Graphic file (type png)
+<use data/NumIterations/final_results_H2/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/NumIterations/final_results_H2/energy_evolution_log_offset.png  used on input line 370.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+<data/NumIterations/final_results_LiH/energy_evolution_log_offset.png, id=1123, 722.7pt x 433.62pt>
+File: data/NumIterations/final_results_LiH/energy_evolution_log_offset.png Graphic file (type png)
+<use data/NumIterations/final_results_LiH/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/NumIterations/final_results_LiH/energy_evolution_log_offset.png  used on input line 376.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+File: data/NumIterations/results_H2O/energy_evolution_log_offset.png Graphic file (type png)
+<use data/NumIterations/results_H2O/energy_evolution_log_offset.png>
+Package pdftex.def Info: data/NumIterations/results_H2O/energy_evolution_log_offset.png  used on input line 382.
+(pdftex.def)             Requested size: 192.0548pt x 115.23296pt.
+
+Underfull \vbox (badness 2253) has occurred while \output is active []
+
+ [61 <./data/NumIterations/final_results_H2/energy_evolution_log_offset.png> <./data/NumIterations/final_results_LiH/energy_evolution_log_offset.png>]) (./chapters/sustainability.tex [62]
+Chapter 5.
+[63
+
+]
+Underfull \vbox (badness 6332) has occurred while \output is active []
+
+ [64] [65] [66] [67]) (./chapters/conclusions.tex [68]
+Chapter 6.
+[69
+
+]) [70] [71
+
+]
+Overfull \hbox (12.86537pt too wide) in paragraph at lines 181--181
+[]\T1/LibertinusSerif-TLF/m/it/12 (-20) Hamiltonian (quan-tum me-chan-ics)\T1/LibertinusSerif-TLF/m/n/12 (-20) . [][]$\T1/DejaVuSansMono-TLF/m/n/12 https : / / en . wikipedia . org / wiki / Hamiltonian _
+ []
+
+
+Overfull \hbox (4.31792pt too wide) in paragraph at lines 181--181
+\T1/LibertinusSerif-TLF/m/n/12 (-20) VQE-UCCSD Cal-cu-la-tions with the FMO Scheme^^Q. In: \T1/LibertinusSerif-TLF/m/it/12 (-20) arXiv preprint arXiv:2402.17993
+ []
+
+[72]
+Overfull \hbox (51.6549pt too wide) in paragraph at lines 181--181
+\T1/LibertinusSerif-TLF/m/it/12 (-20) po-sium on The-o-ret-i-cal As-pects of Soft-ware En-gi-neer-ing (TASE)\T1/LibertinusSerif-TLF/m/n/12 (-20) . 2019, doi:10.1109/TASE.2019.000^^U
+ []
+
+(./chapters/appendices.tex [73]
+Appendix A.
+
+Underfull \vbox (badness 1057) has occurred while \output is active []
+
+ [74
+
+]
+LaTeX Font Info:    Font shape `T1/LibertinusSerif-TLF/b/it' will be
+(Font)              scaled to size 12.0pt on input line 154.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [75{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_opzo24.enc}]
+Overfull \hbox (11.88362pt too wide) detected at line 198
+\LS1/libertinust1math/m/it/12 U\LS1/libertinust1math/m/n/12 .\LS1/libertinust1math/m/it/12 ^^^\LS1/libertinust1math/m/n/12 / = []
+ []
+
+)
+Underfull \hbox (badness 10000) in paragraph at lines 208--187
+[]\T1/LibertinusSerif-TLF/m/n/12 (+20) These gates are im-ple-mented in Pen-ny-Lane as \T1/DejaVuSansMono-TLF/m/n/12 qml.SingleExcitation \T1/LibertinusSerif-TLF/m/n/12 (+20) and
+ []
+
+[76] (./TFG.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-02-20>
+ ***********
+Package rerunfilecheck Info: File `TFG.out' has not changed.
+(rerunfilecheck)             Checksum: FB52C83CBA61F12C1C551D1DF227FE00;15444.
+Package logreq Info: Writing requests to 'TFG.run.xml'.
+\openout1 = `TFG.run.xml'.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 82370 strings out of 474116
+ 2070032 string characters out of 5743682
+ 3449336 words of memory out of 5000000
+ 102686 multiletter control sequences out of 15000+600000
+ 781257 words of font info for 465 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 89i,19n,120p,1467b,3176s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono-Oblique.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/dejavu/DejaVuSansMono.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSans-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSans-Regular.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Bold.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-BoldItalic.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Italic.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinus-type1/LibertinusSerif-Regular.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/libertinust1math/LibertinusT1Math.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/stix/stix-mathcal.pfb>
+Output written on TFG.pdf (76 pages, 5331420 bytes).
+PDF statistics:
+ 1460 PDF objects out of 1728 (max. 8388607)
+ 1292 compressed objects within 13 object streams
+ 491 named destinations out of 1000 (max. 500000)
+ 114470 words of extra memory for PDF output out of 128383 (max. 10000000)
+

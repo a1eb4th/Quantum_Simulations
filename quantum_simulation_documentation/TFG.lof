@@ -4,16 +4,18 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {1.1}{\ignorespaces Gantt diagram showing the project timeline and the distribution of tasks over the development period.}}{15}{figure.caption.7}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Comparison of computation time for molecular simulations: classical vs quantum.}}{18}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Comparison between the growth of classical and quantum computational capacity.\blx@tocontentsinit {0}\cite {mooreslaw}}}{17}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces VQE pipline\blx@tocontentsinit {0}\cite {VQE_review}.}}{24}{figure.caption.9}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Execution time of different molecules per iteration in the simulation.}}{49}{figure.caption.15}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Execution time in different parts of the code.}}{50}{figure.caption.18}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Energy vs. Time for different Ansätze and iterations.}}{52}{figure.caption.19}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Energy vs. Time for different Ansätze.}}{52}{figure.caption.20}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Optimal \emph {step size} selection for each optimizer and molecule.}}{53}{figure.caption.21}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Energy evolution as a function of \textit {step size} for different molecules.}}{56}{figure.caption.28}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Energy evolution as a function of \textit {number of iterations} for different molecules.}}{58}{figure.caption.35}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Execution time of different molecules per iteration in the simulation.}}{51}{figure.caption.16}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Execution time in different parts of the code.}}{52}{figure.caption.19}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Energy vs. Time for different Ansätze and iterations.}}{54}{figure.caption.20}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Energy vs. Time for different Ansätze.}}{54}{figure.caption.21}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Optimal \emph {step size} selection for each optimizer and molecule.}}{55}{figure.caption.22}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Energy evolution as a function of \textit {step size} for different molecules.}}{57}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Energy evolution as a function of \textit {number of iterations} for different molecules.}}{59}{figure.caption.26}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Energy evolution as a function of \textit {number of iterations} for different molecules.}}{61}{figure.caption.30}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

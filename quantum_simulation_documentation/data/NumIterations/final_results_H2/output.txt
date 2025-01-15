@@ -1,0 +1,277 @@
+Exact Energy (FCI): -1.13469066 Ha
+
+--- Molecule Information ---
+Symbols: H, H
+Number of electrons: 2
+Number of orbitals: 2
+Number of spin orbitals: 4
+
+[1 1 0 0]
+Number of both excitations: 3
+
+--- Optimizing with Momentum_0.12_uccsd_0layers_2steps ---
+
+Iteration 1, Energy = -1.11559238 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.12771651 Ha, Max Gradient = 1.36640e-01
+Iteration 3, Energy = -1.13511566 Ha, Max Gradient = 6.60870e-02
+Iteration 4, Energy = -1.13682454 Ha, Max Gradient = 1.51810e-02
+Iteration 5, Energy = -1.13703939 Ha, Max Gradient = 9.24660e-04
+Iteration 6, Energy = -1.13713564 Ha, Max Gradient = 1.06930e-03
+Iteration 7, Energy = -1.13719807 Ha, Max Gradient = 6.15517e-04
+Iteration 8, Energy = -1.13723805 Ha, Max Gradient = 4.74965e-04
+Iteration 9, Energy = -1.13726345 Ha, Max Gradient = 3.18859e-04
+Iteration 10, Energy = -1.13727947 Ha, Max Gradient = 2.51615e-04
+Iteration 11, Energy = -1.13728953 Ha, Max Gradient = 1.74064e-04
+Iteration 12, Energy = -1.13729580 Ha, Max Gradient = 1.44482e-04
+Iteration 13, Energy = -1.13729971 Ha, Max Gradient = 9.79138e-05
+Iteration 14, Energy = -1.13730213 Ha, Max Gradient = 8.88658e-05
+Iteration 15, Energy = -1.13730364 Ha, Max Gradient = 5.51769e-05
+Iteration 16, Energy = -1.13730456 Ha, Max Gradient = 5.89302e-05
+Iteration 17, Energy = -1.13730514 Ha, Max Gradient = 3.01214e-05
+Iteration 18, Energy = -1.13730549 Ha, Max Gradient = 4.19580e-05
+Iteration 19, Energy = -1.13730571 Ha, Max Gradient = 1.60153e-05
+Iteration 20, Energy = -1.13730584 Ha, Max Gradient = 3.04005e-05
+Iteration 21, Energy = -1.13730592 Ha, Max Gradient = 1.01905e-05
+Iteration 22, Energy = -1.13730597 Ha, Max Gradient = 2.03826e-05
+Iteration 23, Energy = -1.13730600 Ha, Max Gradient = 9.67604e-06
+Iteration 24, Energy = -1.13730602 Ha, Max Gradient = 1.27127e-05
+Iteration 25, Energy = -1.13730603 Ha, Max Gradient = 9.79525e-06
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 26, Energy = -1.13730604 Ha, Max Gradient = 9.52455e-06
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 27, Energy = -1.13730604 Ha, Max Gradient = 9.22944e-06
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 28, Energy = -1.13730605 Ha, Max Gradient = 1.16364e-05
+Top-level convergence reached: consecutive diffs < 1e-08
+Total optimization time (uccsd): 95.57 seconds
+Final energy with Momentum_0.12_uccsd_0layers_2steps (autograd) = -1.13730605 Ha
+Difference from exact (FCI) energy: -2.61538680e-03 Ha
+
+Final geometry:
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.055586  0.000000  0.000000
+H         1.444414  0.000000  0.000000
+
+Quantum Circuit:
+
+0: ─╭|Ψ⟩─╭G²(0.13)─╭G²(0.07)─╭G²(0.02)─╭G²(0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)
+1: ─├|Ψ⟩─├G²(0.13)─├G²(0.07)─├G²(0.02)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+2: ─├|Ψ⟩─├G²(0.13)─├G²(0.07)─├G²(0.02)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+3: ─╰|Ψ⟩─╰G²(0.13)─╰G²(0.07)─╰G²(0.02)─╰G²(0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)
+
+──╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+──╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)
+
+──╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+──╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)
+
+──╭G²(0.00)─╭G²(0.00)─┤ ╭<𝓗>
+──├G²(0.00)─├G²(0.00)─┤ ├<𝓗>
+──├G²(0.00)─├G²(0.00)─┤ ├<𝓗>
+──╰G²(0.00)─╰G²(0.00)─┤ ╰<𝓗>
+
+
+--- Optimizing with Momentum_0.12_uccsd_0layers_4steps ---
+
+Iteration 1, Energy = -1.12803024 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.13651833 Ha, Max Gradient = 4.83326e-02
+Iteration 3, Energy = -1.13700026 Ha, Max Gradient = 1.63886e-02
+Iteration 4, Energy = -1.13717570 Ha, Max Gradient = 7.72835e-03
+Iteration 5, Energy = -1.13723763 Ha, Max Gradient = 7.59502e-03
+Iteration 6, Energy = -1.13727543 Ha, Max Gradient = 5.40071e-03
+Iteration 7, Energy = -1.13728634 Ha, Max Gradient = 4.75414e-03
+Iteration 8, Energy = -1.13729987 Ha, Max Gradient = 2.62437e-03
+Iteration 9, Energy = -1.13730393 Ha, Max Gradient = 1.35804e-03
+Iteration 10, Energy = -1.13730565 Ha, Max Gradient = 1.30411e-04
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 11, Energy = -1.13730589 Ha, Max Gradient = 8.02514e-05
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 12, Energy = -1.13730599 Ha, Max Gradient = 7.62444e-05
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 13, Energy = -1.13730603 Ha, Max Gradient = 7.16383e-05
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 14, Energy = -1.13730604 Ha, Max Gradient = 7.06160e-05
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 15, Energy = -1.13730605 Ha, Max Gradient = 7.31681e-05
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 16, Energy = -1.13730605 Ha, Max Gradient = 3.17499e-05
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 17, Energy = -1.13730605 Ha, Max Gradient = 1.98324e-05
+Top-level convergence reached: consecutive diffs < 1e-08
+Total optimization time (uccsd): 96.65 seconds
+Final energy with Momentum_0.12_uccsd_0layers_4steps (autograd) = -1.13730605 Ha
+Difference from exact (FCI) energy: -2.61539015e-03 Ha
+
+Final geometry:
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.055614  0.000000  0.000000
+H         1.444386  0.000000  0.000000
+
+Quantum Circuit:
+
+0: ─╭|Ψ⟩─╭G²(0.20)─╭G²(0.03)─╭G²(-0.01)─╭G²(0.00)─╭G²(-0.00)─╭G²(0.00)─╭G²(-0.00)─╭G²(0.00)
+1: ─├|Ψ⟩─├G²(0.20)─├G²(0.03)─├G²(-0.01)─├G²(0.00)─├G²(-0.00)─├G²(0.00)─├G²(-0.00)─├G²(0.00)
+2: ─├|Ψ⟩─├G²(0.20)─├G²(0.03)─├G²(-0.01)─├G²(0.00)─├G²(-0.00)─├G²(0.00)─├G²(-0.00)─├G²(0.00)
+3: ─╰|Ψ⟩─╰G²(0.20)─╰G²(0.03)─╰G²(-0.01)─╰G²(0.00)─╰G²(-0.00)─╰G²(0.00)─╰G²(-0.00)─╰G²(0.00)
+
+──╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(0.00)─╭G²(-0.00)─┤
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(0.00)─├G²(-0.00)─┤
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(0.00)─├G²(-0.00)─┤
+──╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(0.00)─╰G²(-0.00)─┤
+
+  ╭<𝓗>
+  ├<𝓗>
+  ├<𝓗>
+  ╰<𝓗>
+
+
+--- Optimizing with Momentum_0.12_uccsd_0layers_6steps ---
+
+Iteration 1, Energy = -1.13461873 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.13640324 Ha, Max Gradient = 4.36139e-02
+Iteration 3, Energy = -1.13691224 Ha, Max Gradient = 2.61777e-02
+Iteration 4, Energy = -1.13711935 Ha, Max Gradient = 1.99283e-02
+Iteration 5, Energy = -1.13729024 Ha, Max Gradient = 6.66444e-03
+Iteration 6, Energy = -1.13730346 Ha, Max Gradient = 5.47345e-04
+Iteration 7, Energy = -1.13730544 Ha, Max Gradient = 4.86112e-04
+Iteration 8, Energy = -1.13730589 Ha, Max Gradient = 4.48880e-04
+Iteration 9, Energy = -1.13730598 Ha, Max Gradient = 4.19355e-04
+Iteration 10, Energy = -1.13730599 Ha, Max Gradient = 3.66750e-04
+Iteration 11, Energy = -1.13730602 Ha, Max Gradient = 2.67280e-04
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 12, Energy = -1.13730604 Ha, Max Gradient = 1.34731e-04
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 13, Energy = -1.13730605 Ha, Max Gradient = 3.07185e-05
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 14, Energy = -1.13730605 Ha, Max Gradient = 7.75463e-06
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 15, Energy = -1.13730605 Ha, Max Gradient = 3.35113e-06
+Top-level convergence reached: consecutive diffs < 1e-08
+Total optimization time (uccsd): 122.50 seconds
+Final energy with Momentum_0.12_uccsd_0layers_6steps (autograd) = -1.13730605 Ha
+Difference from exact (FCI) energy: -2.61539217e-03 Ha
+
+Final geometry:
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.055643  0.000000  0.000000
+H         1.444357  0.000000  0.000000
+
+Quantum Circuit:
+
+0: ─╭|Ψ⟩─╭G²(0.25)─╭G²(-0.04)─╭G²(0.01)─╭G²(-0.01)─╭G²(0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)
+1: ─├|Ψ⟩─├G²(0.25)─├G²(-0.04)─├G²(0.01)─├G²(-0.01)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+2: ─├|Ψ⟩─├G²(0.25)─├G²(-0.04)─├G²(0.01)─├G²(-0.01)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+3: ─╰|Ψ⟩─╰G²(0.25)─╰G²(-0.04)─╰G²(0.01)─╰G²(-0.01)─╰G²(0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)
+
+──╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(0.00)─╭G²(-0.00)─┤ ╭<𝓗>
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(0.00)─├G²(-0.00)─┤ ├<𝓗>
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(0.00)─├G²(-0.00)─┤ ├<𝓗>
+──╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(0.00)─╰G²(-0.00)─┤ ╰<𝓗>
+
+
+--- Optimizing with Momentum_0.12_uccsd_0layers_8steps ---
+
+Iteration 1, Energy = -1.13181614 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.13329413 Ha, Max Gradient = 1.05542e-01
+Iteration 3, Energy = -1.13693863 Ha, Max Gradient = 5.54168e-02
+Iteration 4, Energy = -1.13727829 Ha, Max Gradient = 2.90669e-03
+Iteration 5, Energy = -1.13730098 Ha, Max Gradient = 2.47331e-03
+Iteration 6, Energy = -1.13730401 Ha, Max Gradient = 2.13118e-03
+Iteration 7, Energy = -1.13730524 Ha, Max Gradient = 1.46439e-03
+Iteration 8, Energy = -1.13730597 Ha, Max Gradient = 5.31444e-04
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 9, Energy = -1.13730605 Ha, Max Gradient = 5.19186e-06
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 10, Energy = -1.13730605 Ha, Max Gradient = 9.98565e-06
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 11, Energy = -1.13730605 Ha, Max Gradient = 1.88074e-06
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 12, Energy = -1.13730605 Ha, Max Gradient = 1.34196e-06
+Top-level convergence reached: consecutive diffs < 1e-08
+Total optimization time (uccsd): 111.27 seconds
+Final energy with Momentum_0.12_uccsd_0layers_8steps (autograd) = -1.13730605 Ha
+Difference from exact (FCI) energy: -2.61539124e-03 Ha
+
+Final geometry:
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.055624  0.000000  0.000000
+H         1.444376  0.000000  0.000000
+
+Quantum Circuit:
+
+0: ─╭|Ψ⟩─╭G²(0.29)─╭G²(-0.08)─╭G²(0.02)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)
+1: ─├|Ψ⟩─├G²(0.29)─├G²(-0.08)─├G²(0.02)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+2: ─├|Ψ⟩─├G²(0.29)─├G²(-0.08)─├G²(0.02)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+3: ─╰|Ψ⟩─╰G²(0.29)─╰G²(-0.08)─╰G²(0.02)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)
+
+──╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─┤ ╭<𝓗>
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─┤ ╰<𝓗>
+
+
+--- Optimizing with Momentum_0.12_uccsd_0layers_10steps ---
+
+Iteration 1, Energy = -1.12729510 Ha, Max Gradient = 1.84266e-01
+Iteration 2, Energy = -1.13535887 Ha, Max Gradient = 1.22846e-01
+Iteration 3, Energy = -1.13727618 Ha, Max Gradient = 3.94796e-03
+Iteration 4, Energy = -1.13730266 Ha, Max Gradient = 7.92841e-04
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 5, Energy = -1.13730573 Ha, Max Gradient = 1.03687e-05
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 6, Energy = -1.13730592 Ha, Max Gradient = 6.88885e-05
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 7, Energy = -1.13730600 Ha, Max Gradient = 4.87889e-06
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 8, Energy = -1.13730603 Ha, Max Gradient = 3.25452e-05
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 9, Energy = -1.13730604 Ha, Max Gradient = 4.28670e-06
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 10, Energy = -1.13730605 Ha, Max Gradient = 1.03166e-05
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 11, Energy = -1.13730605 Ha, Max Gradient = 2.29229e-06
+Convergence reached updating parameters and coordinates: Energy difference < 1e-08
+Iteration 12, Energy = -1.13730605 Ha, Max Gradient = 1.66876e-06
+Top-level convergence reached: consecutive diffs < 1e-08
+Total optimization time (uccsd): 98.74 seconds
+Final energy with Momentum_0.12_uccsd_0layers_10steps (autograd) = -1.13730605 Ha
+Difference from exact (FCI) energy: -2.61539068e-03 Ha
+
+Final geometry:
+Symbol       x (Å)     y (Å)     z (Å)
+--------  --------  --------  --------
+H         0.055617  0.000000  0.000000
+H         1.444383  0.000000  0.000000
+
+Quantum Circuit:
+
+0: ─╭|Ψ⟩─╭G²(0.31)─╭G²(-0.09)─╭G²(0.00)─╭G²(0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)
+1: ─├|Ψ⟩─├G²(0.31)─├G²(-0.09)─├G²(0.00)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+2: ─├|Ψ⟩─├G²(0.31)─├G²(-0.09)─├G²(0.00)─├G²(0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)
+3: ─╰|Ψ⟩─╰G²(0.31)─╰G²(-0.09)─╰G²(0.00)─╰G²(0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)
+
+──╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─╭G²(-0.00)─┤ ╭<𝓗>
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─├G²(-0.00)─┤ ├<𝓗>
+──╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─╰G²(-0.00)─┤ ╰<𝓗>
+
+=== Total Optimization Times ===
+
+Interface: autograd
+Optimizer: Momentum_0.12_uccsd_0layers_2steps, Time: 95.57 seconds
+Optimizer: Momentum_0.12_uccsd_0layers_4steps, Time: 96.65 seconds
+Optimizer: Momentum_0.12_uccsd_0layers_6steps, Time: 122.50 seconds
+Optimizer: Momentum_0.12_uccsd_0layers_8steps, Time: 111.27 seconds
+Optimizer: Momentum_0.12_uccsd_0layers_10steps, Time: 98.74 seconds
+Report completely saved on: num_iterations/final_results_H2/profile_output_autograd.txt
+Filtered report saved on: num_iterations/final_results_H2/filtered_report_autograd.txt
+Report completely saved on: num_iterations/final_results_H2/profile_output_autograd.txt
+Filtered report saved on: num_iterations/final_results_H2/filtered_report_autograd.txt

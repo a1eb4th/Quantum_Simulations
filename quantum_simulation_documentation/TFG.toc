@@ -1,0 +1,113 @@
+\babel@toc {english}{}\relax 
+\acswitchoff 
+\babel@toc {english}{}\relax 
+\contentsline {section}{Summary}{2}{Doc-Start}%
+\contentsline {section}{Acknowledgements}{4}{chapter*.1}%
+\contentsline {section}{Revision history and approval record}{5}{chapter*.2}%
+\contentsline {section}{Contents}{6}{chapter*.2}%
+\contentsline {section}{List of figures}{9}{chapter*.4}%
+\contentsline {section}{List of tables}{10}{chapter*.5}%
+\contentsline {section}{Abbreviations}{11}{chapter*.5}%
+\contentsline {chapter}{\numberline {1}Introduction}{12}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Work goals}{12}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Requirements and specifications}{13}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Methods and procedures}{14}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Work plan}{14}{section.1.4}%
+\contentsline {chapter}{\numberline {2}State of the Art}{16}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Quantum Computing}{16}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Qubit}{17}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Quantum Entanglement}{18}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Quantum Superposition}{18}{subsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.1.4}Quantum Decoherence}{19}{subsection.2.1.4}%
+\contentsline {section}{\numberline {2.2}Quantum Simulation}{19}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Hamiltonian}{20}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Mathematical Definition}{21}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Role in the Schrödinger Equation}{22}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Hamiltonian in Multi-Particle Systems}{22}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}The second quantization}{23}{subsection.2.3.4}%
+\contentsline {subsection}{\numberline {2.3.5}Importance in Quantum Simulations}{23}{subsection.2.3.5}%
+\contentsline {section}{\numberline {2.4}VQE: Variational Quantum Eigensolver}{23}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Fundamental Principles and Stages of the Algorithm}{24}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Advantages and Challenges}{25}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Outlook in Quantum Simulation}{26}{subsection.2.4.3}%
+\contentsline {section}{\numberline {2.5}Ans\"{a}tze}{26}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Hartree--Fock-based Ans\"{a}tze (Classical Reference)}{27}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Unitary Coupled Cluster (UCC)}{27}{subsection.2.5.2}%
+\contentsline {section}{\numberline {2.6}Optimizers}{28}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Gradient Descent (GD)}{28}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Momentum Optimizer}{29}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}Nesterov Momentum Optimizer (NMomentum)}{29}{subsection.2.6.3}%
+\contentsline {subsection}{\numberline {2.6.4}RMSProp}{29}{subsection.2.6.4}%
+\contentsline {subsection}{\numberline {2.6.5}Adagrad}{29}{subsection.2.6.5}%
+\contentsline {subsection}{\numberline {2.6.6}Adam}{30}{subsection.2.6.6}%
+\contentsline {subsection}{\numberline {2.6.7}Quantum Natural Gradient (QNG)}{30}{subsection.2.6.7}%
+\contentsline {subsection}{\numberline {2.6.8}Importance of Optimizers in Quantum Simulation}{31}{subsection.2.6.8}%
+\contentsline {chapter}{\numberline {3}Methodology / project development}{32}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Tools and Frameworks Selection}{33}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Project Structuring}{33}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Code Organization}{34}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Main Directory}{34}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}\texttt {config/} Directory}{34}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}\texttt {modules/} Directory}{34}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.5}\texttt {temp\_results\_autograd/} Directory}{35}{subsection.3.2.5}%
+\contentsline {section}{\numberline {3.3}Implementation of the VQE}{35}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Hamiltonian Construction Process}{36}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Adaptive Ansatz Construction and Operator Selection}{38}{subsection.3.3.2}%
+\contentsline {subsubsection}{Adaptive Ansatz Benefits}{40}{subsubsection*.10}%
+\contentsline {subsection}{\numberline {3.3.3}Cost Function Definition}{41}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Mixed Optimization Strategy}{41}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Rationale for a Coupled Scheme}{42}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Iterative Optimization Steps}{42}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Efficiency of the Coupled Strategy}{45}{subsection.3.4.3}%
+\contentsline {section}{\numberline {3.5}Parallelization of Executions}{45}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}User Input Management and System Configuration}{45}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Parallelization of Execution with Multiple Optimizers}{47}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}Compilation of Results and Cleanup of Temporary Files}{48}{subsection.3.5.3}%
+\contentsline {subsubsection}{Creation and Execution of Parallel Processes}{48}{subsubsection*.11}%
+\contentsline {subsubsection}{Unification of Results into a Single File}{48}{subsubsection*.12}%
+\contentsline {subsubsection}{Deletion of Temporary Files}{48}{subsubsection*.13}%
+\contentsline {subsubsection}{Generation of Final Results}{49}{subsubsection*.14}%
+\contentsline {chapter}{\numberline {4}Results}{50}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Interface Comparison}{50}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Optimization and Timing Logging}{50}{subsection.4.1.1}%
+\contentsline {subsubsection}{Comparative Performance Analysis}{51}{subsubsection*.17}%
+\contentsline {subsection}{\numberline {4.1.2}Computation Time per Function}{52}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Conclusions}{53}{subsection.4.1.3}%
+\contentsline {section}{\numberline {4.2}Ansatz Comparison}{53}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Optimizer}{55}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Optimizer Selection}{55}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Step Size Selection}{57}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Number of Subiterations}{58}{subsection.4.3.3}%
+\contentsline {subsubsection}{Initial Results}{59}{subsubsection*.27}%
+\contentsline {subsubsection}{Final phase}{61}{subsubsection*.29}%
+\contentsline {section}{\numberline {4.4}Limitations}{62}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Sustainability Analysis and Ethical Implications}{63}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Sustainability Matrix}{63}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Environmental Perspective}{63}{subsection.5.1.1}%
+\contentsline {subsubsection}{Development}{63}{subsubsection*.32}%
+\contentsline {subsubsection}{Execution}{64}{subsubsection*.33}%
+\contentsline {subsubsection}{Risks and Limitations}{65}{subsubsection*.34}%
+\contentsline {subsection}{\numberline {5.1.2}Economic Perspective}{65}{subsection.5.1.2}%
+\contentsline {subsubsection}{Development Costs}{65}{subsubsection*.35}%
+\contentsline {subsubsection}{Execution}{66}{subsubsection*.36}%
+\contentsline {subsubsection}{Risks and Limitations}{67}{subsubsection*.37}%
+\contentsline {subsection}{\numberline {5.1.3}Social Perspective}{67}{subsection.5.1.3}%
+\contentsline {subsubsection}{Development}{67}{subsubsection*.38}%
+\contentsline {subsubsection}{Execution}{68}{subsubsection*.39}%
+\contentsline {subsubsection}{Risks and Limitations}{68}{subsubsection*.40}%
+\contentsline {section}{\numberline {5.2}Ethical Implications}{68}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Relation to the Sustainable Development Goals (SDGs)}{68}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Conclusions and Future Work}{69}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Conclusions}{69}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Future Directions}{69}{section.6.2}%
+\contentsline {chapter}{Bibliography}{71}{chapter*.41}%
+\contentsline {chapter}{\numberline {A}Logic Gates}{74}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Simple Logic Gates}{74}{section.A.1}%
+\contentsline {paragraph}{X Gate (Pauli-X)}{74}{paragraph*.42}%
+\contentsline {paragraph}{Y Gate (Pauli-Y)}{74}{paragraph*.43}%
+\contentsline {paragraph}{Z Gate (Pauli-Z)}{74}{paragraph*.44}%
+\contentsline {paragraph}{Hadamard Gate (H)}{75}{paragraph*.45}%
+\contentsline {section}{\numberline {A.2}Multi-Qubit Logic Gates}{75}{section.A.2}%
+\contentsline {paragraph}{Controlled-NOT Gate (CNOT)}{75}{paragraph*.46}%
+\contentsline {paragraph}{Single Excitation Gate (\textit {SingleExcitation})}{75}{paragraph*.47}%
+\contentsline {paragraph}{Double Excitation Gate (\textit {DoubleExcitation})}{76}{paragraph*.48}%

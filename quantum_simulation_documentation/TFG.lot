@@ -1,0 +1,16 @@
+\babel@toc {english}{}\relax 
+\acswitchoff 
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Execution times for different molecules and interfaces using \textit {Gradient Descent}.}}{51}{table.caption.15}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Comparison of execution times between JAX and autograd interfaces for different molecules.}}{52}{table.caption.18}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Final energy and optimization time for \(\mathrm {H_2}\), \(\mathrm {LiH}\), and \(\mathrm {H_2O}\) using various optimizers.}}{56}{table.caption.23}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Final energy and optimization time for \(\mathrm {H_2}\), \(\mathrm {LiH}\), and \(\mathrm {H_2O}\) varying the \textit {step size} (optimizer: Momentum).}}{58}{table.caption.25}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Final energy and optimization time for \(\mathrm {H_2}\), \(\mathrm {LiH}\), and \(\mathrm {H_2O}\) using Momentum optimizer with varying steps.}}{60}{table.caption.28}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Final energy and optimization time for \(\mathrm {H_2}\) and \(\mathrm {LiH}\).}}{62}{table.caption.31}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

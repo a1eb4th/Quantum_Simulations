@@ -5,27 +5,24 @@
 
 This chapter details the methodology used to execute the project, providing a clear and concise description of the approaches and techniques implemented to ensure replicability and academic rigor. It not only covers the research methods and measurement techniques but also delves into specific aspects of software development and project structuring. Whether the project involves computational modeling, algorithm implementation and software optimization, this section explains how each component contributes to the overall objectives.
 
-Additionally, the chapter provides justifications for selecting specific approaches over alternatives. For instance, the \textbf{PennyLane} framework was chosen over \textbf{Qiskit} for quantum simulations due to its robust documentation and practical examples in molecular simulations. The adoption of the \textbf{Variational Quantum Eigensolver (VQE)} algorithm was motivated by its compatibility with Noisy Intermediate-Scale Quantum (NISQ) devices. Parallelization strategies were implemented to enhance computational efficiency and reduce execution times.
+Additionally, the chapter provides justifications for selecting specific methods over alternatives. For instance, the \textbf{PennyLane} framework was chosen over \textbf{Qiskit} for quantum simulations due to its robust documentation and practical examples in molecular simulations. The adoption of the \textbf{Variational Quantum Eigensolver (VQE)} algorithm was motivated by its compatibility with Noisy Intermediate-Scale Quantum (NISQ) devices. Parallelization strategies were implemented to enhance computational efficiency and reduce execution times.
 
 The project follows a modular structure that facilitates scalability and simplifies the integration of new functionalities. The codebase is organized into configuration files, main execution scripts, and core computational modules. Furthermore, the adaptive construction of the \textit{ansatz} and operator selection processes are described, highlighting how these techniques improve the accuracy and efficiency of quantum simulations.
 
 Finally, the chapter addresses the limitations of the chosen methodologies and the strategies applied to mitigate these challenges. These include managing framework stability issues, computational resource constraints, and optimization convergence difficulties. By transparently discussing the strengths and weaknesses, this section presents a balanced view of the development process, emphasizing its reliability and robustness.
 
 \section{Tools and Frameworks Selection}
-To achieve the objectives of our project, the first crucial step was to select the framework to be used throughout the development process. This decision was essential, as it directly influenced the progress and success of the project.
+To achieve the objectives of our project, the first essential step was to select the framework to be used throughout the development process. This decision was essential, as it directly influenced the progress and success of the project.
 
 To make the decision on which framework to use, we compared the documentation of the two quantum simulation frameworks available in the market: \textit{PennyLane} and \textit{Qiskit}. These are the most comprehensive frameworks with similar features available at the time of creating this project. After reviewing the documentation, we ultimately chose to use \textit{PennyLane} for two reasons.
 
 The first reason was the amount of documentation related to quantum simulation. Once we started looking into how others were using these resources, we realized that in the field of molecular simulation, the existing documentation—both theoretical and especially practical—was substantially greater. This provided us with more examples to begin developing our project and a more extensive theoretical background to understand the concepts we were working with.
 
-The second reason for our choice was the frequent major changes implemented by \textit{Qiskit}. We realized that while \textit{Qiskit} is a tool that promises to be very good, it has historically undergone significant structural changes. For these reasons, this project has been developed using the \textit{PennyLane} framework.
-
-\subsection{Version Control}
-Git was employed for version control, enabling detailed tracking of code changes and ongoing collaboration with project supervisors. Initially, a single branch was used for development and exploration. Once a stable version was established, branches were created for testing and adding new features. The first branches were dedicated to different interface versions, each refined to ensure consistent performance across all interfaces. Ultimately, only the most suitable interface adjustments were merged back into the main branch.
+The second reason for our choice was the frequent major changes implemented by \textit{Qiskit}. We realized that while \textit{Qiskit} is a tool that promises to be high capable, it has historically undergone significant structural changes. For these reasons, this project has been developed using the \textit{PennyLane} framework.
 
 \section{Project Structuring}
 
-After selecting the interface and implementing the initial version of the code, we reorganized the project to achieve a more modular structure. This revised organization not only makes it easier to add new functionalities but also ensures that the project can handle higher levels of complexity. Below, we present the structure of the project and the functionality of each directory and file.
+After selecting the interface and implementing the initial version of the code, we reorganized the project to achieve a more modular architecture. This revised organization not only makes it easier to add new functionalities but also ensures that the project can handle higher levels of complexity. Below, we present the layout of the project and the functionality of each directory and file.
 
 \subsection{Code Organization}
 \begin{ProjectStructure}
@@ -131,7 +128,7 @@ Next, we will explore the implementation of the VQE within our project, breaking
 \begin{enumerate}
     \item \textbf{Definition of Molecular Geometry:}
 
-    First of all, it is necessary to define the molecular geometry of the system to be studied. This information includes the atomic symbols and the initial coordinates of the nuclei. In our project, this data is stored in a JSON file, which is loaded and processed to initialize the molecule. However, custom molecules can also be added directly in the code. 
+    Initially, it is necessary to define the molecular geometry of the system to be studied. This information includes the atomic symbols and the initial coordinates of the nuclei. In our project, this data is stored in a JSON file, which is loaded and processed to initialize the molecule. However, custom molecules can also be added directly in the code. 
 
     This part of the code provides the user with the ability to select the molecule to be simulated, allowing them to choose between the predefined molecules in the JSON file or add a new one. The \texttt{from\_user\_input} function loads the molecular information and initializes it, preparing it for simulation.
 
@@ -167,11 +164,11 @@ def build_hamiltonian(x, symbols, charge=0, mult=1, basis_name='sto-3g'):
 
 \subsection{Adaptive Ansatz Construction and Operator Selection}
 
-For the constructioon of the ansatz, we use the adaptive ansatz construction builds upon the conventional variational approach by strategically selecting only those excitations that offer the most significant energy reductions. Instead of starting from a large, fixed set of parameters, the algorithm begins with the Hartree-Fock state and incrementally introduces new excitations based on their calculated impact on lowering the system’s energy. This methodology provides both theoretical and practical advantages in handling the complexity of the solution space.
+For the construction of the ansatz, we use the adaptive ansatz construction builds upon the conventional variational approach by strategically selecting only those excitations that offer the most significant energy reductions. Instead of starting from a large, fixed set of parameters, the algorithm begins with the Hartree-Fock state and incrementally introduces new excitations based on their calculated impact on lowering the system’s energy. This methodology provides both theoretical and practical advantages in handling the complexity of the solution space.
 
-The selection process begins with a predefined \textit{operator pool},composed of single and double excitation operators relevant to the molecular system. At the start of the procedure, no variational parameters are assigned, and the system is initialized in the reference Hartree-Fock state. At each iteration, the algorithm evaluates the energy gradients associated with adding each operator from the pool.
+The selection process begins with a predefined \textit{operator pool}, consisting of single and double excitation operators relevant to the molecular system. At the start of the procedure, no variational parameters are assigned, and the system is initialized in the reference Hartree-Fock state. At each iteration, the algorithm evaluates the energy gradients associated with adding each operator from the pool.
 
-Below we present the main steps of the adaptive ansatz construction and operator selection process, all implemented on the \texttt{ansatz\_preparer.py} file:
+The following outlines the main steps of the adaptive ansatz construction and operator selection process, all implemented on the \texttt{ansatz\_preparer.py} file:
 
 \begin{enumerate}
     \item \textbf{Gradient Calculation:} For every candidate operator $\hat{O}_i$ in the pool, the partial derivative of the energy with respect to the parameter controlling $\hat{O}_i$ is computed. This step identifies how sensitive the energy is to introducing that particular excitation. In our project this functionality is implemented in the \texttt{compute\_operator\_gradients} function.
@@ -217,7 +214,7 @@ def select_operator(gradients, operator_pool, convergence):
     selected_gate = operator_pool[max_grad_index]
     return selected_gate, max_grad_value
       \end{tcblisting}
-    \item \textbf{Incremental Ansatz Growth:} The selected operator(s) is then added to the ansatz. A new parameter is introduced and optimized, increasing the dimensionality of the parameter space \emph{only where it matters}. This targeted expansion ensures that each additional parameter contributes meaningfully to lowering the energy. The incremental ansatz is implemented de la siguiente manera:
+    \item \textbf{Incremental Ansatz Growth:} The selected operator(s) is then added to the ansatz. A new parameter is introduced and optimized, increasing the dimensionality of the parameter space. This targeted expansion ensures that each additional parameter contributes meaningfully to lowering the energy. The incremental ansatz is implemented as follows:
     \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
         title=Operation Ranking, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
         listing options={language=Python, basicstyle=\ttfamily\small,
@@ -230,7 +227,7 @@ def prepare_ansatz_uccsd(params, hf_state, selected_excitations, spin_orbitals):
         elif len(exc) == 4:
             qml.DoubleExcitation(params[i], wires=exc)
       \end{tcblisting}
-    \item \textbf{Pool Update and Iteration:} After adding the chosen operators, the process repeats. The operator pool is re-examined at subsequent steps, but it now excludes previously chosen operators unless they are included as parameterized parts of the ansatz. Over multiple iterations, the ansatz evolves adaptively, honing in on the most relevant subset of excitations.
+    \item \textbf{Pool Update and Iteration:} After adding the chosen operators, the process repeats. The operator pool is re-examined at subsequent steps, but it now excludes previously chosen operators unless they are included as parameterized parts of the ansatz. Over multiple iterations, the ansatz evolves adaptively, selecting the most relevant subset of excitations.
 \end{enumerate}
 
 Below, we can observe a simplified code snippet, consistent with the project’s implementation, showcasing the adaptive operator selection process:
@@ -302,7 +299,7 @@ Traditional sequential approaches often optimize electronic parameters at a fixe
 The key steps of the coupled optimization process, implemented in the \textit{run\_optimization\_uccsd} function within the \texttt{optimizer.py} file, are described below:
 \begin{enumerate}
     \item \textbf{Initialization:}
-    Firts of all, we define the initial geometry \(\mathbf{X}_0\), variational parameters \(\theta_0\), and other required structures.
+    First, we define the initial geometry \(\mathbf{X}_0\), variational parameters \(\theta_0\), and other required structures.
     \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
         title=Initialization, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
         listing options={language=Python, basicstyle=\ttfamily\small,
@@ -339,8 +336,6 @@ for iteration in range(max_iterations):
     \end{tcblisting}
 
     \item \textbf{Electronic Update via Operator Gradients:}
-    The text is clear, but it can be slightly refined for better readability and grammatical correctness. Here's the revised version:
-
     The next step is to compute the energy gradient with respect to a pool of candidate excitation operators. We select the operator that yields the largest energy decrease and add it to the ansatz. This strategy expands the variational parameter space only in directions that significantly reduce the energy.
     \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,
         title=Electronic Update, fonttitle=\bfseries, breakable, enhanced jigsaw, leftupper=8mm,
@@ -502,7 +497,7 @@ def build_optimizers(args, ansatz_list, optimizer_map, predefined_steps):
 \end{tcblisting}
 
 \subsection{Parallelization of Execution with Multiple Optimizers}
-After generating the optimizers and their corresponding configurations, the parallel execution process is invoked. This approach distributes each simulation across different processes using \texttt{ProcessPoolExecutor}, thereby leveraging multiple CPU cores to significantly accelerate computation time:
+After generating the optimizers and their corresponding configurations, the parallel execution process is invoked. This approach distributes each simulation across different processes using \texttt{ProcessPoolExecutor}, thereby leveraging multiple CPU cores to significantly speed up computation time:
 
 
 \begin{tcblisting}{colback=gray!5!white,colframe=gray!75!black,listing only,

@@ -2248,4 +2248,183 @@
       <bcf:entrytype>incollection</bcf:entrytype>
       <bcf:entrytype>suppcollection</bcf:entrytype>
       <bcf:entrytype>inreference</bcf:entrytype>
-      <bcf:constraint type="man
+      <bcf:constraint type="mandatory">
+        <bcf:field>author</bcf:field>
+        <bcf:field>editor</bcf:field>
+        <bcf:field>title</bcf:field>
+        <bcf:field>booktitle</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>dataset</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>title</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>manual</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>title</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>misc</bcf:entrytype>
+      <bcf:entrytype>software</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>title</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>online</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>title</bcf:field>
+        <bcf:fieldor>
+          <bcf:field>url</bcf:field>
+          <bcf:field>doi</bcf:field>
+          <bcf:field>eprint</bcf:field>
+        </bcf:fieldor>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>patent</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>author</bcf:field>
+        <bcf:field>title</bcf:field>
+        <bcf:field>number</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>periodical</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>editor</bcf:field>
+        <bcf:field>title</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>proceedings</bcf:entrytype>
+      <bcf:entrytype>mvproceedings</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>title</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>inproceedings</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>author</bcf:field>
+        <bcf:field>title</bcf:field>
+        <bcf:field>booktitle</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>report</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>author</bcf:field>
+        <bcf:field>title</bcf:field>
+        <bcf:field>type</bcf:field>
+        <bcf:field>institution</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>thesis</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>author</bcf:field>
+        <bcf:field>title</bcf:field>
+        <bcf:field>type</bcf:field>
+        <bcf:field>institution</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:entrytype>unpublished</bcf:entrytype>
+      <bcf:constraint type="mandatory">
+        <bcf:field>author</bcf:field>
+        <bcf:field>title</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+    <bcf:constraints>
+      <bcf:constraint type="data" datatype="isbn">
+        <bcf:field>isbn</bcf:field>
+      </bcf:constraint>
+      <bcf:constraint type="data" datatype="issn">
+        <bcf:field>issn</bcf:field>
+      </bcf:constraint>
+      <bcf:constraint type="data" datatype="ismn">
+        <bcf:field>ismn</bcf:field>
+      </bcf:constraint>
+      <bcf:constraint type="data" datatype="pattern" pattern="(?:sf|sm|sn|pf|pm|pn|pp)">
+        <bcf:field>gender</bcf:field>
+      </bcf:constraint>
+    </bcf:constraints>
+  </bcf:datamodel>
+  <!-- CITATION DATA -->
+  <!-- SECTION 0 -->
+  <bcf:bibdata section="0">
+    <bcf:datasource type="file" datatype="bibtex" glob="false">TFG.bib</bcf:datasource>
+  </bcf:bibdata>
+  <bcf:section number="0">
+    <bcf:citekey order="3" intorder="1">mooreslaw</bcf:citekey>
+    <bcf:citekey order="4" intorder="1">mooreslaw</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">wikipedia_qubit</bcf:citekey>
+    <bcf:citekey order="6" intorder="1">pirandola2015advances</bcf:citekey>
+    <bcf:citekey order="7" intorder="1">ibm_quantum_computing</bcf:citekey>
+    <bcf:citekey order="8" intorder="1">optimizing_decoherence</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">decoherence</bcf:citekey>
+    <bcf:citekey order="10" intorder="1">AQS</bcf:citekey>
+    <bcf:citekey order="11" intorder="1">mps_peps_tensor_networks</bcf:citekey>
+    <bcf:citekey order="12" intorder="1">QuantumSimulation</bcf:citekey>
+    <bcf:citekey order="13" intorder="1">wiki:hamiltonian_quantum_mechanics</bcf:citekey>
+    <bcf:citekey order="14" intorder="1">wiki:hamiltonian_quantum_mechanics</bcf:citekey>
+    <bcf:citekey order="15" intorder="1">tao_schrodinger</bcf:citekey>
+    <bcf:citekey order="16" intorder="1">wiki:hamiltonian_quantum_mechanics</bcf:citekey>
+    <bcf:citekey order="17" intorder="1">SecondQuantization</bcf:citekey>
+    <bcf:citekey order="18" intorder="1">VQEs</bcf:citekey>
+    <bcf:citekey order="19" intorder="1">ibm_vqe_tutorial</bcf:citekey>
+    <bcf:citekey order="20" intorder="1">VQE_review</bcf:citekey>
+    <bcf:citekey order="21" intorder="1">VQE_review</bcf:citekey>
+    <bcf:citekey order="22" intorder="1">ADAPTVQE</bcf:citekey>
+    <bcf:citekey order="23" intorder="1">VQE_review</bcf:citekey>
+    <bcf:citekey order="24" intorder="1">wiki:hartree_fock_method</bcf:citekey>
+    <bcf:citekey order="25" intorder="1">wiki:post_hartree_fock</bcf:citekey>
+    <bcf:citekey order="26" intorder="1">OptimizationAlgorithms</bcf:citekey>
+    <bcf:citekey order="27" intorder="1">pennylane_qngoptimizer</bcf:citekey>
+    <bcf:citekey order="28" intorder="1" nocite="1">*</bcf:citekey>
+  </bcf:section>
+  <!-- SORTING TEMPLATES -->
+  <bcf:sortingtemplate name="nyt">
+    <bcf:sort order="1">
+      <bcf:sortitem order="1">presort</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="2" final="1">
+      <bcf:sortitem order="1">sortkey</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="3">
+      <bcf:sortitem order="1">sortname</bcf:sortitem>
+      <bcf:sortitem order="2">author</bcf:sortitem>
+      <bcf:sortitem order="3">editor</bcf:sortitem>
+      <bcf:sortitem order="4">translator</bcf:sortitem>
+      <bcf:sortitem order="5">sorttitle</bcf:sortitem>
+      <bcf:sortitem order="6">title</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="4">
+      <bcf:sortitem order="1">sortyear</bcf:sortitem>
+      <bcf:sortitem order="2">year</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="5">
+      <bcf:sortitem order="1">sorttitle</bcf:sortitem>
+      <bcf:sortitem order="2">title</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="6">
+      <bcf:sortitem order="1">volume</bcf:sortitem>
+      <bcf:sortitem literal="1" order="2">0</bcf:sortitem>
+    </bcf:sort>
+  </bcf:sortingtemplate>
+  <!-- DATALISTS -->
+  <bcf:datalist section="0"
+                name="nyt/global//global/global"
+                type="entry"
+                sortingtemplatename="nyt"
+                sortingnamekeytemplatename="global"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global">
+  </bcf:datalist>
+</bcf:controlfile>

@@ -63,6 +63,101 @@
       \verb https://arxiv.org/abs/2210.15438
       \endverb
     \endentry
+    \entry{mps_peps_tensor_networks}{article}{}
+      \name{author}{4}{}{%
+        {{hash=f0fb29b6b2eba9e1bb61064aa432ea7a}{%
+           family={Cirac},
+           familyi={C\bibinitperiod},
+           given={J.\bibnamedelimi Ignacio},
+           giveni={J\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
+        {{hash=c1a0f4fde0f549aefa45178341a028b4}{%
+           family={Perez-Garcia},
+           familyi={P\bibinithyphendelim G\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=d6ad7cbe797863db505ad2d0b9cc77ce}{%
+           family={Schuch},
+           familyi={S\bibinitperiod},
+           given={Norbert},
+           giveni={N\bibinitperiod}}}%
+        {{hash=1003ae5f362d7f74a9671760817ebb1a}{%
+           family={Verstraete},
+           familyi={V\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{65430863fda372748b357f41f1d55965}
+      \strng{fullhash}{d2a8c19409fa1659ceb5cf05e30c5e65}
+      \strng{bibnamehash}{65430863fda372748b357f41f1d55965}
+      \strng{authorbibnamehash}{65430863fda372748b357f41f1d55965}
+      \strng{authornamehash}{65430863fda372748b357f41f1d55965}
+      \strng{authorfullhash}{d2a8c19409fa1659ceb5cf05e30c5e65}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv}
+      \field{note}{Discusses MPS and PEPS techniques for representing and simulating quantum systems efficiently.}
+      \field{title}{Matrix Product States and Projected Entangled Pair States: Concepts, Symmetries, and Theorems}
+      \field{year}{2020}
+      \field{pages}{14\bibrangedash 15}
+      \range{pages}{2}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2011.12127
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2011.12127
+      \endverb
+    \endentry
+    \entry{QuantumSimulation}{article}{}
+      \name{author}{3}{}{%
+        {{hash=a7e13af88ac503095e2949a206a0af1c}{%
+           family={Georgescu},
+           familyi={G\bibinitperiod},
+           given={I.\bibnamedelimi M.},
+           giveni={I\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=c38c7e3876bd1796913f6be52ded0516}{%
+           family={Ashhab},
+           familyi={A\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=2cfaf55a849299a0fe647e070cffada8}{%
+           family={Nori},
+           familyi={N\bibinitperiod},
+           given={Franco},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{42989644f16eb98a09147d97095a9c3c}
+      \strng{fullhash}{42989644f16eb98a09147d97095a9c3c}
+      \strng{bibnamehash}{42989644f16eb98a09147d97095a9c3c}
+      \strng{authorbibnamehash}{42989644f16eb98a09147d97095a9c3c}
+      \strng{authornamehash}{42989644f16eb98a09147d97095a9c3c}
+      \strng{authorfullhash}{42989644f16eb98a09147d97095a9c3c}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{quant-ph}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{Reviews of Modern Physics}
+      \field{title}{Quantum Simulation}
+      \field{volume}{86}
+      \field{year}{2014}
+      \field{pages}{41}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1103/RevModPhys.86.153
+      \endverb
+      \verb{eprint}
+      \verb 1308.6253
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1308.6253
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1308.6253
+      \endverb
+    \endentry
     \entry{arxiv_2201.04216}{article}{}
       \name{author}{4}{}{%
         {{hash=c857454925fd025cd349bfaafb6b24a0}{%
@@ -139,6 +234,93 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/1910.05168
+      \endverb
+    \endentry
+    \entry{wiki:hamiltonian_quantum_mechanics}{misc}{}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://en.wikipedia.org/wiki/Hamiltonian_(quantum_mechanics)}}
+      \field{note}{Last accessed: December 20, 2024}
+      \field{title}{Hamiltonian (quantum mechanics)}
+    \endentry
+    \entry{AQS}{misc}{}
+      \name{author}{3}{}{%
+        {{hash=ef4bc0c6c97353b8ff0534c917bdfbbb}{%
+           family={Hangleiter},
+           familyi={H\bibinitperiod},
+           given={Dominik},
+           giveni={D\bibinitperiod}}}%
+        {{hash=16a69e8729672324331002faff6dfb62}{%
+           family={Carolan},
+           familyi={C\bibinitperiod},
+           given={Jacques},
+           giveni={J\bibinitperiod}}}%
+        {{hash=dce975debca5ffb3dbce34f39ba9054f}{%
+           family={Thébault},
+           familyi={T\bibinitperiod},
+           given={Karim\bibnamedelimb P.\bibnamedelimi Y.},
+           giveni={K\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{cc72c35ba48994e322d2b4d5f485179c}
+      \strng{fullhash}{cc72c35ba48994e322d2b4d5f485179c}
+      \strng{bibnamehash}{cc72c35ba48994e322d2b4d5f485179c}
+      \strng{authorbibnamehash}{cc72c35ba48994e322d2b4d5f485179c}
+      \strng{authornamehash}{cc72c35ba48994e322d2b4d5f485179c}
+      \strng{authorfullhash}{cc72c35ba48994e322d2b4d5f485179c}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{quant-ph}
+      \field{eprinttype}{arXiv}
+      \field{title}{Analogue Quantum Simulation: A New Instrument for Scientific Understanding}
+      \field{year}{2023}
+      \verb{doi}
+      \verb 10.1007/978-3-030-87216-8
+      \endverb
+      \verb{eprint}
+      \verb 2303.00814
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2303.00814
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2303.00814
+      \endverb
+    \endentry
+    \entry{wiki:hartree_fock_method}{misc}{}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://en.wikipedia.org/wiki/Hartree%E2%80%93Fock_method}}
+      \field{note}{Last accessed: January 9, 2025}
+      \field{title}{Hartree–Fock method}
+    \endentry
+    \entry{ibm_quantum_computing}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=091825ef571773417253c5c2f9bac796}{%
+           family={{IBM Quantum}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{091825ef571773417253c5c2f9bac796}
+      \strng{fullhash}{091825ef571773417253c5c2f9bac796}
+      \strng{bibnamehash}{091825ef571773417253c5c2f9bac796}
+      \strng{authorbibnamehash}{091825ef571773417253c5c2f9bac796}
+      \strng{authornamehash}{091825ef571773417253c5c2f9bac796}
+      \strng{authorfullhash}{091825ef571773417253c5c2f9bac796}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Accessed: 2025-01-14}
+      \field{title}{Quantum Computing Topics}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://www.ibm.com/think/topics/quantum-computing
+      \endverb
+      \verb{url}
+      \verb https://www.ibm.com/think/topics/quantum-computing
       \endverb
     \endentry
     \entry{arxiv_2409.05939}{article}{}
@@ -306,6 +488,90 @@
       \verb https://arxiv.org/pdf/1304.3061
       \endverb
     \endentry
+    \entry{wiki:post_hartree_fock}{misc}{}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labeltitlesource}{title}
+      \field{note}{Last accessed: January 9, 2025}
+      \field{title}{Post-Hartree-Fock}
+      \verb{urlraw}
+      \verb https://en.wikipedia.org/wiki/Post%E2%80%93Hartree%E2%80%93Fock
+      \endverb
+      \verb{url}
+      \verb https://en.wikipedia.org/wiki/Post%E2%80%93Hartree%E2%80%93Fock
+      \endverb
+    \endentry
+    \entry{ibm_vqe_tutorial}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=2adf706ddef36299b86913d208d5ddf8}{%
+           family={Quantum},
+           familyi={Q\bibinitperiod},
+           given={IBM},
+           giveni={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{2adf706ddef36299b86913d208d5ddf8}
+      \strng{fullhash}{2adf706ddef36299b86913d208d5ddf8}
+      \strng{bibnamehash}{2adf706ddef36299b86913d208d5ddf8}
+      \strng{authorbibnamehash}{2adf706ddef36299b86913d208d5ddf8}
+      \strng{authornamehash}{2adf706ddef36299b86913d208d5ddf8}
+      \strng{authorfullhash}{2adf706ddef36299b86913d208d5ddf8}
+      \field{sortinit}{Q}
+      \field{sortinithash}{ce69a400a872ddd02ee7fdb3b38c6abd}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://learning.quantum.ibm.com/tutorial/variational-quantum-eigensolver}}
+      \field{note}{Last accessed: January 8, 2025}
+      \field{title}{Variational Quantum Eigensolver Tutorial}
+    \endentry
+    \entry{VQEs}{article}{}
+      \name{author}{5}{}{%
+        {{hash=284d29a0610986600c4f63bb5bf6b946}{%
+           family={Sherbert},
+           familyi={S\bibinitperiod},
+           given={Kyle\bibnamedelima M.},
+           giveni={K\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=d63588679d8aab49e249b2fb935e9166}{%
+           family={Amer},
+           familyi={A\bibinitperiod},
+           given={Hisham},
+           giveni={H\bibinitperiod}}}%
+        {{hash=d1565292905e7bfee6c084f42b6b3e82}{%
+           family={Economou},
+           familyi={E\bibinitperiod},
+           given={Sophia\bibnamedelima E.},
+           giveni={S\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=25d5b6530157972082e4172eee0bcffa}{%
+           family={Barnes},
+           familyi={B\bibinitperiod},
+           given={Edwin},
+           giveni={E\bibinitperiod}}}%
+        {{hash=e4e4cc30d84fc39188b1b259c5e2ba37}{%
+           family={Mayhall},
+           familyi={M\bibinitperiod},
+           given={Nicholas\bibnamedelima J.},
+           giveni={N\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \strng{namehash}{91308ea7c94bd52309b88a43941fd272}
+      \strng{fullhash}{130d6fcceabd829ecaca4a8c7c15072d}
+      \strng{bibnamehash}{91308ea7c94bd52309b88a43941fd272}
+      \strng{authorbibnamehash}{91308ea7c94bd52309b88a43941fd272}
+      \strng{authornamehash}{91308ea7c94bd52309b88a43941fd272}
+      \strng{authorfullhash}{130d6fcceabd829ecaca4a8c7c15072d}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2405.15166}
+      \field{note}{Last accessed: January 8, 2025}
+      \field{title}{Parameterization and optimizability of pulse-level VQEs}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://arxiv.org/pdf/2405.15166
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/pdf/2405.15166
+      \endverb
+    \endentry
     \entry{arxiv_2306.00467}{article}{}
       \name{author}{3}{}{%
         {{hash=5d0ddda3a367ceb26fbaeca02e391c22}{%
@@ -453,6 +719,127 @@
       \verb https://arxiv.org/abs/2402.17993
       \endverb
     \endentry
+    \entry{tao_schrodinger}{unpublished}{}
+      \name{author}{1}{}{%
+        {{hash=4cea0d7ce90ed017dfa21b4cee6c72e9}{%
+           family={Tao},
+           familyi={T\bibinitperiod},
+           given={Terence},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {University of California, Los Angeles}%
+      }
+      \strng{namehash}{4cea0d7ce90ed017dfa21b4cee6c72e9}
+      \strng{fullhash}{4cea0d7ce90ed017dfa21b4cee6c72e9}
+      \strng{bibnamehash}{4cea0d7ce90ed017dfa21b4cee6c72e9}
+      \strng{authorbibnamehash}{4cea0d7ce90ed017dfa21b4cee6c72e9}
+      \strng{authornamehash}{4cea0d7ce90ed017dfa21b4cee6c72e9}
+      \strng{authorfullhash}{4cea0d7ce90ed017dfa21b4cee6c72e9}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{3}
+      \field{note}{Available at \url{https://www.math.ucla.edu/~tao/preprints/schrodinger.pdf}}
+      \field{title}{The Schrödinger Equation}
+      \field{year}{2006}
+    \endentry
+    \entry{VQE_review}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{10}{}{%
+        {{hash=e89afd76e739d24b6a9e723873e46a0d}{%
+           family={Tilly},
+           familyi={T\bibinitperiod},
+           given={Jules},
+           giveni={J\bibinitperiod}}}%
+        {{hash=815b49d34a2166323e21f54355f9ce2c}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Hongxiang},
+           giveni={H\bibinitperiod}}}%
+        {{hash=e5d3d918b7be338f8a424a23f0dce0ba}{%
+           family={Cao},
+           familyi={C\bibinitperiod},
+           given={Shuxiang},
+           giveni={S\bibinitperiod}}}%
+        {{hash=400cb20be1a645ad4be6c55d828fab8b}{%
+           family={Picozzi},
+           familyi={P\bibinitperiod},
+           given={Dario},
+           giveni={D\bibinitperiod}}}%
+        {{hash=abfb3de829a93fdf1dbd5bcac06ef044}{%
+           family={Setia},
+           familyi={S\bibinitperiod},
+           given={Kanav},
+           giveni={K\bibinitperiod}}}%
+        {{hash=96641b60b95eb223b3df53d9263f63ff}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Ying},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=b1d176833e606713973a4617ef10e618}{%
+           family={Grant},
+           familyi={G\bibinitperiod},
+           given={Edward},
+           giveni={E\bibinitperiod}}}%
+        {{hash=87c1e1f5d917ee25158301ca68f9794d}{%
+           family={Wossnig},
+           familyi={W\bibinitperiod},
+           given={Leonard},
+           giveni={L\bibinitperiod}}}%
+        {{hash=a94f26fffc034d863986f733b1ceaeff}{%
+           family={Rungger},
+           familyi={R\bibinitperiod},
+           given={Ivan},
+           giveni={I\bibinitperiod}}}%
+        {{hash=8c7b2231792946b925014d762dcf665a}{%
+           family={Booth},
+           familyi={B\bibinitperiod},
+           given={George\bibnamedelima H},
+           giveni={G\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \strng{namehash}{7aa107736bfa0f89edac9f086a4ab520}
+      \strng{fullhash}{1a95acdba69093ac45866ad02b054e3b}
+      \strng{bibnamehash}{7aa107736bfa0f89edac9f086a4ab520}
+      \strng{authorbibnamehash}{7aa107736bfa0f89edac9f086a4ab520}
+      \strng{authornamehash}{7aa107736bfa0f89edac9f086a4ab520}
+      \strng{authorfullhash}{1a95acdba69093ac45866ad02b054e3b}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2111.05176}
+      \field{title}{The Variational Quantum Eigensolver: a review of methods and best practices}
+      \field{year}{2021}
+    \endentry
+    \entry{wikipedia_qubit}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=b6aea1a416c89509a7df1cbb69249cb6}{%
+           family={{Wikipedia contributors}},
+           familyi={W\bibinitperiod}}}%
+      }
+      \strng{namehash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{fullhash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{bibnamehash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{authorbibnamehash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{authornamehash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{authorfullhash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Last accessed: January 8, 2025}
+      \field{title}{Qubit}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://en.wikipedia.org/wiki/Qubit
+      \endverb
+      \verb{url}
+      \verb https://en.wikipedia.org/wiki/Qubit
+      \endverb
+    \endentry
     \entry{arxiv_2005.08451}{article}{}
       \name{author}{8}{}{%
         {{hash=42c9eb4e433c39a7f2b150f72f048a5b}{%
@@ -515,6 +902,33 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/2005.08451
+      \endverb
+    \endentry
+    \entry{mooreslaw}{online}{}
+      \name{author}{1}{}{%
+        {{hash=55c2a4ed4389c3fd392783ce1719d873}{%
+           family={Yoder},
+           familyi={Y\bibinitperiod},
+           given={Nick},
+           giveni={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{55c2a4ed4389c3fd392783ce1719d873}
+      \strng{fullhash}{55c2a4ed4389c3fd392783ce1719d873}
+      \strng{bibnamehash}{55c2a4ed4389c3fd392783ce1719d873}
+      \strng{authorbibnamehash}{55c2a4ed4389c3fd392783ce1719d873}
+      \strng{authornamehash}{55c2a4ed4389c3fd392783ce1719d873}
+      \strng{authorfullhash}{55c2a4ed4389c3fd392783ce1719d873}
+      \field{sortinit}{Y}
+      \field{sortinithash}{fd67ad5a9ef0f7456bdd9aab10fe1495}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Moore's Law and Quantum Computers}
+      \field{year}{2023}
+      \verb{urlraw}
+      \verb https://nickyoder.com/moores-law-quantum-computer/
+      \endverb
+      \verb{url}
+      \verb https://nickyoder.com/moores-law-quantum-computer/
       \endverb
     \endentry
     \entry{arxiv_2311.09634}{article}{}
